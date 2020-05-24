@@ -1,0 +1,39 @@
+功能：match函数是用于个性化定制搜索模式。
+
+例子：
+   文件内容：
+this is wang ,not wan
+that is chen, not che 
+this is chen ,and wang ,not wan che 
+
+  思路：
+
+比如你想提取is后面的第一个单词，和not 后面的第一个单词，
+
+这时候利用位置来提取是不可行的，因为第三行的模式和前两行不一致，这种情况在基因注解里经常会碰到。
+
+这是就可以用awk的match函数啦！！
+
+[wangjq@mgmt humandb]$ cat test
+this is wang,not wan
+that is chen,not che
+this is chen,and wang,not wan che
+[wangjq@mgmt humandb]$ awk '{match($0,/.+is([^,]+).+not(.+)/,a);print a[1],a[2]}' test
+ wang  wan
+ chen  che
+ chen  wan che
+ 
+格式：match(string,regexp,array)  和string~regexp的作用类似
+
+没有array的情况下：通过regexp，在string中寻找最左边，最长的substring，返回substring的index位置。
+
+有array的情况下：在regexp中用()将要组成的array的内容按顺序弄好,a[1]代表第一个（）的内容，a[2]代表第二个（）的内容，以此类推。
+
+echo "gene_type  "mrna";gene_name "typ""|awk 'match($0,/(gene_type).+(".+?");gene_name/,a){print a[1]}'
+gene_type
+ 
+echo "gene_type  "mrna";gene_name "typ""|awk 'match($0,/(gene_type).+("+?");gene_nae/,a){print a[2]}'
+mrna
+　　
+
+拒绝低效率勤奋，保持高效思考
