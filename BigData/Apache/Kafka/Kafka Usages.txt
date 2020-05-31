@@ -1,0 +1,7 @@
+
+
+# 1. start zookeeper server 
+# 2. start kafka server 
+# 3. create topic
+# 4. delete topic 
+# 5.   

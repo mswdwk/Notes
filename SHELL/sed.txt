@@ -1,0 +1,2 @@
+1) delete stray \240 , \302 in file tmp.txt
+sed -i 's/\o240|\o302//'  tmp.txt

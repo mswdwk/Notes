@@ -1,0 +1,27 @@
+1) 配置系统coredump文件名称格式及路径
+
+指定生成文件的路径和名字；执行# vim /etc/sysctl.conf，进入编辑模式，加入下面两行
+
+kernel.core_pattern=/var/core/core_%e_%p
+kernel.core_uses_pid=0
+
+在var下创建core目录，用# sysctl –p 是修改马上生效。
+
+
+2) core_pattern的命名参数如下：
+
+%c 转储文件的大小上限
+
+%e 所dump的文件名
+
+%g 所dump的进程的实际组ID
+
+%h 主机名
+
+%p 所dump的进程PID
+
+%s 导致本次coredump的信号
+
+%t 转储时刻(由1970年1月1日起计的秒数)
+
+%u 所dump进程的实际用户ID
