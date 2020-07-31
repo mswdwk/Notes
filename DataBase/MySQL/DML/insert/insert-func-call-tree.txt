@@ -1,0 +1,35 @@
+handle_connection {
+	do_command {
+		dispatch_command {
+			mysql_parse {
+				mysql_execute_command {
+					case SQLCOM_INSERT:
+					res= lex->m_sql_cmd->execute(thd) {
+						Sql_cmd_insert::execute(THD *thd){
+							MYSQL_INSERT_START(const_cast<char*>(thd->query().str))
+							all_tables = lex->select_lex->get_table_list()
+							res = mysql_insert(thd, all_tables) {
+								open_tables_for_query(thd, table_list, 0)
+								run_before_dml_hook(thd)
+								mysql_prepare_insert(thd, table_list, values, false){
+									mysql_prepare_insert_check_table(thd, table_list, insert_field_list,select_insert)
+									check_insert_fields
+								}	
+								if(lex->describe) explain_single_table_modification
+								prepare_triggers_for_insert_stmt(insert_table)
+								error= write_record(thd, insert_table, &info, &update){
+									
+								}
+								insert_table->file->ha_release_auto_increment()
+							}
+							MYSQL_INSERT_DONE(res, (ulong) thd->get_row_count_func())	
+						}
+					}	
+				}
+			}
+			thd->update_server_status();
+      	thd->send_statement_status();
+      	query_cache.end_of_result(thd);
+		}
+	}
+}

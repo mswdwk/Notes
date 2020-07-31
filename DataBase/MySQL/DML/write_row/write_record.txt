@@ -1,0 +1,45 @@
+write_record {
+	handler::ha_write_row(uchar *buf){
+		mark_trx_read_write()
+		MYSQL_TABLE_IO_WAIT(PSI_TABLE_WRITE_ROW, MAX_KEY, error,{ error= write_row(buf); }) {
+			ha_innobase::write_row{
+				error = row_insert_for_mysql((byte*) record, m_prebuilt){
+					if (dict_table_is_intrinsic(prebuilt->table)) {
+						row_insert_for_mysql_using_cursor(mysql_rec, prebuilt)
+					} else {
+						row_insert_for_mysql_using_ins_graph(mysql_rec, prebuilt) {
+							row_get_prebuilt_insert_row{
+								/* Create an insert node and query graph to the prebuilt struct */
+								ins_node_t*		node;
+								node = ins_node_create(INS_DIRECT, table, prebuilt->heap)
+								row = dtuple_create_with_vcol(
+									prebuilt->heap, dict_table_get_n_cols(table),
+									dict_table_get_n_v_cols(table));
+								dict_table_copy_types(row, table);
+								ins_node_set_new_row(node, row);	
+							}
+							row_mysql_convert_row_to_innobase
+							row_ins_step(thr){
+								err = row_ins(node, thr) {
+									err = row_ins_index_entry_step(node, thr) {
+										err = row_ins_index_entry_set_vals(node->index, node->entry, node->row);
+										err = row_ins_index_entry(node->index, node->entry, thr) {
+											if (dict_index_is_clust(index)) {
+												row_ins_clust_index_entry(index, entry, thr, 0, false)
+											} else {
+												row_ins_sec_index_entry(index, entry, thr, false)
+											}
+										}
+									}
+								}	
+							}
+						}
+					}	
+				}
+				innobase_srv_conc_exit_innodb(m_prebuilt);
+			}	
+		}
+		MYSQL_INSERT_ROW_DONE(error)
+		error= binlog_log_row(table, 0, buf, log_func)
+	}
+}
