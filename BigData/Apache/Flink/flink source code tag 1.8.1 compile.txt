@@ -1,0 +1,13 @@
+p: problem 
+s: step
+
+p1) Too many files with unapproved license
+[ERROR] Failed to execute goal org.apache.rat:apache-rat-plugin:0.12:check (default) on project flink-parent: Too many files with unapproved license: 3 See RAT report in: D:\Work\github\apache-flink\target\rat.txt -> [Help1]
+
+solve p1)
+在maven命令中，添加参数：
+-Dlicense.skip=true -Drat.ignoreErrors=true
+或者添加参数：
+apache-rat:check -Drat.numUnapprovedLicenses=9999
+其中rat.numUnapprovedLicenses是需要检查源文件的阈值，可以设置得大一点。
+https://www.wuliang.me/2020/how-to-skip-unapproved-license-check-in-maven/
