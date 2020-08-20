@@ -1,4 +1,9 @@
+1) problem
 Hardware assisted virtualization and data execution protection must be enabled in the BIOS. 
 See https://docs.docker.com/docker-for-windows/troubleshoot/#virtualization-must-be-enabled
 
+2) reason
+虚拟监控程序未运行
+
+3) resolve solution, run as administrator
 bcdedit /set hypervisorlaunchtype Auto
