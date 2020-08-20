@@ -1,0 +1,4 @@
+Hardware assisted virtualization and data execution protection must be enabled in the BIOS. 
+See https://docs.docker.com/docker-for-windows/troubleshoot/#virtualization-must-be-enabled
+
+bcdedit /set hypervisorlaunchtype Auto

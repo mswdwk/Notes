@@ -1,0 +1,17 @@
+Docker.Core.DockerException:
+time="2020-08-04T22:56:53+08:00" level=error msg="cannot get pki directory: cannot read \"front-proxy-client.crt\": open C:\\Users\\lenovo\\AppData\\Local\\Docker\\pki\\front-proxy-client.crt: The system cannot find the file specified."
+
+   在 Docker.Engines.IsoConfig.CreateIso(Settings settings, JObject jsonConfig, Boolean rawJson) 位置 C:\workspaces\stable-2.3.x\src\github.com\docker\pinata\win\src\Docker.Desktop\Engines\IsoConfig.cs:行号 122
+   在 Docker.Engines.WSL2.WSL2Configurator.PrepareConfiguration(Settings settings) 位置 C:\workspaces\stable-2.3.x\src\github.com\docker\pinata\win\src\Docker.Desktop\Engines\WSL2\WSL2Configurator.cs:行号 19
+   在 Docker.Engines.WSL2.LinuxWSL2Engine.<DoStartAsync>d__23.MoveNext() 位置 C:\workspaces\stable-2.3.x\src\github.com\docker\pinata\win\src\Docker.Desktop\Engines\WSL2\LinuxWSL2Engine.cs:行号 98
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 Docker.ApiServices.StateMachines.TaskExtensions.<WrapAsyncInCancellationException>d__0.MoveNext() 位置 C:\workspaces\stable-2.3.x\src\github.com\docker\pinata\win\src\Docker.ApiServices\StateMachines\TaskExtensions.cs:行号 29
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 Docker.ApiServices.StateMachines.StartTransition.<DoRunAsync>d__5.MoveNext() 位置 C:\workspaces\stable-2.3.x\src\github.com\docker\pinata\win\src\Docker.ApiServices\StateMachines\StartTransition.cs:行号 67
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   在 Docker.ApiServices.StateMachines.StartTransition.<DoRunAsync>d__5.MoveNext() 位置 C:\workspaces\stable-2.3.x\src\github.com\docker\pinata\win\src\Docker.ApiServices\StateMachines\StartTransition.cs:行号 92
