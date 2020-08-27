@@ -1,0 +1,57 @@
+字符编码优化
+
+1、什么是字符编码: 可以实现对非英文字符的支持
+计算机操作系统是谁发明的?  --美国人--英语	
+支持中文比较好的编码:
+UTF-8 比较通用
+GBK   比较国际通用
+
+2、出现乱码的原因:
+
+01. 系统字符集设置有问题
+02. 远程软件字符集设置有问题
+03. 文件编写字符集和系统查看的字符集不统一
+
+3、系统中字符集编码设置方法
+3-1、centos6
+查看默认编码信息:
+
+[root@oldboyedu ~]# echo $LANG   --- LANG用于设置字符编码信息
+    en_US.UTF-8
+临时修改:
+
+    [root@oldboyedu ~]# echo $LANG
+    en_US.UTF-8
+LANG=XXX
+永久修改:
+
+方法一:
+[root@oldboyedu ~]# tail -5 /etc/profile
+    export LANG='en_US.UTF-8'
+
+方法二:
+vi /etc/sysconfig/i18n
+LANG='en_US.UTF-8
+    source /etc/sysconfig/i18n
+
+3-2、centos7
+查看默认编码信息
+
+[root@oldboyedu ~]# echo $LANG
+    en_US.UTF-8
+临时修改:
+
+[root@oldboyedu ~]# echo $LANG
+    en_US.UTF-8
+LANG=XXX
+永久修改:
+
+方法一: 更加优先
+    [root@oldboyedu ~]# tail -5 /etc/profile
+    export LANG='en_US.UTF-8'
+方法二:
+[root@oldboyedu ~]# cat /etc/locale.conf 
+    LANG="zh_CN.UTF-8"
+补充：一条命令即临时设置，又永久设置
+
+localectl set-locale LANG=zh_CN.GBK
