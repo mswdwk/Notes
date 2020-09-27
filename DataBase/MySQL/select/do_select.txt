@@ -1,0 +1,15 @@
+mysql_execute_command{
+  handle_query{
+    select->join->exec{
+      do_select{
+        
+        join->first_select(join,qep_tab,0){
+          sub_select{
+            qep_tab->starts_weedout
+            error= (*qep_tab->read_first_record)(qep_tab);
+          }
+        }
+      }
+    }
+  }
+}
