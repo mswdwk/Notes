@@ -1,0 +1,8 @@
+1) search  installed  files with package xxx
+rpm -ql xxx
+2) install a xxx.rpm package
+rpm -ivh xxx.rpm
+3) uninstall xxx.rpm package
+rpm -e  --nodeps xxx
+4) query a package xxx is installed or not
+rpm -qa|grep -ni xxx
