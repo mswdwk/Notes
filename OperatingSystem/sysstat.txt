@@ -1,0 +1,7 @@
+1) Change monitor interval time from default 10 minutes to 30 seconds.
+# 1# On Manjaro 20 version, CentOS 7 version.
+open /usr/lib/systemd/system/sysstat-collect.timer
+in section Timer,append "OnUnitActiveSec=30s",comment "#OnCalendar=*:00/10".
+
+# 2# On CentOS 6 version.
+use crond method.

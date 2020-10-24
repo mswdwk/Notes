@@ -1,0 +1,2 @@
+1) manjaro install rpcgen 
+yay -S rpcsvc-proto 
