@@ -1,0 +1,14 @@
+1) warn message
+2020-11-27T02:36:05.062770Z 0 [Warning] Changed limits: max_open_files: 1024 (requested 5000)
+2020-11-27T02:36:05.062897Z 0 [Warning] Changed limits: table_open_cache: 431 (requested 2000)
+
+1) slove method
+1-1) edit /etc/sysctl.conf
+append "fs.file-max=102400"
+
+1-2)edit /etc/security/limits.conf
+append "* soft nofile 102400"
+append "* hard nofile 102400"
+
+2) start
+mysqld_safe --character-set-server=utf8 &
