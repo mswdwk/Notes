@@ -1,0 +1,140 @@
+[https://www.elastic.co/guide/en/elasticsearch/client/java-rest/6.2/java-rest-high-search-scroll.html]
+Search Scroll API
+The Scroll API can be used to retrieve a large number of results from a search request.
+
+In order to use scrolling, the following steps need to be executed in the given order.
+
+Initialize the search scroll context
+An initial search request with a scroll parameter must be executed to initialize the scroll session through the Search API. When processing this SearchRequest, Elasticsearch detects the presence of the scroll parameter and keeps the search context alive for the corresponding time interval.
+
+SearchRequest searchRequest = new SearchRequest("posts");
+SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+searchSourceBuilder.query(matchQuery("title", "Elasticsearch"));
+searchSourceBuilder.size(size); 
+searchRequest.source(searchSourceBuilder);
+searchRequest.scroll(TimeValue.timeValueMinutes(1L)); 
+SearchResponse searchResponse = client.search(searchRequest);
+String scrollId = searchResponse.getScrollId(); 
+SearchHits hits = searchResponse.getHits();  
+
+Create the SearchRequest and its corresponding SearchSourceBuilder. Also optionally set the size to control how many results to retrieve at a time.
+
+
+Set the scroll interval
+
+
+Read the returned scroll id, which points to the search context that’s being kept alive and will be needed in the following search scroll call
+
+
+Retrieve the first batch of search hits
+
+Retrieve all the relevant documents
+As a second step, the received scroll identifier must be set to a SearchScrollRequest along with a new scroll interval and sent through the searchScroll method. Elasticsearch returns another batch of results with a new scroll identifier. This new scroll identifier can then be used in a subsequent SearchScrollRequest to retrieve the next batch of results, and so on. This process should be repeated in a loop until no more results are returned, meaning that the scroll has been exhausted and all the matching documents have been retrieved.
+
+SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId); 
+scrollRequest.scroll(TimeValue.timeValueSeconds(30));
+SearchResponse searchScrollResponse = client.searchScroll(scrollRequest);
+scrollId = searchScrollResponse.getScrollId();  
+hits = searchScrollResponse.getHits(); 
+assertEquals(3, hits.getTotalHits());
+assertEquals(1, hits.getHits().length);
+assertNotNull(scrollId);
+
+Create the SearchScrollRequest by setting the required scroll id and the scroll interval
+
+
+Read the new scroll id, which points to the search context that’s being kept alive and will be needed in the following search scroll call
+
+
+Retrieve another batch of search hits <4>
+
+Clear the scroll context
+Finally, the last scroll identifier can be deleted using the Clear Scroll API in order to release the search context. This happens automatically when the scroll expires, but it’s good practice to do it as soon as the scroll session is completed.
+
+Optional arguments
+The following arguments can optionally be provided when constructing the SearchScrollRequest:
+
+scrollRequest.scroll(TimeValue.timeValueSeconds(60L)); 
+scrollRequest.scroll("60s"); 
+
+Scroll interval as a TimeValue
+
+
+Scroll interval as a String
+
+If no scroll value is set for the SearchScrollRequest, the search context will expire once the initial scroll time expired (ie, the scroll time set in the initial search request).
+
+Synchronous Execution
+SearchResponse searchResponse = client.searchScroll(scrollRequest);
+Asynchronous Execution
+The asynchronous execution of a search scroll request requires both the SearchScrollRequest instance and an ActionListener instance to be passed to the asynchronous method:
+
+client.searchScrollAsync(scrollRequest, scrollListener); 
+
+The SearchScrollRequest to execute and the ActionListener to use when the execution completes
+
+The asynchronous method does not block and returns immediately. Once it is completed the ActionListener is called back using the onResponse method if the execution successfully completed or using the onFailure method if it failed.
+
+A typical listener for SearchResponse looks like:
+
+ActionListener<SearchResponse> scrollListener =  new ActionListener<SearchResponse>() {
+    @Override
+    public void onResponse(SearchResponse searchResponse) {
+        
+    }
+
+    @Override
+    public void onFailure(Exception e) {
+        
+    }
+};
+
+Called when the execution is successfully completed. The response is provided as an argument
+
+
+Called in case of failure. The raised exception is provided as an argument
+
+Response
+The search scroll API returns a SearchResponse object, same as the Search API.
+
+Full example
+The following is a complete example of a scrolled search.
+
+final Scroll scroll = new Scroll(TimeValue.timeValueMinutes(1L));
+SearchRequest searchRequest = new SearchRequest("posts");
+searchRequest.scroll(scroll);
+SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+searchSourceBuilder.query(matchQuery("title", "Elasticsearch"));
+searchRequest.source(searchSourceBuilder);
+
+SearchResponse searchResponse = client.search(searchRequest); 
+String scrollId = searchResponse.getScrollId();
+SearchHit[] searchHits = searchResponse.getHits().getHits();
+
+while (searchHits != null && searchHits.length > 0) { 
+    SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId); 
+    scrollRequest.scroll(scroll);
+    searchResponse = client.searchScroll(scrollRequest);
+    scrollId = searchResponse.getScrollId();
+    searchHits = searchResponse.getHits().getHits();
+    
+}
+
+ClearScrollRequest clearScrollRequest = new ClearScrollRequest(); 
+clearScrollRequest.addScrollId(scrollId);
+ClearScrollResponse clearScrollResponse = client.clearScroll(clearScrollRequest);
+boolean succeeded = clearScrollResponse.isSucceeded();
+
+Initialize the search context by sending the initial SearchRequest
+
+
+Retrieve all the search hits by calling the Search Scroll api in a loop until no documents are returned
+
+
+Create a new SearchScrollRequest holding the last returned scroll identifier and the scroll interval
+
+
+Process the returned search results
+
+
+Clear the scroll context once the scroll is completed

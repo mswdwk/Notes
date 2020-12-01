@@ -1,0 +1,16 @@
+error-logs:
+'''
+[1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65536]
+[2]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+'''
+1)
+vim /etc/security/limits.conf
+
+add the following 
+'''
+* soft nofile 65536
+* hard nofile 65536
+'''
+
+2)
+sysctl -w vm.max_map_count=262144

@@ -1,0 +1,162 @@
+JNA 如何 加载多个 存在依赖的 DLL 库
+JNA 的出现，极大的简化了原有的 JNI 技术。下面是JNA github地址：https://github.com/java-native-access/jna
+
+1. 简单的一个例子：
+
+/** Simple example of JNA interface mapping and usage. */
+public class HelloWorld {
+ 
+    public interface CLibrary extends Library {
+        CLibrary INSTANCE = (CLibrary)Native.loadLibrary((Platform.isWindows() ? "msvcrt" : "c"), CLibrary.class);
+         
+        void printf(String format, Object... args); // void printf(const char *format, [argument]);       
+    }
+ 
+    public static void main(String[] args) {
+        CLibrary.INSTANCE.printf("Hello, World\n");
+        for (int i=0; i < args.length; i++) {
+            CLibrary.INSTANCE.printf("Argument %d: %s\n", i, args[i]);
+        }
+    }   
+}
+原理是，通过 CLibrary extends Libarary 在其中加载系统的 DLL/so 库，并列出Java要调用的DLL库函数，该函数到DLL库函数直接的映射有JNA来完成。
+
+这样就可以调用DLL/so库中的函数了。
+
+2. 如何使用 JNA 加载多个DLL库，而且它们之间存在依赖关系
+
+http://stackoverflow.com/questions/32609829/load-multiple-libraries-with-jna
+
+Is there a way in JNA to load multiple libraries with Java?
+
+I usually use Native.loadLibrary(...) to load one DLL. But I guess its not working this way because I assign this function call to the instance member.
+
+Let's say I have library foo and library bar. bar has a dependency on foo; it also has a dependency on baz, which we are not mapping with JNA:
+
+public class Foo {
+    public static final boolean LOADED;
+    static {
+        Native.register("foo");
+        LOADED = true;
+    }
+    public static native void call_foo();
+}
+
+public class Bar {
+    static {
+        // Reference "Foo" so that it is loaded first
+        if (Foo.LOADED) {
+            System.loadLibrary("baz");
+            // Or System.load("/path/to/libbaz.so")
+            Native.register("bar");
+        }
+    }
+    public static native void call_bar();
+}
+The call to System.load/loadLibrary will only be necessary if baz is neither on your library load path (PATH/LD_LIBRARY_PATH, for windows/linux respectively) nor in the same directory as bar(windows only).
+
+EDIT
+
+You can also do this via interface mapping:
+
+public interface Foo extends Library {
+    Foo INSTANCE = (Foo)Native.loadLibrary("foo");
+}
+public interface Bar extends Library {
+    // Reference Foo prior to instantiating Bar, just be sure
+    // to reference the Foo class prior to creating the Bar instance
+    Foo FOO = Foo.INSTANCE;
+    Bar INSTANCE = (Bar)Native.loadLibrary("bar");
+}
+-----------------
+
+3. 自己的代码例子：
+
+public class DDLTest {
+ 
+    public static void main(String[] args){
+        System.out.println(System.getProperty("java.library.path"));
+        FingerLibrary.Fingerdll.ZAZCloseDeviceEx(-1);
+         
+        int r = ID_FprCap.fprCap.LIVESCAN_Init();
+        ID_FprCap.fprCap.LIVESCAN_Close();
+        ID_FprCap.fprCap.LIVESCAN_BeginCapture(1);
+        ID_FprCap.fprCap.LIVESCAN_GetFPRawData(1, "aaaaaa");
+        r = ID_Fpr.INSTANCE.FP_FeatureMatch("aaaaaaaaaaa", "aaaaaaaaaaa", (float)0.5);
+    }  
+     
+    public interface FingerLibrary extends Library {
+         int FPDATASIZE = 256;
+         int IMGWIDTH = 256;
+         int IMGHEIGHT = 288;
+         int IMGSIZE = 73728;
+         
+         // 窗口消息
+         int WM_FPMESSAGE = 1024 + 120; // 自定义消息
+         int FPM_DEVICE = 0x01; // 状态提示
+         int FPM_PLACE = 0x02; // 请按手指
+         int FPM_LIFT = 0x03; // 请抬起手指
+         int FPM_CAPTURE = 0x04; // 采集图像
+         int FPM_ENROLL = 0x06; // 登记指纹模版
+         int FPM_GENCHAR = 0x05; // 采集特征点
+         int FPM_NEWIMAGE = 0x07; // 指纹图像
+         int RET_OK = 0x1;
+         int RET_FAIL = 0x0;
+         
+         FingerLibrary Fingerdll = (FingerLibrary) Native.loadLibrary("ZAZAPIt", FingerLibrary.class);
+         
+         public int ZAZOpenDeviceEx(int[] hHandle, int nDeviceType, int iCom, int iBaud, int nPackageSize, int iDevNum);
+         public int ZAZCloseDeviceEx(int handle);
+         public int ZAZVfyPwd(int pHandle, int nAddr,   byte[] pPassword);
+         public int ZAZReadInfPage(int pHandle, int nAddr,  byte[] pInf);
+         public int ZAZReadIndexTable(int pHandle, int nAddr, int nPage, byte[] UserContent); 
+          
+//       public int FP_FeatureMatch(String pFeatureData1, String pFeatureData2, float pfSimilarity);
+    }
+     
+     
+     
+    public interface ID_Fpr extends Library {
+        ID_Fpr INSTANCE  = (ID_Fpr)Native.loadLibrary("ID_Fpr", ID_Fpr.class);
+//      public int LIVESCAN_Init();
+ 
+        public int FP_FeatureMatch(String pFeatureData1, String pFeatureData2, float pfSimilarity);
+        //int __stdcall FP_FeatureMatch(unsigned char * pFeatureData1,  //输入参数 指纹特征数据1
+        //                              unsigned char * pFeatureData2,  //输入参数 指纹特征数据2
+        //                              float * pfSimilarity);          //输出参数 匹配相似度值0.00-1.00
+         
+//      typedef int (__stdcall *FP_FeatureMatch)(unsigned char * pFeatureData1, //输入参数 指纹特征数据1
+//               unsigned char * pFeatureData2, //输入参数 指纹特征数据2
+//               float * pfSimilarity);         //输出参数 匹配相似度值0.00-1.00
+    }
+     
+    public interface ID_FprCap extends StdCallLibrary {
+        ID_Fpr fpr = ID_Fpr.INSTANCE ;
+        ID_FprCap fprCap = (ID_FprCap)Native.loadLibrary("ID_FprCap", ID_FprCap.class);
+         
+        public int LIVESCAN_Init();     //int __stdcall LIVESCAN_Init();
+        public int LIVESCAN_Close();    //int __stdcall LIVESCAN_Close();
+        public int LIVESCAN_BeginCapture(int nChannel);
+        public int LIVESCAN_GetFPRawData(int nChannel, String pRawData);
+//      int     __stdcall   LIVESCAN_BeginCapture(  int nChannel );
+//      int     __stdcall   LIVESCAN_GetFPRawData(int nChannel,unsigned char *pRawData);
+         
+        public int LIVESCAN_GetFPBmpData(int nChannel, String pBmpData);
+//      int     __stdcall   LIVESCAN_GetFPBmpData(int nChannel, unsigned char *pBmpData);
+ 
+        public int LIVESCAN_EndCapture(int nChannel);
+//      int     __stdcall   LIVESCAN_EndCapture(int nChannel );
+ 
+        public int LIVESCAN_IsSupportSetup();      
+//      int     __stdcall   LIVESCAN_IsSupportSetup();
+ 
+        public int LIVESCAN_GetVersion();
+//      int     __stdcall   LIVESCAN_GetVersion();
+ 
+        public int LIVESCAN_GetDesc(String pszDesc);
+//      int     __stdcall   LIVESCAN_GetDesc(char pszDesc[1024]);
+ 
+        public int LIVESCAN_GetErrorInfo(int nErrorNo, String pszErrorInfo);
+//      int     __stdcall   LIVESCAN_GetErrorInfo(int nErrorNo, char pszErrorInfo[256]);       
+    }      
+}
