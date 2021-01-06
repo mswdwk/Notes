@@ -1,0 +1,21 @@
+failed to abort on host 0
+
+
+linux查看磁盘类型（是否SSD盘）
+介绍两种方法：
+
+第一种：
+
+cat /sys/block/sda/queue/rotational
+
+注意：
+
+命令中的sba是你的磁盘名称，可以通过df命令查看磁盘，然后修改成你要的
+
+结果：
+
+返回0：SSD盘
+返回1：SATA盘
+ 
+第二种：
+lssci查看下图地方：

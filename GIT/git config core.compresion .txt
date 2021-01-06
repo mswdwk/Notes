@@ -1,0 +1,2 @@
+#1） Git下拉和提交等遇到:fatal: early EOF fatal: index-pack failed
+git config --global core.compression 0
