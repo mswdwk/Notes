@@ -1,0 +1,4 @@
+[client]
+user=monitor
+password=123
+port=3306

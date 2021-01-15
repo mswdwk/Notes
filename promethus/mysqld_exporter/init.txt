@@ -4,3 +4,6 @@ grant select,replication client,process ON *.* to 'monitor'@'%' identified by '1
 # config iptable
 sudo iptables -I INPUT -p tcp -s 0.0.0.0/0 --dport 9015 -j ACCEPT
 sudo iptables -I INPUT -p tcp -s 0.0.0.0 --dport 9015 -j ACCEPT
+
+# start exporter
+nohup ./mysqld_exporter --config.my-cnf=my_exporter.cnf &
