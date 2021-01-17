@@ -13,3 +13,4 @@ badblock -o bad.log -v /dev/sda1
 # 3.reference 
 1)https://www.thegeekdiary.com/how-to-check-a-disk-for-bad-blocks-or-disk-errors-on-centos-rhel/
 2)[Linux硬盘的检测--smartctl详细介绍](https://www.cnblogs.com/fiberhome/p/8275961.html)
+

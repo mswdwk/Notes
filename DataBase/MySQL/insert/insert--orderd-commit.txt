@@ -1,0 +1,15 @@
+# insert into auto value(5,5,5,'extra 5');
+(gdb) bt
+#0  MYSQL_BIN_LOG::ordered_commit (this=0x2c45f00 <mysql_bin_log>, thd=0x7f131000efe0, all=false, skip_commit=false) at /home/user/Repos/mysql-server/sql/binlog.cc:9262
+#1  0x00000000017e6fda in MYSQL_BIN_LOG::commit (this=0x2c45f00 <mysql_bin_log>, thd=0x7f131000efe0, all=false) at /home/user/Repos/mysql-server/sql/binlog.cc:8629
+#2  0x0000000000f2f09f in ha_commit_trans (thd=0x7f131000efe0, all=false, ignore_global_read_lock=false) at /home/user/Repos/mysql-server/sql/handler.cc:1796
+#3  0x000000000163c59b in trans_commit_stmt (thd=0x7f131000efe0) at /home/user/Repos/mysql-server/sql/transaction.cc:458
+#4  0x0000000001541956 in mysql_execute_command (thd=0x7f131000efe0, first_level=true) at /home/user/Repos/mysql-server/sql/sql_parse.cc:5004
+#5  0x0000000001543026 in mysql_parse (thd=0x7f131000efe0, parser_state=0x7f139c063690) at /home/user/Repos/mysql-server/sql/sql_parse.cc:5582
+#6  0x0000000001538733 in dispatch_command (thd=0x7f131000efe0, com_data=0x7f139c063df0, command=COM_QUERY) at /home/user/Repos/mysql-server/sql/sql_parse.cc:1458
+#7  0x000000000153759c in do_command (thd=0x7f131000efe0) at /home/user/Repos/mysql-server/sql/sql_parse.cc:999
+#8  0x0000000001668bbc in handle_connection (arg=0x45473e0) at /home/user/Repos/mysql-server/sql/conn_handler/connection_handler_per_thread.cc:300
+#9  0x0000000001ced500 in pfs_spawn_thread (arg=0x44fa330) at /home/user/Repos/mysql-server/storage/perfschema/pfs.cc:2190
+#10 0x00007f13a7fa1dd5 in start_thread () from /lib64/libpthread.so.0
+#11 0x00007f13a6e68ead in clone () from /lib64/libc.so.6
+(gdb) 
