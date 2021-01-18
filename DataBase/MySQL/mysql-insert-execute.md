@@ -3,7 +3,12 @@ do_command->dispatch_command->{case COM_QUERY: mysql_parse(thd, &parser_state)}
 mysql_parse->{parse_sql,mysql_execute_command }
 
 mysql_execute_command -> {case SQLCOM_SELECT: execute_sqlcom_select,
-SQLCOM_INSERT: res= lex->m_sql_cmd->execute(thd);}
+SQLCOM_INSERT: res= lex->m_sql_cmd->execute(thd);
+if (thd->is_error() || (thd->variables.option_bits & OPTION_MASTER_SQL_ERROR))
+	trans_rollback_stmt(thd);
+else
+	trans_commit_stmt(thd);
+}
 
 lex->m_sql_cmd->execute  -> Sql_cmd_insert::execute(THD *thd) ->Sql_cmd_insert:: mysql_insert
 ->{
@@ -29,6 +34,76 @@ ha_write_row -> {
 mark_trx_read_write();
  MYSQL_TABLE_IO_WAIT(PSI_TABLE_WRITE_ROW, MAX_KEY, error,{ error= write_row(buf); })
  binlog_log_row(table, 0, buf, log_func)
+}
+
+ha_innobase::write_row{
+if (high_level_read_only) {
+		ib_senderrf(ha_thd(), IB_LOG_LEVEL_WARN, ER_READ_ONLY_MODE);
+		DBUG_RETURN(HA_ERR_TABLE_READONLY);
+	}
+ha_statistic_increment(&SSV::ha_write_count);
+/* Step-3: Handling of Auto-Increment Columns. */
+error_result = update_auto_increment()
+/* Step-4: Prepare INSERT graph that will be executed for actual INSERT
+build_template(true);
+innobase_srv_conc_enter_innodb
+/* Step-5: Execute insert graph that will result in actual insert. */
+error = row_insert_for_mysql((byte*) record, m_prebuilt);
+/* Step-6: Handling of errors related to auto-increment. */
+
+innobase_srv_conc_exit_innodb(m_prebuilt);
+
+
+report_error:
+	/* Step-7: Cleanup and exit. */
+	if (error == DB_TABLESPACE_DELETED) {
+		ib_senderrf(
+			trx->mysql_thd, IB_LOG_LEVEL_ERROR,
+			ER_TABLESPACE_DISCARDED,
+			table->s->table_name.str);
+	}
+
+	error_result = convert_error_code_to_mysql(
+		error, m_prebuilt->table->flags, m_user_thd);
+
+	if (error_result == HA_FTS_INVALID_DOCID) {
+		my_error(HA_FTS_INVALID_DOCID, MYF(0));
+	}
+
+func_exit:
+	innobase_active_small();
+
+	DBUG_RETURN(error_result);
+}
+
+
+row_insert_for_mysql_using_ins_graph{
+row_mysql_delay_if_needed();
+
+	trx_start_if_not_started_xa(trx, true);
+
+	row_get_prebuilt_insert_row(prebuilt);
+	node = prebuilt->ins_node;
+
+	row_mysql_convert_row_to_innobase(node->row, prebuilt, mysql_rec,
+					  &blob_heap);
+
+	savept = trx_savept_take(trx);
+
+	thr = que_fork_get_first_thr(prebuilt->ins_graph);
+	que_thr_move_to_run_state_for_mysql(thr, trx);
+	row_ins_step(thr);
+}
+
+row_ins_step{
+err = row_ins(node, thr);
+}
+
+row_ins{
+	row_ins_index_entry_step{
+		err = row_ins_index_entry_set_vals(node->index, node->entry, node->row);
+		err = row_ins_index_entry(node->index, node->entry, thr);
+	}
 }
 
 
