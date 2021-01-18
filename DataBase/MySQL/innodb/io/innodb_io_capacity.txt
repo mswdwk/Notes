@@ -1,0 +1,2 @@
+# update innodb_io_capacity system variable `srv_io_capacity`
+innodb_io_capacity_update

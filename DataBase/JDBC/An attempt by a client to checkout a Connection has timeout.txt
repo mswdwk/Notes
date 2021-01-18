@@ -1,0 +1,5 @@
+c3p0作为连接池，报：java.sql.SQLException: An attempt by a client to checkout a Connection has timed out.
+网上查了很久，有人说是checkoutTimeout太短的原因，（Default: 0）于是由原来的1000改为2000,问题还是未解决。
+然后找了份没有问题的配置作了些对比，发现我的maxPoolSize＝100显得有些大，于是改为默认的15.再测试，居然没有问题了。后来再试了大一点的60,也没有问题。
+下面是我的配置：
+
