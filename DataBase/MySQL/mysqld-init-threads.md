@@ -9,6 +9,8 @@ PFS_thread_container global_thread_container(& thread_allocator);
 
 class PFS_thread_array 
 
+os_thread_create
+
 # mysql thread keys
 PSI_thread_key key_thread_bootstrap, key_thread_handle_manager, key_thread_main,
   key_thread_one_connection, key_thread_signal_hand,
