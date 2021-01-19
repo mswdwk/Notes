@@ -1,1 +1,0 @@
-nohup ./prometheus --config.file=prometheus.yml &
