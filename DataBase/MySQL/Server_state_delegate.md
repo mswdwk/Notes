@@ -1,0 +1,2 @@
+Server_state_delegate *server_state_delegate;
+Server_state_delegate::before_handle_connection

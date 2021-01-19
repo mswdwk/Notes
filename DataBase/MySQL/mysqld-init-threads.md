@@ -1,0 +1,2 @@
+start_handle_manager{handle_manager}
+create_compress_gtid_table_thread()
