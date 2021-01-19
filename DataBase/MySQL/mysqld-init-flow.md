@@ -9,6 +9,15 @@ sql/main.cc: main{
  		sys_var_init();
 		adjust_related_options(&requested_open_files);
 		PSI_hook= initialize_performance_schema(&pfs_param);
+		init_server_psi_keys();
+		if (PSI_hook){
+			set_psi_server(psi_server);
+		  /* Instrument the main thread */
+		  PSI_thread *psi= PSI_THREAD_CALL(new_thread)(key_thread_main, NULL, 0);
+		  PSI_THREAD_CALL(set_thread_os_id)(psi);
+		  PSI_THREAD_CALL(set_thread)(psi);
+			my_thread_global_reinit();
+		}
 		init_error_log
 		mysql_audit_initialize()
 		query_logger.init();
@@ -21,6 +30,7 @@ sql/main.cc: main{
 		if (opt_keyring_migration_source || opt_keyring_migration_destination || migrate_connect_options)
 		{ Migrate_keyring mk; mk.init ; mk.execute(); unireg_abort(MYSQLD_SUCCESS_EXIT);}
 		my_setwd(mysql_real_data_home,MYF(MY_WME));
+
 		init_server_components()
 		/* Each server should have one UUID. We will create it automatically, if it does not exist. */
   		init_server_auto_options()
