@@ -1,0 +1,2 @@
+# not use network.host on ES version 7
+http.host: 192.168.79.1

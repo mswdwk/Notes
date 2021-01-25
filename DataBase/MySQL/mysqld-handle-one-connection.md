@@ -4,8 +4,7 @@ mysqld_socket_acceptor->connection_event_loop(){
 		thd_set_thread_stack(thd, (char*) &thd);
 
 		mysql_thread_set_psi_id(thd->thread_id());
-	  mysql_socket_set_thread_owner(
-		thd->get_protocol_classic()->get_vio()->mysql_socket);
+	  mysql_socket_set_thread_owner(thd->get_protocol_classic()->get_vio()->mysql_socket);
 
 	  Global_THD_manager *thd_manager= Global_THD_manager::get_instance();
 	  thd_manager->add_thd(thd);
@@ -18,8 +17,7 @@ mysqld_socket_acceptor->connection_event_loop(){
 		delete channel_info;
 		while (thd_connection_alive(thd))
 		{
-		  if (do_command(thd))
-			break;
+		  if (do_command(thd))break;
 		}
 		end_connection(thd);
 	  }
@@ -28,7 +26,7 @@ mysqld_socket_acceptor->connection_event_loop(){
 	  thd_manager->remove_thd(thd);
 	  Connection_handler_manager::dec_connection_count();
 		delete thd;
-	  return error;
+	  	return error;
 	}
 }
 
