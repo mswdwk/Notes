@@ -94,3 +94,55 @@ JOIN::optimize{
 	make_join_plan()
 	optimize_distinct_group_order())
 }
+
+
+
+ const Cost_model_server* cost_model() const
+  {
+    DBUG_ASSERT(thd != NULL);
+    return thd->cost_model();
+  }
+// sql_class.h
+class THD {
+private:
+  /**
+    Optimizer cost model for server operations.
+  */
+  Cost_model_server m_cost_model;
+
+public:
+  /**
+    Initialize the optimizer cost model.
+
+    This function should be called each time a new query is started.
+  */
+  void init_cost_model() { m_cost_model.init(); }
+
+  /**
+    Retrieve the optimizer cost model for this connection.
+  */
+  const Cost_model_server* cost_model() const { return &m_cost_model; }
+
+
+}
+
+
+// sql/table.h
+class TABLE {
+  /// @return true if current row is null-extended
+  bool has_null_row() const { return null_row; }
+
+  /**
+    Initialize the optimizer cost model.
+ 
+    This function should be called each time a new query is started.
+
+    @param cost_model_server the main cost model object for the query
+  */
+  void init_cost_model(const Cost_model_server* cost_model_server)
+  {
+    m_cost_model.init(cost_model_server, this);
+  }
+
+
+}
