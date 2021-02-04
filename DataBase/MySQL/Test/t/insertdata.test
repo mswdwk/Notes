@@ -1,0 +1,12 @@
+connect (conn1,127.0.0.1,root,Roo123.,testdb,3310); 
+connection conn1;
+drop table if exists t1;
+create table t1(c1 int primary key, c2 int unique,c3 int) engine=innodb;
+
+let $loop=100;
+while($loop)
+{
+  eval insert into t1(c1,c2,c3) values($loop, $loop+1, $loop+2);
+  dec $loop;
+}
+set optimizer_trace = "enabled=on";
