@@ -1,0 +1,34 @@
+// error message:
+mysql:2013:Lost connection to MySQL server at 'reading initial communication packet',system error: 9 "Bad file descriptor"
+
+// file: sql-common/client
+
+MYSQL *STDCALL CLI_MYSQL_REAL_CONNECT(MYSQL *mysql, const char *host,
+                                      const char *user, const char *passwd,
+                                      const char *db, uint port,
+                                      const char *unix_socket,
+                                      ulong client_flag) 
+{
+  if ((pkt_length = cli_safe_read(mysql, NULL)) == packet_error) {
+      if (mysql->net.last_errno == CR_SERVER_LOST)
+        set_mysql_extended_error(
+            mysql, CR_SERVER_LOST, unknown_sqlstate, ER(CR_SERVER_LOST_EXTENDED),
+            "reading initial communication packet", socket_errno);
+      goto error;
+    }
+
+
+}
+
+// open_table_def in table.cc (sql) :       error= 9;
+
+MYSQL * STDCALL 
+CLI_MYSQL_REAL_CONNECT(MYSQL *mysql,const char *host, const char *user,
+		       const char *passwd, const char *db,
+		       uint port, const char *unix_socket,ulong client_flag)
+{
+
+  vio_socket_connect{
+    mysql_socket_connect
+  }
+}

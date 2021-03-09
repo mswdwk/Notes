@@ -1,0 +1,9 @@
+function get_cur_br(){
+	local br = $(git symbolic-ref --short -q HEAD 2 >/dev/null)||return;
+	if [ "$branch" == "" ];then
+		return
+	fi
+	echo -e "\e[36m(\e[31m$br\e[36m\e[0m"
+}
+
+PS1='['`whoami`'@'`hostname`'$(get_cur_br):\W]>'

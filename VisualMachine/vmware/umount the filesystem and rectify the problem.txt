@@ -1,0 +1,15 @@
+
+ [Please umount the filesystem and rectify the problem(s)](https://www.cnblogs.com/hshy/p/11904047.html)
+https://blog.csdn.net/Small_StarOne/article/details/102796845
+# 问题
+本地虚拟机因为断电重启之后，启动异常，报错：
+Please umount the filesystem and rectify the problem(s) 。。。。。
+Generating "/run/initramfs/rdsosreport.txt"。。。
+# 解决步骤
+1、输入命令：ls -l /dev/mapper
+
+2、再输入：xfs_repair /dev/dm-0
+
+3.输入命令：xfs_repair -L /dev/dm-0
+
+4、最后进行重启：init 6 等价于 reboot
