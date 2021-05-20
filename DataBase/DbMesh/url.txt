@@ -1,0 +1,3 @@
+https://www.sofastack.tech/blog/ant-financial-db-mesh-explore-practice/
+https://github.com/pingcap/community/issues/148
+https://www.slidestalk.com/TUG/DBMeshForTiDBMySQL1171167?video
