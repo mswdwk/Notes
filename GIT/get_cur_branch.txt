@@ -1,9 +1,11 @@
+# modify /etc/profile  
 function get_cur_br(){
-	local br = $(git symbolic-ref --short -q HEAD 2 >/dev/null)||return;
-	if [ "$branch" == "" ];then
+	local br=$(git symbolic-ref --short -q HEAD 2>/dev/null)||return;
+	if [ "$br" == "" ];then
 		return
 	fi
-	echo -e "\e[36m(\e[31m$br\e[36m\e[0m"
+	echo -e "\e[36m(\e[31m$br\e[36m)\e[0m"
 }
+echo `get_cur_br`
 
-PS1='['`whoami`'@'`hostname`'$(get_cur_br):\W]>'
+PS1='['`whoami`'@'`hostname -s`'$(get_cur_br):\W]>'
