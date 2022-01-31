@@ -1,0 +1,241 @@
+[转自：C/C++捕获段错误，打印出错的具体位置(精确到哪一行)](https://www.cnblogs.com/embedded-linux/p/9028918.html)
+
+修订：2013-02-16
+
+其实还可以使用 glibc 的 backtrace_symbols 函数，把栈帧各返回地址里面的数字地址翻译成符号描述的
+
+ 
+
+修订：2011-06-11
+
+背景知识：
+
+· 在linux/unix中的信号处理机制，知道signal函数与sigaction的区别
+
+· 段错误的概念，CPU中断处理的步骤，中断向量表的分类
+
+· 知道CPU Exception分为Fault、trap和abort，了解他们的基本区别
+
+· 段错误和浮点错误属于Fault，产生Fault时会将出错指令的地址入栈，而不是下一条将执行指令的地址
+
+· 在linux/unix里可以通过调用backstrace来获取栈帧的信息
+
+· 文中用到的几个头文件和函数，都属于glibc，所以不用担心出现找不到头文件和链接错误的情况
+
+· addr2line是个系统自带的小工具，用来转换编译出来的地址和源码行号
+
+ 
+
+背景知识大家可以看书，google，看手册（建议可以简单阅读一下本文列出来的参考资料）…，这里不想粘贴大量的背景知识，本文主要介绍在 linux / unix 里面，如何捕获段错误并输出发生错误时的代码执行路径，最后还提供了一个封装好的头文件。
+
+OK，下面直奔主题：
+
+ 
+
+——先要抓住段错误，别让它跑了
+
+     捕获段错误的方式很简单，针对段错误的信号调用 sigaction 注册一个处理函数就可以了。
+
+     struct sigaction act;
+
+     int sig = SIGSEGV;
+
+     sigemptyset(&act.sa_mask);
+
+     act.sa_sigaction = OnSIGSEGV;
+
+     act.sa_flags = SA_SIGINFO;
+
+     if(sigaction(sig, &act, NULL)<0)
+
+     {
+
+              perror("sigaction:");
+
+     }
+
+         信号处理函数
+
+void OnSIGSEGV(int signum, siginfo_t *info, void *ptr)
+
+{
+
+//TO DO: 输出堆栈信息
+
+         abort();
+
+}
+
+ 
+
+——接下来，分析出错时的函数调用路径
+
+         发生段错误时的函数调用关系体现在栈帧上，可以通过在信号处理函数中调用 backstrace 来获取栈帧信息，backstrace 的具体描述可google之/阅读头文件execinfo.h。修改后的处理函数如下：
+
+void OnSIGSEGV(int signum, siginfo_t *info, void *ptr)
+
+{
+
+         void * array[25]; /* 25 层，太够了 : )，你也可以自己设定个其他值 */
+
+         int nSize = backtrace(array, sizeof(array)/sizeof(array[0]));
+
+         for (int i=nSize-3; i>=2; i--){ /* 头尾几个地址不必输出，看官要是好奇，输出来看看就知道了 */
+
+/* 修正array使其指向正在执行的代码 */[f1] 
+
+                   printf("SIGSEGV catched when running code at %x\n", (char*)array[i] - 1);
+
+         }
+
+         abort();
+
+}
+
+ 
+
+——进一步定位到出错的具体位置
+
+         要想输出出错的具体位置，必须用到信号处理函数的第三个参数，在linux/unix环境下，该指针指向一个ucontext_t结构。这个结构的具体情况，可以通过阅读头文件ucontext.h得知。此结构体里面包含了发生段错误时的寄存器现场，其中就包含EIP寄存器，该寄存器的内容正是段错误时的指令地址（因为段错误是一种Fault）。
+
+进一步修正后的信号处理函数如下：
+
+void OnSIGSEGV(int signum, siginfo_t *info, void *ptr)
+
+{
+
+     void * array[25];
+
+     int nSize = backtrace(array, sizeof(array)/sizeof(array[0]));
+
+     for (int i=nSize-3; i>2; i--){ /* 头尾几个地址不必输出 */
+
+              /* 对array修正一下，使地址指向正在执行的代码 */
+
+              printf("signal[%d] catched when running code at %x\n", signum, (char*)array[i] - 1);
+
+     }
+
+    
+
+     if (NULL != ptr){
+
+              ucontext_t* ptrUC = (ucontext_t*)ptr;
+
+              int *pgregs = (int*)(&(ptrUC->uc_mcontext.gregs));
+
+              int eip = pgregs[REG_EIP];
+
+              if (eip != array[i]){ /* 有些处理器会将出错时的 EIP 也入栈 */
+
+                  printf("signal[%d] catched when running code at %x\n", signum, (char*)array[i] - 1);
+
+              }
+
+              printf("signal[%d] catched when running code at %x\n", signum, eip); /* 出错地址 */
+
+     }else{
+
+              printf("signal[%d] catched when running code at unknown address\n", signum);
+
+     }
+
+ 
+
+         abort();
+
+}
+
+ 
+
+——调用函数的路径、出错的位置都输出了，但是你能看懂输出么
+
+         好了，现在栈帧里面的地址和出错位置的地址都已经以十六进制的形式输出了，但是这是编译后的地址，而不是源码的行号，你能看懂么？所以还需要借助一个linux/unix自带的小工具addr2line，将这些打印出来的指令地址转换为行号、函数名。
+
+执行情况的一个示例：
+
+[root@suse tcpBreak]# ./a.out
+
+signal[11] catched when running code at 804861d
+
+signal[11] catched when running code at 8048578
+
+signal[11] catched when running code at 804855a
+
+ 
+
+[root@ suse tcpBreak]# addr2line 804861d 8048578 804855a -s -C -f -e a.out
+
+main
+
+newsig.cpp:55
+
+oops()
+
+newsig.cpp:32
+
+error(int)
+
+newsig.cpp:27
+
+ 
+
+         上面输出的内容，其具体含义是：
+
+捕获的信号序号是 11 （SIGSEGV）
+
+执行路径是第52行--第32行--第27行
+
+调用关系是main--oops--error，在error函数内部，即文件的第27行发生了段错误。
+
+ 
+
+——一点讨论
+
+         · 你可能已经阅读了 execinfo.h，发现其中有一个 backtrace_symbols，想通过调用这个函数来输出stack frame上面的函数名…你不妨试一下
+
+         · 将 backtrace 得到的 array 地址元素减 1 就能得到调用地点么？的确是这样的，减 1 不保证地址落到函数调用时跳转指令的起始处，但可以保证指向了该指令的最后一个字节，而该指令地址经addr2line转换后[f2] ，就对应了发生函数调用的行号。
+
+· 可不可以不调用 backstrace 来得到栈帧中的内容？可以的，因为这些内容都在栈里，你要是明确地知道偏移，就可以得知函数调用栈，但是要费很多心思，而且估计你自己写的模仿 backstrace 的代码，可移植性成了问题。
+
+         · 通过 gdb 调试 core文件 不是直接看得到内存映像么，还有必要搞得这么复杂么？一般情况下当然不必要，上面所列解决方法的优点在无法正常产生 core 文件的情况[f3] 下才得以体现。
+
+         · 需要在编译时添加选项 -g 么？当然需要了，不在可执行文件中记录行号信息，addr2line上哪里去找行号。否则只能得到函数名称，无法得到行号信息。
+
+ 
+
+——头疼，想直接用行不行，能来个直接可以用的代码么
+
+         这里提供一个头文件（见附件 segvCatch.rar ），但是不保证没有bug哦。使用方法很简单，只需要在main函数所在源文件包含该头文件即可。
+
+         该头文件捕获了浮点错误和段错误，像上面示例所说的，在出错时会向 STDOUT 输出一系列地址后退出程序，再使用 addr2line 对输出的地址进行转换，bingo，调用路径一目了然展示在你眼前啦！
+
+ 
+
+ 标注：
+
+ [f1]调用函数时，会将函数返回地址入栈，此返回地址为返回后将执行的指令地址。
+
+ [f2]事实上，test()翻译成若干汇编指令，指向这些指令对应区域的所有地址将被addr2line转换为调用test()对应的行号。
+
+ [f3]权限不够、ulimit未打开、core文件太大…等情况
+
+ 
+
+参考资料：
+
+中断与异常
+
+http://blog.csdn.net/shaohaigod1981/archive/2009/11/04/4767915.aspx
+
+http://hi.baidu.com/hilyjiang/blog/item/cdd7ebb417f8be728bd4b2a1.html
+
+http://www.logix.cz/michal/doc/i386/chp09-08.htm
+
+ucontext_t说明 http://www.gnu.org/s/libc/manual/html_node/System-V-contexts.html
+
+信号概述 http://www.ibm.com/developerworks/cn/linux/l-ipc/part2/index1.html?ca=drs-
+
+Backstrace http://hi.baidu.com/sunkang_2/blog/item/e7dd68df51db585c94ee378f.html
+
+man 7 signal
