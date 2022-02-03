@@ -1,0 +1,116 @@
+DRDA（Distributed Relational Database Architecture ）分布式关系数据库体系结构。
+
+    分布式关系数据库体系结构(DRDA)是一个跨IBM平台访问、遵循SQL标准的数据库信息的IBM标准。它是IBM的信息仓库框架中的重要组成部分，该框架定义了庞大的后台服务器，客户机可通过较小的基于工作组的中介服务器来访问它。
+
+    DRDA具有下列功能：　
+
+    1、定义了客户机和后台数据库之间的接口协议。　　  
+
+    2、提供了IBM的DB2、DBM、SQL/DS和SQL/400数据库系统的互连框架。　　
+
+    3、支持多供应商提供的数据库系统。　　
+
+    4、支持分布式数据库上的事务(工作单元)处理。　
+
+    在DRDA中，客户机叫做应用请求器(ARS)，后台服务器叫做应用服务器(AS)，协议叫做应用支持协议(ASP)，提供AR和AS间的接口。整个过程操作在SNA网上，但也计划支持OSI和TCP/IP。有一个附加的协议叫做数据库支持协议(DSP)，它使一个AS能对另一服务器扮演AR的角色。通过这种方法服务器之间能相互通话并传递来自客户AR的请求，如图D-25所示。最初的协议对一个数据库只支持一个结构化查询语言(SQL)的语句，但未来的版本将对一个或多个数据库提供多个语句的支持。　　
+
+    DRDA是IBM环境中建立客户机/服务器计算的基础之一。其它基础是高级的对等联网(APPN)和分布式数据管理(DDM)。通过信息仓库和DRDA，IBM计算机将它的企业中心组成部分的大型计算机，用作各种类型信息(包括多媒体信息)的存储平台。
+
+ 
+
+DB2使用的DRDA通讯协议研究
+
+
+
+    观察的结果是基于wireshark。wireshark是否正确直接决定了下面的结果是否正确。
+
+    DB2的版本是V9，使用JAVA的JDBC连接。驱动是db2jcc.jar。其他连接方式没有尝试过。
+
+DRDA是使用TCP作为传输层协议。
+
+一个数据包有n个DRDA。
+
+DRDA = DDM + n* PARAMETER。(n>=0)。
+
+DDM
+作用：描述这个DRDA
+组成：（以字节为单位）
+2--length(这个DRDA的长度)
+1--Magic
+1--Fomat
+2--correlID(连接的ID)
+2--length2(?)
+2--code point(描述这个DRDA的用途)
+
+PARAMETER
+作用：存放数据
+组成：（以字节为单位）
+2--length(这个PARAMETER的长度)
+2--code point(描述这个数据的用途）
+length-4 -- data (EBCDIC字符)
+
+
+
+一：建立连接：
+第一次交互：客户端和数据库服务器交换彼此硬件和软件的信息。
+客户端：
+DDM Code point :EXCSAT(0x1041）
+PARAMETER Code point :EXTNAM(0x115e) external name 客户端
+PARAMETER Code point :SRVNAM(0x116d) server name 客户端
+PARAMETER Code point :SRVRLSLV(0x115a) server product release level 客户端版本
+数据库：
+DDM Code point :EXCSATRD(0x1443）
+
+
+第二次交互：
+1.客户端把数据库名，用户名，密码和使用软件的信息发送到服务器。接受认证。
+
+DDM Code point :SECCHK(0x106e）请求验证
+PARAMETER Code point :RDBNAM(0x2110)数据库名
+PARAMETER Code point :USERID(0x11a0)用户名
+PARAMETER Code point :PASSWORD(0x11a1)密码（没加密）
+
+2.服务器把验证结果返回给客户端
+验证成功：
+DDM Code point :ACCRDBRM(0x2201）access to RDB completed
+验证失败：
+
+服务器马上提出TCP关闭请求。
+
+
+
+二：select，insert，update,delete语句(select比较复杂)
+客户端：
+DDM Code point :SQLSTT(0x2414） (ASCII字符) 里可以找到SQL语句
+注意：执行select，insert，delete,update语句的时候会发来2句SQL，第二句才是真正的语句
+
+
+服务器：
+一般是返回几个SQLCARD(0x2408)和ENDUOWRM(0x220c)End Unit of work condition和其他信息
+
+
+select失败：
+DDM Code point :OPNQFLRM(0x2212）open query failure
+select成功：
+DDM Code point :OPNQRYRM(0x2205） Open Query Complete
+
+
+insert，delete，update失败：
+返回一系列SQLCARD(0x2408)，表示失败的原因（注意，成功也会返回SQLCARD）
+insert，delete，update成功：
+DDM Code point :RDBUPDRM(0x2218） RDB update reply message
+
+
+
+
+三：结束连接：
+1.客户端发来请求。
+DDM Code point:RDBCMM(0x200e)
+2.服务器返回信息。
+DDM Code point:ENDUOWRM(0x220c)
+TCP断开连接
+
+
+-----------------------------------
+DRDA协议分析
+https://blog.51cto.com/sopace/1726047
