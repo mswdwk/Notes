@@ -1,11 +1,12 @@
 MYSQL_SRC=~/Repos/mysql-server
-MYSQL_ISD=~/MySQL5.7_1 #install dir
+MYSQL_ISD=~/MySQL5.7 #install dir
 BOOST_DIR=/usr/local/boost_1_59_0
 BUILD_DIR=~/build-mysql
 
 prepare_make(){
 	rm -rf  $BUILD_DIR
 	mkdir -p $BUILD_DIR
+	mkdir -p $BUILD_ISD
 	cd $BUILD_DIR
 	cmake -DCMAKE_INSTALL_PREFIX=$MYSQL_ISD  -DWITH_EMBEDDED_SERVER=1 -DWITH_DEBUG=1 -DWITH_BOOST=$BOOST_DIR \
 	-DDEFAULT_CHARSET=utf8mb4 -DDEFAULT_COLLATION=utf8mb4_bin \
