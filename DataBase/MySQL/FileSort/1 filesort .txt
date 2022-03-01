@@ -1,0 +1,16 @@
+Use of filesort to Satisfy ORDER BY
+If an index cannot be used to satisfy an ORDER BY clause, MySQL performs a filesort operation
+that reads table rows and sorts them. A filesort constitutes an extra sorting phase in query
+execution.
+To obtain memory for filesort operations, the optimizer allocates a fixed amount of
+sort_buffer_size bytes up front. Individual sessions can change the session value of this variable
+as desired to avoid excessive memory use, or to allocate more memory as necessary.
+A filesort operation uses temporary disk files as necessary if the result set is too large to fit in
+memory. Some types of queries are particularly suited to completely in-memory filesort operations.
+For example, the optimizer can use filesort to efficiently handle in memory, without temporary files,
+the ORDER BY operation for queries (and subqueries) of the following form:
+SELECT ... FROM single_table ... ORDER BY non_index_column [DESC] LIMIT [M,]N;
+Such queries are common in web applications that display only a few rows from a larger result set.
+Examples:
+SELECT col1, ... FROM t1 ... ORDER BY name LIMIT 10;
+SELECT col1, ... FROM t1 ... ORDER BY RAND() LIMIT 15;
