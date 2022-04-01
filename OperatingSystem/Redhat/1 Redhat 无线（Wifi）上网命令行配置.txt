@@ -1,0 +1,76 @@
+一、使用wpa_supplicant命令（主要去配WPA-PSK,WPA2-PSK加密方式的AP）
+
+1、关闭NetworkManager服务
+
+一定要关闭NetworkManager服务，否则连接会出现各种错误
+
+[root@wangp ~]# systemctl stop  NetworkManager
+
+2、配置wpa_supplicant.conf文件（将AP用户名密码添加进去）
+cd /etc/wpa_supplicant/
+---wpa_supplicant.cnf---
+ctrl_interface=/var/run/wpa_supplicant
+ctrl_interface_group=wheel
+
+network={
+ssid="ssid_name"
+psk="wifi_password"
+}
+
+3、启动无线网卡
+
+我机器的无线网卡是wlp1s0
+
+[root@wangp ~]# ifconfig wlp1s0up
+4、后台运行wpa_supplicant（这个程序要一致运行）
+4-1 method 1
+ cd /etc/sysconfig/
+--edit--file--wpa_supplicant---
+# Use the flag "-i" before each of your interfaces, like so:
+#  INTERFACES="-ieth1 -iwlan0"
+INTERFACES="-iwlp1s0"
+
+# Use the flag "-D" before each driver, like so:
+#  DRIVERS="-Dwext"
+DRIVERS=""
+
+# Other arguments
+#   -u   Enable the D-Bus interface (required for use with NetworkManager)
+#   -f   Log to /var/log/wpa_supplicant.log
+#   -P   Write pid file to /var/run/wpa_supplicant.pid
+#        required to return proper codes by init scripts (e.g. double "start" action)
+#        -B to daemonize that has to be used together with -P is already in wpa_supplicant.init.d
+OTHER_ARGS="-P /var/run/wpa_supplicant.pid"
+
+
+4-2 method 2
+[root@wangp ~]# wpa_supplicant -B -c/etc/wpa_supplicant/wpa_supplicant.conf -iwlp1s0
+-B：后台运行
+-c：配置文件
+-i：网卡
+
+5、[可选] 查看是否连接成功
+[root@wangp ~]# iwconfig wlan0
+wlan0 IEEE 802.11abgn ESSID:"wtms" 
+Mode:Managed Frequency:2.412 GHz Access Point: A8:57:4E:1A:D8:F0 
+Bit Rate=0 kb/s Tx-Power=15 dBm 
+Retry long limit:7 RTS thr:off Fragment thr:off
+Encryption key:off
+Power Management:off
+复制代码
+以上可以看到已经连接成功了ESSID:"wtms" 
+
+此时通过ifconfig查看wlp1s0还是没有获取到ip地址的
+
+6、动态分配ip
+
+[root@wangp ~]# dhclient wlp1s0
+执行成功就已经可以上网了
+
+7、测试
+
+[root@wangp ~]# ping www.baidu.com
+PING www.a.shifen.com (180.97.33.107) 56(84) bytes of data.
+64 bytes from 180.97.33.107: icmp_seq=1 ttl=54 time=24.3 ms
+64 bytes from 180.97.33.107: icmp_seq=2 ttl=54 time=24.9 ms
+64 bytes from 180.97.33.107: icmp_seq=3 ttl=54 time=21.0 ms
