@@ -1,0 +1,6 @@
+[redhat-server-7]
+name=redhat-server-local-disk-repo
+baseurl=file:///usr/local/iso
+enabled=1
+gpgcheck=1
+gpgkey=file:///usr/local/iso/RPM-GPG-KEY-redhat-release
