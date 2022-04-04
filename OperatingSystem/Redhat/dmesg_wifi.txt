@@ -1,0 +1,8 @@
+[Mon Apr  4 02:43:25 2022] Intel(R) Wireless WiFi driver for Linux
+[Mon Apr  4 02:43:25 2022] Copyright(c) 2003- 2015 Intel Corporation
+[Mon Apr  4 02:43:25 2022] iwlwifi 0000:01:00.0: enabling device (0000 -> 0002)
+[Mon Apr  4 02:43:25 2022] iwlwifi 0000:01:00.0: irq 130 for MSI/MSI-X
+[Mon Apr  4 02:43:25 2022] iwlwifi 0000:01:00.0: loaded firmware version 29.1044073957.0 op_mode iwlmvm
+[Mon Apr  4 02:43:25 2022] input: HDA Intel PCH Mic as /devices/pci0000:00/0000:00:1f.3/sound/card0/input10
+[Mon Apr  4 02:43:25 2022] input: HDA Intel PCH Headphone as /devices/pci0000:00/0000:00:1f.3/sound/card0/input11
+
