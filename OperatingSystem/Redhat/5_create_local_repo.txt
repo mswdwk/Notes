@@ -1,0 +1,18 @@
+# https://blog.csdn.net/aganliang/article/details/93178141
+内网环境 CentOS7 搭建本地repo仓库源
+
+# 1) sync rpms from remote to your local disk dir
+	# epel is the remote repo id,which is already created
+	# in your dir /etc/yum.repo.d/
+	reposync -r epel -p /your/local/repo/dir	
+# 2) create repodata
+	createrepo -v /your/local/repo/dir
+
+# 3) create a new repo file point to this local repo dir
+[Local-epel-repo]
+name=Redhat-7 - Local-epel
+baseurl=file:///your/local/repo/dir
+gpgcheck=1
+enabled=1
+#gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
