@@ -1,0 +1,10 @@
+ESP_USING_FILESORT   <- {
+	bool JOIN::add_sorting_to_table(uint idx, ORDER_with_src *sort_order)
+	bool Explain_table::shallow_explain()	
+}
+------
+
+
+test_if_equality_guarantees_uniqueness;
+
+bool String::needs_conversion;
