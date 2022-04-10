@@ -1,0 +1,48 @@
+[general]
+instance_num = 1
+[mysqld]
+bind_address=0.0.0.0
+port=5730
+sync_binlog=1
+innodb_flush_log_at_trx_commit=1
+transaction_isolation=READ-COMMITTED
+slow_query_log=on
+long_query_time=0.6
+basedir=~/
+datadir=~/data/data
+innodb_data_file_path=ibdata1:100M:autoextend
+innodb_data_home_dir=~/data/data
+innodb_undo_directory=~/data/undo
+innodb_log_group_home_dir=~/data/redo
+innodb_lock_wait_timeout=10
+innodb_print_all_deadlocks=ON
+innodb_write_io_threads=8
+innodb_read_io_threads=8
+innodb-file-per-table
+innodb_io_capacity=1000 # for ssd disk, as for hdd disk ,this is 200 by default
+innodb_io_capacity_max=2000 # for ssd disk , iops
+#innodb-open-files=65535
+innodb_open_files=65535
+innodb-buffer-pool-instances=8
+innodb-buffer-pool-size=2G
+innodb_page_cleaners=4
+log-bin=../binlog/mysql-bin
+binlog_format=ROW
+max_binlog_size=104857600
+relay-log=../relaylog/relay-bin
+log-error=~/log/mysqld1.log
+pid-file=~/bin/mysqld1.pid
+tmpdir=~/data/tmp
+socket=~/bin/mysql1.sock
+server_id=5730
+gtid_mode=on
+enforce_gtid_consistency=on
+#defaults_file=~/etc/my.cnf
+
+binlog_ignore_db=sys, mysql,performance_schema,information_schema ;日志记录忽略那些数据库的
+binlog_do_db = testdb
+expire_logs_days=7
+
+[client]
+socket=~/bin/mysql1.sock
+port=5730

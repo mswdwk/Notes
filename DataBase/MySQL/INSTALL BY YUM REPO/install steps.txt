@@ -1,0 +1,8 @@
+
+一、安装mysql 5.7版本的rpm包
+
+1、wget http://repo.mysql.com/mysql57-community-release-el7-7.noarch.rpm （下载rpm）
+
+2、rpm -ivh mysql57-community-release-el7-7.noarch.rpm（安装rpm包）
+
+3、yum install -y mysql-server

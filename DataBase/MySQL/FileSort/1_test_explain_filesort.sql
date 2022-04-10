@@ -49,4 +49,10 @@ explain select * from test_order where distrib='cont'  and D='d' and A='a' order
 explain select * from test_order where distrib='cont'  and D='d' and A='a' order by B,C; -- no filesort. dbeaver client  verion 21.2 output same as mysql client, when mysql-server is 5.7.22 or 5.7.37
 
 
-show variables like '%collation%'
+show variables like '%collation%';
+
+show variables like '%optimizer_trace%';
+
+set optimizer_trace='enabled=on'
+
+select * from information_schema.OPTIMIZER_TRACE;

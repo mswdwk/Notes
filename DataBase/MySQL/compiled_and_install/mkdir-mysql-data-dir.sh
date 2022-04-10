@@ -1,4 +1,4 @@
-basedir=/home/mysql2/MySQL5.7
+basedir=~
 mkdir -p $basedir/data/data
 mkdir -p $basedir/data/tmp
 mkdir -p $basedir/data/undo

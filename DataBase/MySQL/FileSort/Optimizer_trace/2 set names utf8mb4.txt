@@ -1,0 +1,271 @@
+mysql> select * from information_schema.optimizer_trace\G
+*************************** 1. row ***************************
+                            QUERY: select * from test_order where distrib='cont' and D='d' and A='a'  order by A,B,C
+                            TRACE: {
+  "steps": [
+    {
+      "join_preparation": {
+        "select#": 1,
+        "steps": [
+          {
+            "expanded_query": "/* select#1 */ select `test_order`.`distrib` AS `distrib`,`test_order`.`D` AS `D`,`test_order`.`id` AS `id`,`test_order`.`pk2` AS `pk2`,`test_order`.`A` AS `A`,`test_order`.`B` AS `B`,`test_order`.`C` AS `C`,`test_order`.`ad` AS `ad` from `test_order` where ((`test_order`.`distrib` = 'cont') and (`test_order`.`D` = 'd') and (`test_order`.`A` = 'a')) order by `test_order`.`A`,`test_order`.`B`,`test_order`.`C`"
+          }
+        ]
+      }
+    },
+    {
+      "join_optimization": {
+        "select#": 1,
+        "steps": [
+          {
+            "condition_processing": {
+              "condition": "WHERE",
+              "original_condition": "((`test_order`.`distrib` = 'cont') and (`test_order`.`D` = 'd') and (`test_order`.`A` = 'a'))",
+              "steps": [
+                {
+                  "transformation": "equality_propagation",
+                  "resulting_condition": "(multiple equal('cont', `test_order`.`distrib`) and multiple equal('d', `test_order`.`D`) and multiple equal('a', `test_order`.`A`))"
+                },
+                {
+                  "transformation": "constant_propagation",
+                  "resulting_condition": "(multiple equal('cont', `test_order`.`distrib`) and multiple equal('d', `test_order`.`D`) and multiple equal('a', `test_order`.`A`))"
+                },
+                {
+                  "transformation": "trivial_condition_removal",
+                  "resulting_condition": "(multiple equal('cont', `test_order`.`distrib`) and multiple equal('d', `test_order`.`D`) and multiple equal('a', `test_order`.`A`))"
+                }
+              ]
+            }
+          },
+          {
+            "substitute_generated_columns": {
+            }
+          },
+          {
+            "table_dependencies": [
+              {
+                "table": "`test_order`",
+                "row_may_be_null": false,
+                "map_bit": 0,
+                "depends_on_map_bits": [
+                ]
+              }
+            ]
+          },
+          {
+            "ref_optimizer_key_uses": [
+              {
+                "table": "`test_order`",
+                "field": "A",
+                "equals": "'a'",
+                "null_rejecting": false
+              }
+            ]
+          },
+          {
+            "rows_estimation": [
+              {
+                "table": "`test_order`",
+                "range_analysis": {
+                  "table_scan": {
+                    "rows": 16,
+                    "cost": 6.3
+                  },
+                  "potential_range_indexes": [
+                    {
+                      "index": "PRIMARY",
+                      "usable": false,
+                      "cause": "not_applicable"
+                    },
+                    {
+                      "index": "idx",
+                      "usable": true,
+                      "key_parts": [
+                        "A",
+                        "B",
+                        "C",
+                        "D",
+                        "id",
+                        "pk2"
+                      ]
+                    }
+                  ],
+                  "setup_range_conditions": [
+                  ],
+                  "group_index_range": {
+                    "chosen": false,
+                    "cause": "not_group_by_or_distinct"
+                  },
+                  "analyzing_range_alternatives": {
+                    "range_scan_alternatives": [
+                      {
+                        "index": "idx",
+                        "ranges": [
+                          "0x6120202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020 <= A <= 0x6120202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020"
+                        ],
+                        "index_dives_for_eq_ranges": true,
+                        "rowid_ordered": false,
+                        "using_mrr": false,
+                        "index_only": false,
+                        "rows": 1,
+                        "cost": 2.21,
+                        "chosen": true
+                      }
+                    ],
+                    "analyzing_roworder_intersect": {
+                      "usable": false,
+                      "cause": "too_few_roworder_scans"
+                    }
+                  },
+                  "chosen_range_access_summary": {
+                    "range_access_plan": {
+                      "type": "range_scan",
+                      "index": "idx",
+                      "rows": 1,
+                      "ranges": [
+                        "0x6120202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020 <= A <= 0x6120202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020"
+                      ]
+                    },
+                    "rows_for_plan": 1,
+                    "cost_for_plan": 2.21,
+                    "chosen": true
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "considered_execution_plans": [
+              {
+                "plan_prefix": [
+                ],
+                "table": "`test_order`",
+                "best_access_path": {
+                  "considered_access_paths": [
+                    {
+                      "access_type": "ref",
+                      "index": "idx",
+                      "rows": 1,
+                      "cost": 1.2,
+                      "chosen": true
+                    },
+                    {
+                      "access_type": "range",
+                      "range_details": {
+                        "used_index": "idx"
+                      },
+                      "chosen": false,
+                      "cause": "heuristic_index_cheaper"
+                    }
+                  ]
+                },
+                "condition_filtering_pct": 100,
+                "rows_for_plan": 1,
+                "cost_for_plan": 1.2,
+                "chosen": true
+              }
+            ]
+          },
+          {
+            "attaching_conditions_to_tables": {
+              "original_condition": "((`test_order`.`A` = 'a') and (`test_order`.`D` = 'd') and (`test_order`.`distrib` = 'cont'))",
+              "attached_conditions_computation": [
+              ],
+              "attached_conditions_summary": [
+                {
+                  "table": "`test_order`",
+                  "attached": "((`test_order`.`D` = 'd') and (`test_order`.`distrib` = 'cont'))"
+                }
+              ]
+            }
+          },
+          {
+            "clause_processing": {
+              "clause": "ORDER BY",
+              "original_clause": "`test_order`.`A`,`test_order`.`B`,`test_order`.`C`",
+              "items": [
+                {
+                  "item": "`test_order`.`A`"
+                },
+                {
+                  "item": "`test_order`.`B`"
+                },
+                {
+                  "item": "`test_order`.`C`"
+                }
+              ],
+              "resulting_clause_is_simple": true,
+              "resulting_clause": "`test_order`.`A`,`test_order`.`B`,`test_order`.`C`"
+            }
+          },
+          {
+            "added_back_ref_condition": "((`test_order`.`A` <=> 'a') and ((`test_order`.`D` = 'd') and (`test_order`.`distrib` = 'cont')))"
+          },
+          {
+            "reconsidering_access_paths_for_index_ordering": {
+              "clause": "ORDER BY",
+              "index_order_summary": {
+                "table": "`test_order`",
+                "index_provides_order": false,
+                "order_direction": "undefined",
+                "index": "idx",
+                "plan_changed": false
+              }
+            }
+          },
+          {
+            "refine_plan": [
+              {
+                "table": "`test_order`",
+                "pushed_index_condition": "((`test_order`.`A` <=> 'a') and (`test_order`.`D` = 'd'))",
+                "table_condition_attached": "(`test_order`.`distrib` = 'cont')"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "join_execution": {
+        "select#": 1,
+        "steps": [
+          {
+            "filesort_information": [
+              {
+                "direction": "asc",
+                "table": "`test_order`",
+                "field": "A"
+              },
+              {
+                "direction": "asc",
+                "table": "`test_order`",
+                "field": "B"
+              },
+              {
+                "direction": "asc",
+                "table": "`test_order`",
+                "field": "C"
+              }
+            ],
+            "filesort_priority_queue_optimization": {
+              "usable": false,
+              "cause": "not applicable (no LIMIT)"
+            },
+            "filesort_execution": [
+            ],
+            "filesort_summary": {
+              "rows": 0,
+              "examined_rows": 0,
+              "number_of_tmp_files": 0,
+              "sort_buffer_size": 261696,
+              "sort_mode": "<sort_key, rowid>"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+MISSING_BYTES_BEYOND_MAX_MEM_SIZE: 0
+          INSUFFICIENT_PRIVILEGES: 0
+1 row in set (0.00 sec)
