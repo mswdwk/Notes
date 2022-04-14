@@ -1,0 +1,5 @@
+# 1) 调试shell脚本时，在跟踪里输出行号
+先 执行如下代码
+export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
+再执行调试命令
+sh -x test.sh
