@@ -1,0 +1,32 @@
+https://blog.csdn.net/a_salty_fish/article/details/108006759
+
+1.在客户机对远程服务器进行编目（CATALOG）【标红部分为参数和自定义名称】
+
+db2 CATALOG TCPIP NODE db2node REMOTE xxx.xxx.xx.x（ip） SERVER xxxxx（端口号）
+
+提示刷新后目录更改才生效：db2 TERMINATE
+
+查看节点目录： db2 list node directory
+
+可以看到我们刚刚创建的节点条目
+
+2.对已经编目的节点进行数据库编目
+
+db2 CATALOG DATABASE XXXX（远程数据库名称） as xxxx（本地别名，自己设置） AT NODE DB2NODE（和1的节点名一致）
+
+提示刷新后目录更改才生效：db2 TERMINATE
+
+查看本地数据库目录：db2 LIST DB DIRECTORY
+
+可以看到刚刚创建的条目类型为远程的数据库
+
+3.连接远程数据库
+
+db2 CONNECT TO xxxx（数据库别名） user xxxx（用户名） by xxxx（密码）
+
+基于安全性的考虑建议输入db2 CONNECT TO xxxx（数据库别名） user xxxx（用户名）后回车再根据提示输密码
+
+如果成功会出现数据库连接信息
+————————————————
+版权声明：本文为CSDN博主「a_salty_fish」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/a_salty_fish/article/details/108006759
