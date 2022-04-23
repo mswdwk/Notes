@@ -1,0 +1,32 @@
+原文链接：https://blog.csdn.net/bruce2u/article/details/120123739
+常用使用实例
+
+1) 测试纯写入性能——相当于不写缓存，直接写裸磁盘（写1G文件），每个块8k，总共写128000个块
+
+time dd if=/dev/zero of=output.file bs=8k count=128000 oflag=direct,nonblock
+
+2)测试纯读取性能——相当于不读缓存，直接读裸磁盘
+
+dd if=output.file of=/dev/null bs=8k count=128000 iflag=direct,nonblock
+
+3)测试同步写入的性能——一次写一个bs大小的数据，同步写到磁盘后再继续写下一个IO，这里每次也是写了缓存，但要等缓存同步到磁盘后才能继续下一个IO
+
+dd if=/dev/zero of=/tmp/1G.file bs=4k count=256000 oflag=dsyncdd if=/dev/zero of=/tmp/1G.file bs=4k count=256000 oflag=sync
+
+4) 测试同步读取的性能
+
+dd if=/tmp/1G.file of=/dev/null bs=4k count=256000 iflag=dsyncdd if=/tmp/1G.file of=/dev/null bs=4k count=256000 iflag=sync
+
+5)测试先写缓存，但最后一次刷新到磁盘中
+
+dd if=/dev/zero of=/tmp/1G.file bs=4k count=256000 conv=fsync
+
+dd if=/dev/zero of=/tmp/1G .file bs=4k count=256000 conv=fdatasync
+
+6)测试磁盘写能力——默认文件系统 会写缓存，同文件系统决定何时同步至磁盘，写速度一般较快
+
+time dd if=/dev/zero of=output.file bs=8k count=128000
+
+7) 测试磁盘读能力——默认文件系统 会读缓存，读速度一般较快，如果缓存里没有，则也是直接读磁盘，但第2次之前就比较快
+
+time dd if=output.file of=/dev/null bs=8k count=128000
