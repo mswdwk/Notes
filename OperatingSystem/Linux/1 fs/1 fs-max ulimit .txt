@@ -1,0 +1,5 @@
+原文链接：https://blog.csdn.net/wo18237095579/article/details/110007882
+
+max-file：表示系统级别的能够打开的文件句柄①的数量。是对整个系统的限制，并不是针对用户的。
+ulimit -n：控制进程级别（比如 Nginx 进程、MySQL 进程）能够打开的文件句柄的数量。提供对 shell 及其启动的进程的可用文件句柄的控制。这是进程级别的。
+一边情况下，服务器上的 ulimit 都需要我们自己设置，而不能使用系统默认的，否则会出现文件描述符耗尽的问题。文件句柄达到上限之后的常见错误有：Too many open files 或者 Socket/File: Can’t open so many files 等。
