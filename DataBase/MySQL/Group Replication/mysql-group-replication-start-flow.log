@@ -1,0 +1,27 @@
+mysql group replication start
+关键流程、对象、线程
+
+2021-06-21T07:56:53.892363Z 4 [Note] Plugin group_replication reported: 'Setting super_read_only=ON.'
+2021-06-21T07:56:53.892525Z 3 [Note] Plugin group_replication reported: 'Group communication SSL configuration: group_replication_ssl_mode: "DISABLED"'
+2021-06-21T07:56:53.892734Z 3 [Note] Plugin group_replication reported: '[GCS] Added automatically IP ranges 127.0.0.1/8,172.17.0.1/16,192.168.122.1/24,192.168.79.132/24 to the whitelist'
+2021-06-21T07:56:53.898688Z 3 [Note] Plugin group_replication reported: '[GCS] Translated 'node1' to 192.168.79.132'
+2021-06-21T07:56:58.909444Z 3 [Warning] Plugin group_replication reported: '[GCS] Automatically adding IPv4 localhost address to the whitelist. It is mandatory that it is added.'
+2021-06-21T07:56:58.909600Z 3 [Note] Plugin group_replication reported: '[GCS] SSL was not enabled'
+2021-06-21T07:56:58.909633Z 3 [Note] Plugin group_replication reported: 'Initialized group communication with configuration: group_replication_group_name: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"; group_replication_local_address: "node1:33101"; group_replication_group_seeds: "node1:33101,node2:33101,node3:33101"; group_replication_bootstrap_group: true; group_replication_poll_spin_loops: 0; group_replication_compression_threshold: 1000000; group_replication_ip_whitelist: "AUTOMATIC"'
+2021-06-21T07:56:58.909749Z 3 [Note] Plugin group_replication reported: '[GCS] Configured number of attempts to join: 0'
+2021-06-21T07:56:58.909760Z 3 [Note] Plugin group_replication reported: '[GCS] Configured time between attempts to join: 5 seconds'
+2021-06-21T07:56:58.909851Z 3 [Note] Plugin group_replication reported: 'Member configuration: member_id: 1; member_uuid: "391e4ba7-50ea-11eb-b1ac-000c299195a1"; single-primary mode: "true"; group_replication_auto_increment_increment: 7; '
+2021-06-21T07:56:58.910217Z 5 [Note] Plugin group_replication reported: 'Detected previous RESET MASTER invocation or an issue exists in the group replication applier relay log. Purging existing applier logs.'
+2021-06-21T07:56:58.918653Z 5 [Note] 'CHANGE MASTER TO FOR CHANNEL 'group_replication_applier' executed'. Previous state master_host='', master_port= 3306, master_log_file='', master_log_pos= 4, master_bind=''. New state master_host='<NULL>', master_port= 0, master_log_file='', master_log_pos= 4, master_bind=''.
+2021-06-21T07:56:58.926740Z 3 [Note] Plugin group_replication reported: 'Group Replication applier module successfully initialized!'
+2021-06-21T07:56:58.926801Z 3 [Note] Plugin group_replication reported: 'auto_increment_increment is set to 7'
+2021-06-21T07:56:58.926820Z 3 [Note] Plugin group_replication reported: 'auto_increment_offset is set to 1'
+2021-06-21T07:56:58.926758Z 8 [Note] Slave SQL thread for channel 'group_replication_applier' initialized, starting replication in log 'FIRST' at position 0, relay log '../relaylog/relay-bin-group_replication_applier.000001' position: 4
+2021-06-21T07:56:58.945327Z 0 [Note] Plugin group_replication reported: 'XCom protocol version: 3'
+2021-06-21T07:56:58.945369Z 0 [Note] Plugin group_replication reported: 'XCom initialized and ready to accept incoming connections on port 33101'
+2021-06-21T07:56:59.948958Z 11 [Note] Plugin group_replication reported: 'Only one server alive. Declaring this server as online within the replication group'
+2021-06-21T07:56:59.949137Z 0 [Note] Plugin group_replication reported: 'Group membership changed to node1:3310 on view 16242622199479876:1.'
+2021-06-21T07:56:59.951036Z 0 [Note] Plugin group_replication reported: 'This server was declared online within the replication group'
+2021-06-21T07:56:59.951215Z 0 [Note] Plugin group_replication reported: 'A new primary with address node1:3310 was elected, enabling conflict detection until the new primary applies all relay logs.'
+2021-06-21T07:56:59.951462Z 13 [Note] Plugin group_replication reported: 'Setting read_only=OFF.'
+2021-06-21T07:56:59.951476Z 13 [Note] Plugin group_replication reported: 'This server is working as primary member.'

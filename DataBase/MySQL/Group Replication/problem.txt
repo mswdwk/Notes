@@ -1,0 +1,9 @@
+# 新加入的实例因为有多余的事务，导致加入mgr组失败。
+
+```
+ Plugin group_replication reported: 'This member has more executed transactions than those present in the group. Local transactions: e0c97c95-f571-11e9-933b-001b785baebb:1 > Group transactions: c2840554-f56b-11e9-8d9b-6cb3113192fc:1,
+
+cc13c1f4-f631-11e9-83fe-6cb3113192fc:1'
+```
+解决办法 reset master;
+原因是在这个节点有操作了之前创建了用户因为是初始化安装所以可以 reset master  清空Executed_Gtid_Set

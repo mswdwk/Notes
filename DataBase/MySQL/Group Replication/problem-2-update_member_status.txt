@@ -1,0 +1,113 @@
+
+
+
+Group_member_info_manager_interface::update_member_status(const std::string& uuid,Group_member_info::Group_member_status new_status)=0;
+
+
+Plugin_gcs_events_handler::update_member_status(const vector<Gcs_member_identifier>& members,Group_member_info::Group_member_status status,Group_member_info::Group_member_status old_status_equal_to,Group_member_info::Group_member_status old_status_different_from);
+
+
+Group_member_info::update_recovery_status(Group_member_status new_status)
+Group_member_info_manager::update_member_status(const std::string& uuid,Group_member_info::Group_member_status new_status);
+
+-----------------Group_member_info_manager::update_member_status---------------------MEMBER_IN_RECOVERY------------------------------------------------------------------------------
+#0  Group_member_info_manager::update_member_status (this=0x7f7b1c075bc0, uuid="336ed6a3-5178-11eb-9e10-000c299195a1", new_status=Group_member_info::MEMBER_IN_RECOVERY)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/member_info.cc:719
+#1  0x00007f7b25b37d9f in Plugin_gcs_events_handler::update_member_status (this=0x7f7b1c074220, members=std::vector of length 1, capacity 1 = {...}, status=Group_member_info::MEMBER_IN_RECOVERY, 
+    old_status_equal_to=Group_member_info::MEMBER_OFFLINE, old_status_different_from=Group_member_info::MEMBER_END)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/gcs_event_handlers.cc:1312
+#2  0x00007f7b25b370bc in Plugin_gcs_events_handler::handle_joining_members (this=0x7f7b1c074220, new_view=..., is_joining=true, is_leaving=false)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/gcs_event_handlers.cc:957
+#3  0x00007f7b25b36049 in Plugin_gcs_events_handler::on_view_changed (this=0x7f7b1c074220, new_view=..., exchanged_data=std::vector of length 1, capacity 1 = {...})
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/gcs_event_handlers.cc:531
+#4  0x00007f7b25aef429 in Gcs_xcom_control::install_view (this=0x7f7b1c0758f0, new_view_id=0x7f7b38008210, group=..., states=0x7f7b1c0757e0, total=0x7f7b1c075750, left=0x7f7b1c075780, join=0x7f7b1c0757b0, 
+    error_code=Gcs_view::OK) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_control_interface.cc:1607
+#5  0x00007f7b25aef074 in Gcs_xcom_control::process_control_message (this=0x7f7b1c0758f0, msg=0x7f7b380081e0)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_control_interface.cc:1502
+#6  0x00007f7b25b16da4 in do_cb_xcom_receive_data (message_id=..., xcom_nodes=0x7f7b406ea180, size=518, data=0x7f7b406eaa00 "\001")
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_interface.cc:1230
+#7  0x00007f7b25b1be8b in Data_notification::do_execute (this=0x7f7b406ea2c0) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:81
+#8  0x00007f7b25b1e6a5 in Parameterized_notification<false>::operator() (this=0x7f7b406ea2c0)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.h:229
+#9  0x00007f7b25b1c6ab in Gcs_xcom_engine::process (this=0x7f7b1c074ce0) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:209
+#10 0x00007f7b25b1c2b7 in process_notification_thread (ptr_object=0x7f7b1c074ce0) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:149
+#11 0x00007f7c3a025dd5 in start_thread () from /lib64/libpthread.so.0
+#12 0x00007f7c38eebead in clone () from /lib64/libc.so.6
+
+-----------------Group_member_info_manager::update_member_status---------------------MEMBER_ONLINE-----------------------------------------------------------------------
+#0  Group_member_info_manager::update_member_status (this=0x7f7b1c075bc0, uuid="336ed6a3-5178-11eb-9e10-000c299195a1", new_status=Group_member_info::MEMBER_ONLINE)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/member_info.cc:719
+#1  0x00007f7b25b34f8b in Plugin_gcs_events_handler::handle_recovery_message (this=0x7f7b1c074220, message=...) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/gcs_event_handlers.cc:188
+#2  0x00007f7b25b34bf1 in Plugin_gcs_events_handler::on_message_received (this=0x7f7b1c074220, message=...) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/gcs_event_handlers.cc:75
+#3  0x00007f7b25ae7995 in Gcs_xcom_communication::notify_received_message (this=0x7f7b1c06f470, message=0x7f7b380081e0)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_communication_interface.cc:256
+#4  0x00007f7b25ae7943 in Gcs_xcom_communication::xcom_receive_data (this=0x7f7b1c06f470, message=0x7f7b380081e0)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_communication_interface.cc:243
+#5  0x00007f7b25b16ded in do_cb_xcom_receive_data (message_id=..., xcom_nodes=0x7f7b4069b370, size=106, data=0x7f7b406eae10 "")
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_interface.cc:1238
+#6  0x00007f7b25b1be8b in Data_notification::do_execute (this=0x7f7b406e9b30) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:81
+#7  0x00007f7b25b1e6a5 in Parameterized_notification<false>::operator() (this=0x7f7b406e9b30)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.h:229
+#8  0x00007f7b25b1c6ab in Gcs_xcom_engine::process (this=0x7f7b1c074ce0) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:209
+#9  0x00007f7b25b1c2b7 in process_notification_thread (ptr_object=0x7f7b1c074ce0) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:149
+#10 0x00007f7c3a025dd5 in start_thread () from /lib64/libpthread.so.0
+#11 0x00007f7c38eebead in clone () from /lib64/libc.so.6
+
+-----------------------handle_recovery_message------------------------------------------------------------------------------------
+case Plugin_gcs_message::CT_RECOVERY_MESSAGE:
+    handle_recovery_message(message);
+---------Recovery_message::Recovery_message-----------------------RECOVERY_END_MESSAGE-------------------------------------------------------------------
+#0  Recovery_message::Recovery_message (this=0x7f468c0e5dc0, type=Recovery_message::RECOVERY_END_MESSAGE, uuid="336ed6a3-5178-11eb-9e10-000c299195a1")
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/recovery_message.cc:21
+#1  0x00007f466035940a in Recovery_module::notify_group_recovery_end (this=0x7f4650029aa0) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/recovery.cc:553
+#2  0x00007f4660358db6 in Recovery_module::recovery_thread_handle (this=0x7f4650029aa0) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/recovery.cc:382
+#3  0x00007f466035810f in launch_handler_thread (arg=0x7f4650029aa0) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/recovery.cc:37
+#4  0x0000000001ced500 in pfs_spawn_thread (arg=0x7f465c00a480) at /home/user/Repos/mysql-server/storage/perfschema/pfs.cc:2190
+#5  0x00007f475aed1dd5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00007f4759d97ead in clone () from /lib64/libc.so.6
+---------------------------------Recovery_message::Recovery_message----------------------------------------------------------
+#0  Recovery_message::Recovery_message (this=0x7f464a111ad0, buf=0x7f465c00833c "\001", len=74) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/recovery_message.cc:31
+#1  0x00007f4660331e35 in Plugin_gcs_events_handler::handle_recovery_message (this=0x7f465002b1b0, message=...) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/gcs_event_handlers.cc:146
+#2  0x00007f4660331bf1 in Plugin_gcs_events_handler::on_message_received (this=0x7f465002b1b0, message=...) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/gcs_event_handlers.cc:75
+#3  0x00007f46602e4995 in Gcs_xcom_communication::notify_received_message (this=0x7f465001ad80, message=0x7f465c008060)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_communication_interface.cc:256
+#4  0x00007f46602e4943 in Gcs_xcom_communication::xcom_receive_data (this=0x7f465001ad80, message=0x7f465c008060)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_communication_interface.cc:243
+#5  0x00007f4660313ded in do_cb_xcom_receive_data (message_id=..., xcom_nodes=0x7f467069b370, size=106, data=0x7f46706ea3c0 "")
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_interface.cc:1238
+#6  0x00007f4660318e8b in Data_notification::do_execute (this=0x7f46706e7fe0) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:81
+#7  0x00007f466031b6a5 in Parameterized_notification<false>::operator() (this=0x7f46706e7fe0)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.h:229
+#8  0x00007f46603196ab in Gcs_xcom_engine::process (this=0x7f4650028bc0) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:209
+#9  0x00007f46603192b7 in process_notification_thread (ptr_object=0x7f4650028bc0) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:149
+#10 0x00007f475aed1dd5 in start_thread () from /lib64/libpthread.so.0
+#11 0x00007f4759d97ead in clone () from /lib64/libc.so.6
+
+-----------recover message 从哪里来的---------从Recovery_module::notify_group_recovery_end来----------------------------------------
+notify_group_recovery_end 函数生成 Recovery_message recovery_msg(Recovery_message::RECOVERY_END_MESSAGE,local_member_info->get_uuid());
+
+
+
+Recovery_module::recovery_thread_handle 启动后阻塞在Applier_module::wait_for_applier_complete_suspension
+Applier_module::interrupt_applier_suspension_wait 和 Applier_module::suspend_applier_module 可以打破上述阻塞
+
+
+Applier_module::interrupt_applier_suspension_wait()
+{
+  mysql_mutex_lock(&suspend_lock);
+  mysql_cond_broadcast(&suspension_waiting_condition);
+  mysql_mutex_unlock(&suspend_lock);
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+b Applier_module::interrupt_applier_suspension_wait 
+b Recovery_module::stop_recovery
+b Applier_module::suspend_applier_module
+
+#0  Applier_module::suspend_applier_module (this=0x7eff80033210) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/include/applier.h:570
+#1  0x00007effa031d84f in Applier_module::apply_action_packet (this=0x7eff80033210, action_packet=0x7effc0008780) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/applier.cc:237
+#2  0x00007effa031e122 in Applier_module::applier_thread_handle (this=0x7eff80033210) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/applier.cc:428
+#3  0x00007effa031cce2 in launch_handler_thread (arg=0x7eff80033210) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/applier.cc:29
+#4  0x0000000001ced500 in pfs_spawn_thread (arg=0x7eff80033e30) at /home/user/Repos/mysql-server/storage/perfschema/pfs.cc:2190
+#5  0x00007f00974fcdd5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00007f00963c2ead in clone () from /lib64/libc.so.6

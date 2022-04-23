@@ -1,0 +1,19 @@
+MGR 插件架构
+
+MGR 是一个MySQL插件，它基于现有的MySQL主从复制基础设施实现，利用了基于行的二进制日志记录和全局事务标识符（GTID）等特性。它与当前MySQL插件式框架集成，如：performance_schema或插件和服务基础设施。MGR的总体架构图如下：
+
+
+
+MGR 插件包含一组用于捕获(capture)，应用(apply)和生命循环（lifecycle）的API接口，这些API接口控制着MGR插件如何与MySQL Server交互。这些接口是放置在事务执行管道中的一些钩子（它们将MySQL Server的核心与组MGR插件隔离开来），逻辑上将MySQL Server内核与MGR插件隔离开来。其中有一些接口提供把通讯信息从Server发送给MGR插件（例如：Server启动、恢复、接受连接以及Server即将提交事务的事件通知），有一些接口提供把通讯信息从MGR插件发送给MySQL Server（例如：MGR插件命令MySQL Server提交、终止一个正在执行的事务，或者让该事务写入relay log中排队等候处理）。
+
+在这些API接口的下一层，是一组组件(capture、applier、Recovery)，组复制中的三个核心模块，当上层API发生调用，将根据调用类型路由到下面这三个模块执行相应的逻辑：
+
+    capture 组件负责跟踪与正在执行的事务相关的上下文信息。applier 组件负责在数据库上执行(应用)远程事务，其实就是读取relay log中数据进行回放。Recovery 组件管理数据库节点的分布式恢复相关的工作，以及负责在一个新的Server（joiner）加入集群时选择一个捐赠者(donor)，协调joiner节点的数据追赶的更新步骤（包括相关的数据回追，失败处理等），以及对选择捐赠者(donor)失败之后做出一些响应。简而言之就是管理组成员的recovery。
+
+继续沿着堆栈向下，复制协议模块包含复制协议中的一些特定逻辑。例如：处理冲突检测，并接收和传播事务到组中。
+
+MGR 插件体系结构的最后两层是组通信系统(GCS) API和基于paxos的组通信引擎(XCom)的实现。GCS API是一个高级API，它抽象了构建复制状态机所需的属性(详见"1、组复制的背景信息")。因此，它将消息层的实现与插件的其余上层组件解耦。组通信引擎处理与复制组成员之间的通信，主要提供基于Paxos协议的变体实现的数据一致性核心功能。
+
+本系列文章参考文献（后续文章将删除这部分内容）：
+
+    MySQL 官方手册：https://dev.mysql.com/doc/ref...MySQL High Availability Team：https://mysqlhighavailability...网易-温正湖-知乎专栏：https://zhuanlan.zhihu.com/p/...wzy0623-csdn博客-MySQL 8 复制系列文章：https://blog.csdn.net/wzy0623宋利兵：深入理解MySQL Group Replication

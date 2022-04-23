@@ -1,0 +1,62 @@
+#0  dict_index_too_big_for_tree (table=0x7f54589534d0, new_index=0x7f5458970df0, 
+    strict=true)
+    at /home/user/Repos/mysql-server/storage/innobase/dict/dict0dict.cc:2386
+#1  0x0000000001b9f82a in dict_index_add_to_cache_w_vcol (table=0x7f54589534d0, 
+    index=0x7f5458970700, add_v=0x0, page_no=4294967295, strict=1)
+    at /home/user/Repos/mysql-server/storage/innobase/dict/dict0dict.cc:2658
+#2  0x0000000001b913d5 in dict_create_index_step (thr=0x7f545896f0b8)
+    at /home/user/Repos/mysql-server/storage/innobase/dict/dict0crea.cc:1623
+#3  0x00000000019c4aeb in que_thr_step (thr=0x7f545896f0b8)
+    at /home/user/Repos/mysql-server/storage/innobase/que/que0que.cc:1063
+#4  0x00000000019c4c67 in que_run_threads_low (thr=0x7f545896f0b8)
+    at /home/user/Repos/mysql-server/storage/innobase/que/que0que.cc:1115
+#5  0x00000000019c4e1d in que_run_threads (thr=0x7f545896f0b8)
+    at /home/user/Repos/mysql-server/storage/innobase/que/que0que.cc:1155
+#6  0x0000000001a1b8e5 in row_create_index_for_mysql (index=0x7f5458970700, 
+    trx=0x7f55660b4d08, field_lengths=0x0, handler=0x0)
+    at /home/user/Repos/mysql-server/storage/innobase/row/row0mysql.cc:3230
+#7  0x00000000018e287b in create_clustered_index_when_no_primary (
+    trx=0x7f55660b4d08, flags=1, table_name=0x7f5564133850 "testdb/t4")
+    at /home/user/Repos/mysql-server/storage/innobase/handler/ha_innodb.cc:10567
+#8  0x00000000018cec40 in create_table_info_t::create_table (this=0x7f5564133730)
+    at /home/user/Repos/mysql-server/storage/innobase/handler/ha_innodb.cc:11848
+#9  0x00000000018cf7b3 in ha_innobase::create (this=0x7f545894e340, 
+    name=0x7f5564136250 "./testdb/t4", form=0x7f55641344f0, 
+    create_info=0x7f5564136b80)
+    at /home/user/Repos/mysql-server/storage/innobase/handler/ha_innodb.cc:12183
+#10 0x0000000000f36e46 in handler::ha_create (this=0x7f545894e340, 
+    name=0x7f5564136250 "./testdb/t4", form=0x7f55641344f0, info=0x7f5564136b80)
+    at /home/user/Repos/mysql-server/sql/handler.cc:4964
+#11 0x0000000000f37444 in ha_create_table (thd=0x7f545801bf10, 
+    path=0x7f5564136250 "./testdb/t4", db=0x7f54580128b0 "testdb", 
+    table_name=0x7f54580122f0 "t4", create_info=0x7f5564136b80, 
+    update_create_info=false, is_temp_table=false)
+    at /home/user/Repos/mysql-server/sql/handler.cc:5123
+#12 0x000000000164a98d in rea_create_table (thd=0x7f545801bf10, 
+    path=0x7f5564136250 "./testdb/t4", db=0x7f54580128b0 "testdb", 
+    table_name=0x7f54580122f0 "t4", create_info=0x7f5564136b80, create_fields=..., 
+    keys=0, key_info=0x7f5458955a48, file=0x7f5458955758, no_ha_table=false)
+---Type <return> to continue, or q <return> to quit---  
+    at /home/user/Repos/mysql-server/sql/unireg.cc:556
+#13 0x00000000015c9a41 in create_table_impl (thd=0x7f545801bf10, 
+    db=0x7f54580128b0 "testdb", table_name=0x7f54580122f0 "t4", 
+    error_table_name=0x7f54580122f0 "t4", path=0x7f5564136250 "./testdb/t4", 
+    create_info=0x7f5564136b80, alter_info=0x7f55641365f0, 
+    internal_tmp_table=false, select_field_count=0, no_ha_table=false, 
+    is_trans=0x7f55641364de, key_info=0x7f5564136460, key_count=0x7f556413645c)
+    at /home/user/Repos/mysql-server/sql/sql_table.cc:5289
+#14 0x00000000015c9fa5 in mysql_create_table_no_lock (thd=0x7f545801bf10, 
+    db=0x7f54580128b0 "testdb", table_name=0x7f54580122f0 "t4", 
+    create_info=0x7f5564136b80, alter_info=0x7f55641365f0, select_field_count=0, 
+    is_trans=0x7f55641364de) at /home/user/Repos/mysql-server/sql/sql_table.cc:5417
+#15 0x00000000015ca09b in mysql_create_table (thd=0x7f545801bf10, 
+    create_table=0x7f5458012328, create_info=0x7f5564136b80, 
+    alter_info=0x7f55641365f0)
+    at /home/user/Repos/mysql-server/sql/sql_table.cc:5463
+#16 0x000000000153c9ce in mysql_execute_command (thd=0x7f545801bf10, 
+    first_level=true) at /home/user/Repos/mysql-server/sql/sql_parse.cc:3249
+#17 0x0000000001543026 in mysql_parse (thd=0x7f545801bf10, 
+    parser_state=0x7f5564137690)
+    at /home/user/Repos/mysql-server/sql/sql_parse.cc:5582
+#18 0x0000000001538733 in dispatch_command (thd=0x7f545801bf10, 
+    com_data=0x7f5564137df0, command=COM_QUERY)

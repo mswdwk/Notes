@@ -1,0 +1,36 @@
+xcom_taskmain{
+	(fd = announce_tcp(listen_port)
+	task_new(tcp_server, int_arg(fd.val), "tcp_server", XCOM_THREAD_DEBUG);
+	task_new(tcp_reaper_task, null_arg, "tcp_reaper_task", XCOM_THREAD_DEBUG);
+	start_run_tasks();
+	task_loop();
+}
+
+int Gcs_xcom_proxy_impl::xcom_init(xcom_port xcom_listen_port)
+{
+  /* Init XCom */
+  ::xcom_fsm(xa_init, int_arg(0));                       /* Basic xcom init */
+
+  ::xcom_taskmain2(xcom_listen_port);
+
+  return 0;
+}
+
+static void *xcom_taskmain_startup(void *ptr)
+{
+  Gcs_xcom_control *gcs_ctrl= (Gcs_xcom_control *) ptr;
+  Gcs_xcom_proxy *proxy= gcs_ctrl->get_xcom_proxy();
+  xcom_port port= gcs_ctrl->get_local_member_info()->get_member_port();
+
+  proxy->xcom_init(port);
+
+  My_xp_thread_util::exit(0);
+/* purecov: begin deadcode */
+  return NULL;
+/* purecov: end */
+}
+
+
+enum_gcs_error Gcs_xcom_control::do_join(bool retry){
+	 m_view_control->end_join();
+}

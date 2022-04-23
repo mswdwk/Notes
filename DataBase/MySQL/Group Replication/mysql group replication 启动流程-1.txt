@@ -1,0 +1,54 @@
+
+
+#0  Applier_module::suspend_applier_module (this=0x7eff80033210) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/include/applier.h:570
+#1  0x00007effa031d84f in Applier_module::apply_action_packet (this=0x7eff80033210, action_packet=0x7effc0008780) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/applier.cc:237
+#2  0x00007effa031e122 in Applier_module::applier_thread_handle (this=0x7eff80033210) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/applier.cc:428
+#3  0x00007effa031cce2 in launch_handler_thread (arg=0x7eff80033210) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/applier.cc:29
+#4  0x0000000001ced500 in pfs_spawn_thread (arg=0x7eff80033e30) at /home/user/Repos/mysql-server/storage/perfschema/pfs.cc:2190
+#5  0x00007f00974fcdd5 in start_thread () from /lib64/libpthread.so.0
+#6  0x00007f00963c2ead in clone () from /lib64/libc.so.6
+
+initialize_plugin_and_join{
+	configure_and_start_applier_module{
+		Applier_module::initialize_applier_thread{
+			launch_handler_thread{
+				applier_thread_handle()
+			}
+		}
+	}
+}
+
+----------------add_suspension_packet----生成--------SUSPENSION_PACKET--类型的消息-
+
+Plugin_gcs_events_handler::handle_joining_members{
+	applier_module->add_suspension_packet();
+}
+
+#0  Plugin_gcs_events_handler::handle_joining_members (this=0x7eff8001a040, new_view=..., is_joining=true, is_leaving=false)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/gcs_event_handlers.cc:922
+#1  0x00007effa0333049 in Plugin_gcs_events_handler::on_view_changed (this=0x7eff8001a040, new_view=..., exchanged_data=std::vector of length 1, capacity 1 = {...})
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/src/gcs_event_handlers.cc:531
+#2  0x00007effa02ec429 in Gcs_xcom_control::install_view (this=0x7eff80031950, new_view_id=0x7effdc0082c0, group=..., states=0x7eff800318f0, total=0x7eff80031860, left=0x7eff80031890, join=0x7eff800318c0, 
+    error_code=Gcs_view::OK) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_control_interface.cc:1607
+#3  0x00007effa02ec074 in Gcs_xcom_control::process_control_message (this=0x7eff80031950, msg=0x7effdc007f70)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_control_interface.cc:1502
+#4  0x00007effa0313da4 in do_cb_xcom_receive_data (message_id=..., xcom_nodes=0x7effe40cff10, size=609, data=0x7effe40d08f0 "\001")
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_interface.cc:1230
+#5  0x00007effa0318e8b in Data_notification::do_execute (this=0x7effe40d0020) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:81
+#6  0x00007effa031b6a5 in Parameterized_notification<false>::operator() (this=0x7effe40d0020)
+    at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.h:229
+#7  0x00007effa03196ab in Gcs_xcom_engine::process (this=0x7eff80031460) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:209
+#8  0x00007effa03192b7 in process_notification_thread (ptr_object=0x7eff80031460) at /home/user/Repos/mysql-server/rapid/plugin/group_replication/libmysqlgcs/src/bindings/xcom/gcs_xcom_notification.cc:149
+#9  0x00007f00974fcdd5 in start_thread () from /lib64/libpthread.so.0
+#10 0x00007f00963c2ead in clone () from /lib64/libc.so.6
+
+
+
+------------------------------------------------------------------
+
+Sql_service_commands::internal_set_super_read_only (){
+	#ifndef NDEBUG          
+	log_message(MY_INFORMATION_LEVEL, "Setting super_read_only=ON.");
+	#endif
+}
+

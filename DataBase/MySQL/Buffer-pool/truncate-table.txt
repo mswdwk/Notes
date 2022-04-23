@@ -1,0 +1,107 @@
+truncate table
+
+drop table 
+
+
+SQLCOM_TRUNCATE,
+  SQLCOM_DROP_TABLE,
+  
+  Sql_cmd_truncate_table::handler_truncate{
+	open_and_lock_tables(thd, table_ref, flags)
+	fk_truncate_illegal_if_parent(thd, table_ref->table)
+	error= table_ref->table->file->ha_truncate(){
+		ha_innobase::truncate()
+		
+		/* Truncate the table in InnoDB */
+		err = row_truncate_table_for_mysql(m_prebuilt->table, m_prebuilt->trx){
+			/* Understanding the truncate flow.
+
+		Step-1: Perform intiial sanity check to ensure table can be truncated.
+		This would include check for tablespace discard status, ibd file
+		missing, etc ....
+
+		Step-2: Start transaction (only for non-temp table as temp-table don't
+		modify any data on disk doesn't need transaction object).
+
+		Step-3: Validate ownership of needed locks (Exclusive lock).
+		Ownership will also ensure there is no active SQL queries, INSERT,
+		SELECT, .....
+
+		Step-4: Stop all the background process associated with table.
+
+		Step-5: There are few foreign key related constraint under which
+		we can't truncate table (due to referential integrity unless it is
+		turned off). Ensure this condition is satisfied.
+
+		Step-6: Truncate operation can be rolled back in case of error
+		till some point. Associate rollback segment to record undo log.
+
+		Step-7: Generate new table-id.
+		Why we need new table-id ?
+		Purge and rollback case: we assign a new table id for the table.
+		Since purge and rollback look for the table based on the table id,
+		they see the table as 'dropped' and discard their operations.
+
+		Step-8: Log information about tablespace which includes
+		table and index information. If there is a crash in the next step
+		then during recovery we will attempt to fixup the operation.
+
+		Step-9: Drop all indexes (this include freeing of the pages
+		associated with them).
+
+		Step-10: Re-create new indexes.
+
+		Step-11: Update new table-id to in-memory cache (dictionary),
+		on-disk (INNODB_SYS_TABLES). INNODB_SYS_INDEXES also needs to
+		be updated to reflect updated root-page-no of new index created
+		and updated table-id.
+
+		Step-12: Cleanup Stage. Reset auto-inc value to 1.
+		Release all the locks.
+		Commit the transaction. Update trx operation state.
+
+		Notes:
+		- On error, log checkpoint is done followed writing of magic number to
+		truncate log file. If servers crashes after truncate, fix-up action
+		will not be applied.
+
+		- log checkpoint is done before starting truncate table to ensure
+		that previous REDO log entries are not applied if current truncate
+		crashes. Consider following use-case:
+		 - create table .... insert/load table .... truncate table (crash)
+		 - on restart table is restored .... truncate table (crash)
+		 - on restart (assuming default log checkpoint is not done) will have
+		   2 REDO log entries for same table. (Note 2 REDO log entries
+		   for different table is not an issue).
+		For system-tablespace we can't truncate the tablespace so we need
+		to initiate a local cleanup that involves dropping of indexes and
+		re-creating them. If we apply stale entry we might end-up issuing
+		drop on wrong indexes.
+
+		- Insert buffer: TRUNCATE TABLE is analogous to DROP TABLE,
+		so we do not have to remove insert buffer records, as the
+		insert buffer works at a low level. If a freed page is later
+		reallocated, the allocator will remove the ibuf entries for
+		it. When we prepare to truncate *.ibd files, we remove all entries
+		for the table in the insert buffer tree. This is not strictly
+		necessary, but we can free up some space in the system tablespace.
+
+		- Linear readahead and random readahead: we use the same
+		method as in 3) to discard ongoing operations. (This is only
+		relevant for TRUNCATE TABLE by TRUNCATE TABLESPACE.)
+		Ensure that the table will be dropped by trx_rollback_active() in
+		case of a crash.
+		*/
+		
+		// step 9
+		fil_reinit_space_header_for_table(table, space_size, trx){
+			buf_LRU_flush_or_remove_pages(id, BUF_REMOVE_ALL_NO_WRITE, 0);
+		}
+		dict_truncate_index_tree_in_mem{
+		
+		}
+		
+		}
+	}
+  
+  }

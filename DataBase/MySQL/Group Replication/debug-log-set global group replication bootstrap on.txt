@@ -1,0 +1,369 @@
+T@4: | | <vio_io_wait 805
+T@4: | <vio_read 136
+T@4: | THD::enter_stage: 'starting' /home/user/Repos/mysql-server/sql/conn_handler/socket_connection.cc:107
+T@4: | >PROFILING::status_change
+T@4: | <PROFILING::status_change 364
+T@4: | packet_header: Memory: 0x7efad4013d80  Bytes: (4)
+30 00 00 00 
+T@4: | >vio_read
+T@4: | <vio_read 136
+T@4: | info: Command on socket (56) = 3 (Query)
+T@4: | info: packet: ''; command: 3
+T@4: | >my_net_set_read_timeout
+T@4: | | enter: timeout: 30
+T@4: | | >vio_socket_timeout
+T@4: | | <vio_socket_timeout 322
+T@4: | <my_net_set_read_timeout 1046
+T@4: | >dispatch_command
+T@4: | | info: command: 3
+T@4: | | >PROFILING::start_new_query
+T@4: | | <PROFILING::start_new_query 393
+T@4: | | >Security_context::priv_user
+T@4: | | <Security_context::priv_user 236
+T@4: | | >Security_context::host_or_ip
+T@4: | | <Security_context::host_or_ip 148
+T@4: | | >mysql_audit_acquire_plugins
+T@4: | | <mysql_audit_acquire_plugins 1125
+T@4: | | >alloc_root
+T@4: | | | enter: root: 0x7efad400d360
+T@4: | | | exit: ptr: 0x7efad400f210
+T@4: | | <alloc_root 304
+T@4: | | >Security_context::priv_user
+T@4: | | <Security_context::priv_user 236
+T@4: | | >Security_context::host_or_ip
+T@4: | | <Security_context::host_or_ip 148
+T@4: | | query: SET GLOBAL group_replication_bootstrap_group=ON
+T@4: | | >PROFILING::set_query_source
+T@4: | | <PROFILING::set_query_source 520
+T@4: | | >alloc_root
+T@4: | | | enter: root: 0x7efad400d360
+T@4: | | | exit: ptr: 0x7efad400f240
+T@4: | | <alloc_root 304
+T@4: | | >mysql_parse
+T@4: | | | mysql_parse: query: 'SET GLOBAL group_replication_bootstrap_group=ON'
+T@4: | | | >mysql_reset_thd_for_next_command
+T@4: | | | | debug: reset_unsafe_rollback_flags
+T@4: | | | | >clear_error
+T@4: | | | | <clear_error 3417
+T@4: | | | | >reset_diagnostics_area
+T@4: | | | | <reset_diagnostics_area 371
+T@4: | | | | >reset_current_stmt_binlog_format_row
+T@4: | | | | | debug: temporary_tables: no, in_sub_stmt: no, system_thread: NON_SYSTEM_THREAD
+T@4: | | | | | >set_current_stmt_binlog_format_row
+T@4: | | | | | <set_current_stmt_binlog_format_row 3707
+T@4: | | | | <reset_current_stmt_binlog_format_row 3744
+T@4: | | | | >THD::set_trans_pos
+T@4: | | | | | return: m_trans_log_file: (null), m_trans_fixed_log_file: (null), m_trans_end_pos: 0
+T@4: | | | | <THD::set_trans_pos 2812
+T@4: | | | | debug: is_current_stmt_binlog_format_row(): 1
+T@4: | | | <mysql_reset_thd_for_next_command 5360
+T@4: | | | >lex_start
+T@4: | | | | >LEX::new_top_level_query
+T@4: | | | | | >LEX::new_query
+T@4: | | | | | | >alloc_root
+T@4: | | | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | | | exit: ptr: 0x7efad400f270
+T@4: | | | | | | <alloc_root 304
+T@4: | | | | | | >alloc_root
+T@4: | | | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | | | exit: ptr: 0x7efad400f558
+T@4: | | | | | | <alloc_root 304
+T@4: | | | | | | >alloc_root
+T@4: | | | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | | | exit: ptr: 0x7efad400fb90
+T@4: | | | | | | <alloc_root 304
+T@4: | | | | | <LEX::new_query 640
+T@4: | | | | <LEX::new_top_level_query 746
+T@4: | | | <lex_start 511
+T@4: | | | >reset_diagnostics_area
+T@4: | | | <reset_diagnostics_area 371
+T@4: | | | >free_root
+T@4: | | | | enter: root: 0x7efad400d990  flags: 0
+T@4: | | | <free_root 477
+T@4: | | | >mysql_audit_acquire_plugins
+T@4: | | | <mysql_audit_acquire_plugins 1125
+T@4: | | | >Query_cache::send_result_to_client
+T@4: | | | <Query_cache::send_result_to_client 1941
+T@4: | | | >parse_sql
+T@4: | | | | >alloc_root
+T@4: | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | exit: ptr: 0x7efad400fba0
+T@4: | | | | <alloc_root 304
+T@4: | | | | >convert_string
+T@4: | | | | | >alloc_root
+T@4: | | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | | exit: ptr: 0x7efad400fbc8
+T@4: | | | | | <alloc_root 304
+T@4: | | | | <convert_string 2426
+T@4: | | | | >alloc_root
+T@4: | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | exit: ptr: 0x7efad400fc30
+T@4: | | | | <alloc_root 304
+T@4: | | | | >alloc_root
+T@4: | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | exit: ptr: 0x7efad400fc68
+T@4: | | | | <alloc_root 304
+T@4: | | | | >alloc_root
+T@4: | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | exit: ptr: 0x7efad400fd10
+T@4: | | | | <alloc_root 304
+T@4: | | | | >alloc_root
+T@4: | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | exit: ptr: 0x7efad400fd18
+T@4: | | | | <alloc_root 304
+T@4: | | | | >alloc_root
+T@4: | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | exit: ptr: 0x7efad400fd58
+T@4: | | | | <alloc_root 304
+T@4: | | | | >alloc_root
+T@4: | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | exit: ptr: 0x7efad400fd98
+T@4: | | | | <alloc_root 304
+T@4: | | | | >alloc_root
+T@4: | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | exit: ptr: 0x7efad400fdb0
+T@4: | | | | <alloc_root 304
+T@4: | | | | >find_sys_var_ex
+T@4: | | | | | >my_hash_first_from_hash_value
+T@4: | | | | | | exit: found key at 246
+T@4: | | | | | <my_hash_first_from_hash_value 319
+T@4: | | | | | >intern_plugin_lock
+T@4: | | | | | | >my_raw_malloc
+T@4: | | | | | | | my: size: 40  my_flags: 16
+T@4: | | | | | | | exit: ptr: 0x7efad40114e0
+T@4: | | | | | | <my_raw_malloc 219
+T@4: | | | | | | info: thd: 0x7efad400a630, plugin: "group_replication", ref_count: 1
+T@4: | | | | | <intern_plugin_lock 865
+T@4: | | | | <find_sys_var_ex 2890
+T@4: | | | | >alloc_root
+T@4: | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | exit: ptr: 0x7efad400fde8
+T@4: | | | | <alloc_root 304
+T@4: | | | | >alloc_root
+T@4: | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | exit: ptr: 0x7efad400fe28
+T@4: | | | | <alloc_root 304
+T@4: | | | <parse_sql 7229
+T@4: | | | >reset_diagnostics_area
+T@4: | | | <reset_diagnostics_area 371
+T@4: | | | >free_root
+T@4: | | | | enter: root: 0x7efad400d990  flags: 0
+T@4: | | | <free_root 477
+T@4: | | | >mysql_audit_acquire_plugins
+T@4: | | | <mysql_audit_acquire_plugins 1125
+T@4: | | | >mysql_audit_acquire_plugins
+T@4: | | | <mysql_audit_acquire_plugins 1125
+T@4: | | | >Security_context::priv_user
+T@4: | | | <Security_context::priv_user 236
+T@4: | | | >Security_context::host_or_ip
+T@4: | | | <Security_context::host_or_ip 148
+T@4: | | | >mysql_execute_command
+T@4: | | | | >reset_diagnostics_area
+T@4: | | | | <reset_diagnostics_area 371
+T@4: | | | | >free_root
+T@4: | | | | | enter: root: 0x7efad400d3c0  flags: 0
+T@4: | | | | <free_root 477
+T@4: | | | | >deny_updates_if_read_only_option
+T@4: | | | | | >check_readonly
+T@4: | | | | | <check_readonly 496
+T@4: | | | | <deny_updates_if_read_only_option 1031
+T@4: | | | | >opt_trace_start
+T@4: | | | | | >Opt_trace_context::start
+T@4: | | | | | | opt: new stmt 0x7efad4018880 support_I_S 0
+T@4: | | | | | | >Opt_trace_context::purge_stmts
+T@4: | | | | | | <Opt_trace_context::purge_stmts 1239
+T@4: | | | | | | opt: rc 16384 max_mem_size 16384
+T@4: | | | | | <Opt_trace_context::start 1082
+T@4: | | | | | >opt_trace_disable_if_no_tables_access
+T@4: | | | | | <opt_trace_disable_if_no_tables_access 441
+T@4: | | | | <opt_trace_start 223
+T@4: | | | | opt: (null): starting struct
+T@4: | | | | opt: steps: starting struct
+T@4: | | | | >gtid_pre_statement_checks
+T@4: | | | | | info: gtid_next->type=0 owned_gtid.{sidno,gno}={0,0}
+T@4: | | | | | >stmt_causes_implicit_commit
+T@4: | | | | | <stmt_causes_implicit_commit 265
+T@4: | | | | <gtid_pre_statement_checks 484
+T@4: | | | | >stmt_causes_implicit_commit
+T@4: | | | | <stmt_causes_implicit_commit 265
+T@4: | | | | >gtid_pre_statement_post_implicit_commit_checks
+T@4: | | | | | >THD::is_ddl_gtid_compatible
+T@4: | | | | | | info: SQLCOM_CREATE:0 CREATE-TMP:0 SELECT:0 SQLCOM_DROP:0 DROP-TMP:0 trx:0
+T@4: | | | | | <THD::is_ddl_gtid_compatible 11030
+T@4: | | | | <gtid_pre_statement_post_implicit_commit_checks 597
+T@4: | | | | >mysql_audit_acquire_plugins
+T@4: | | | | <mysql_audit_acquire_plugins 1125
+T@4: | | | | >open_temporary_tables
+T@4: | | | | <open_temporary_tables 7164
+T@4: | | | | >check_grant
+T@4: | | | | <check_grant 2199
+T@4: | | | | >open_and_lock_tables
+T@4: | | | | | >open_tables
+T@4: | | | | | | THD::enter_stage: 'Opening tables' /home/user/Repos/mysql-server/sql/sql_base.cc:5686
+T@4: | | | | | | >PROFILING::status_change
+T@4: | | | | | | <PROFILING::status_change 364
+T@4: | | | | | | >my_hash_free
+T@4: | | | | | | | enter: hash: 0x7efb583bcfb0
+T@4: | | | | | | <my_hash_free 185
+T@4: | | | | | | >my_hash_free
+T@4: | | | | | | | enter: hash: 0x7efb583bd090
+T@4: | | | | | | <my_hash_free 185
+T@4: | | | | | | open_tables: returning: 0
+T@4: | | | | | <open_tables 5958
+T@4: | | | | | >lock_tables
+T@4: | | | | | | >THD::decide_logging_format
+T@4: | | | | | | | info: query: SET GLOBAL group_replication_bootstrap_group=ON
+T@4: | | | | | | | info: variables.binlog_format: 2
+T@4: | | | | | | | >get_stmt_unsafe_flags
+T@4: | | | | | | | <get_stmt_unsafe_flags 2178
+T@4: | | | | | | | info: lex->get_stmt_unsafe_flags(): 0x0
+T@4: | | | | | | | debug: prelocked_mode: LTM_NONE
+T@4: | | | | | | | info: flags_write_all_set: 0xc00000000
+T@4: | | | | | | | info: flags_write_some_set: 0x0
+T@4: | | | | | | | info: flags_access_some_set: 0x0
+T@4: | | | | | | | info: multi_write_engine: 0
+T@4: | | | | | | | info: multi_access_engine: 0
+T@4: | | | | | | | >LEX::stmt_accessed_table
+T@4: | | | | | | | <LEX::stmt_accessed_table 2349
+T@4: | | | | | | | >LEX::stmt_accessed_table
+T@4: | | | | | | | <LEX::stmt_accessed_table 2349
+T@4: | | | | | | | >get_stmt_unsafe_flags
+T@4: | | | | | | | <get_stmt_unsafe_flags 2178
+T@4: | | | | | | | >THD::is_dml_gtid_compatible(bool, bool, bool)
+T@4: | | | | | | | | info: some_non_transactional_table=0 some_transactional_table=0 trans_has_updated_trans_table=0 non_transactional_tables_are_tmp=0 is_current_stmt_binlog_format_row=1
+T@4: | | | | | | | <THD::is_dml_gtid_compatible(bool, bool, bool) 11084
+T@4: | | | | | | | info: decision: logging in ROW format
+T@4: | | | | | | <THD::decide_logging_format 10872
+T@4: | | | | | <lock_tables 6639
+T@4: | | | | <open_and_lock_tables 6488
+T@4: | | | | >sql_set_variables
+T@4: | | | | | >set_var::check
+T@4: | | | | | | >check_global_access
+T@4: | | | | | | <check_global_access 4326
+T@4: | | | | | | >alloc_root
+T@4: | | | | | | | enter: root: 0x7efad400d360
+T@4: | | | | | | | exit: ptr: 0x7efad400fe38
+T@4: | | | | | | <alloc_root 304
+T@4: | | | | | | >mysql_audit_acquire_plugins
+T@4: | | | | | | <mysql_audit_acquire_plugins 1125
+T@4: | | | | | <set_var::check 775
+T@4: | | | | <sql_set_variables 667
+T@4: | | | | >set_ok_status
+T@4: | | | | <set_ok_status 396
+T@4: | | | | THD::enter_stage: 'query end' /home/user/Repos/mysql-server/sql/sql_parse.cc:4965
+T@4: | | | | >PROFILING::status_change
+T@4: | | | | <PROFILING::status_change 364
+T@4: | | | | >mysql_audit_acquire_plugins
+T@4: | | | | <mysql_audit_acquire_plugins 1125
+T@4: | | | | >trans_commit_stmt
+T@4: | | | | | debug: add_unsafe_rollback_flags: 0
+T@4: | | | | | >MYSQL_BIN_LOG::commit
+T@4: | | | | | | info: query='SET GLOBAL group_replication_bootstrap_group=ON'
+T@4: | | | | | | enter: thd: 0x7efad400a630, all: no, xid: 0, cache_mngr: 0x0
+T@4: | | | | | | >ha_commit_low
+T@4: | | | | | | <ha_commit_low 1939
+T@4: | | | | | <MYSQL_BIN_LOG::commit 8416
+T@4: | | | | | >Rpl_consistency_ctx::notify_after_transaction_commit
+T@4: | | | | | <Rpl_consistency_ctx::notify_after_transaction_commit 64
+T@4: | | | | | debug: reset_unsafe_rollback_flags
+T@4: | | | | <trans_commit_stmt 474
+T@4: | | | | >st_select_lex_unit::cleanup
+T@4: | | | | | >st_select_lex::cleanup()
+T@4: | | | | | <st_select_lex::cleanup() 1092
+T@4: | | | | <st_select_lex_unit::cleanup 944
+T@4: | | | | THD::enter_stage: 'closing tables' /home/user/Repos/mysql-server/sql/sql_parse.cc:5017
+T@4: | | | | >PROFILING::status_change
+T@4: | | | | <PROFILING::status_change 364
+T@4: | | | | >close_thread_tables
+T@4: | | | | <close_thread_tables 1724
+T@4: | | | | >stmt_causes_implicit_commit
+T@4: | | | | <stmt_causes_implicit_commit 265
+T@4: | | | | >MDL_context::release_transactional_locks
+T@4: | | | | | >MDL_context::release_locks_stored_before
+T@4: | | | | | <MDL_context::release_locks_stored_before 4439
+T@4: | | | | | >MDL_context::release_locks_stored_before
+T@4: | | | | | <MDL_context::release_locks_stored_before 4439
+T@4: | | | | <MDL_context::release_transactional_locks 4718
+T@4: | | | | >binlog_gtid_end_transaction
+T@4: | | | | | >stmt_causes_implicit_commit
+T@4: | | | | | <stmt_causes_implicit_commit 265
+T@4: | | | | <binlog_gtid_end_transaction 2394
+T@4: | | | <mysql_execute_command 5106
+T@4: | | | opt: steps: ending struct
+T@4: | | | opt: (null): ending struct
+T@4: | | | >~opt_trace_start
+T@4: | | | | >my_raw_malloc
+T@4: | | | | | my: size: 40  my_flags: 16
+T@4: | | | | | exit: ptr: 0x7efad4018a20
+T@4: | | | | <my_raw_malloc 219
+Complete optimizer trace:
+T@4: | | | | >Opt_trace_context::purge_stmts
+T@4: | | | | | >my_free
+T@4: | | | | | | my: ptr: 0x7efad4018a20
+T@4: | | | | | <my_free 292
+T@4: | | | | <Opt_trace_context::purge_stmts 1239
+T@4: | | | <~opt_trace_start 232
+T@4: | | | THD::enter_stage: 'freeing items' /home/user/Repos/mysql-server/sql/sql_parse.cc:5622
+T@4: | | | >PROFILING::status_change
+T@4: | | | <PROFILING::status_change 364
+T@4: | | | >lex_end
+T@4: | | | | enter: lex: 0x7efad400c948
+T@4: | | | | >plugin_unlock_list
+T@4: | | | | | >intern_plugin_unlock
+T@4: | | | | | | >my_free
+T@4: | | | | | | | my: ptr: 0x7efad40114e0
+T@4: | | | | | | <my_free 292
+T@4: | | | | | | info: unlocking plugin, name= group_replication, ref_count= 1
+T@4: | | | | | <intern_plugin_unlock 1169
+T@4: | | | | <plugin_unlock_list 1210
+T@4: | | | <lex_end 534
+T@4: | | | >Query_arena::free_items
+T@4: | | | <Query_arena::free_items 3399
+T@4: | | <mysql_parse 5647
+T@4: | | info: query ready
+T@4: | | >send_statement_status
+T@4: | | | >Protocol_classic::send_ok
+T@4: | | | | >net_send_ok
+T@4: | | | | | info: affected_rows: 0  id: 0  status: 2  warning_count: 0
+T@4: | | | | | packet_header: Memory: 0x7efb583be150  Bytes: (4)
+07 00 00 01 
+T@4: | | | | | >net_flush
+T@4: | | | | | | >net_write_packet
+T@4: | | | | | | | >Query_cache::insert
+T@4: | | | | | | | <Query_cache::insert 959
+T@4: | | | | | | | >vio_write
+T@4: | | | | | | | <vio_write 214
+T@4: | | | | | | <net_write_packet 648
+T@4: | | | | | <net_flush 228
+T@4: | | | | | info: OK sent, so no more error sending allowed
+T@4: | | | | <net_send_ok 374
+T@4: | | | <Protocol_classic::send_ok 644
+T@4: | | <send_statement_status 4729
+T@4: | | >Rpl_consistency_ctx::notify_after_response_packet
+T@4: | | <Rpl_consistency_ctx::notify_after_response_packet 147
+T@4: | | >Query_cache::end_of_result
+T@4: | | <Query_cache::end_of_result 1056
+T@4: | | >mysql_audit_acquire_plugins
+T@4: | | <mysql_audit_acquire_plugins 1125
+T@4: | | >mysql_audit_acquire_plugins
+T@4: | | <mysql_audit_acquire_plugins 1125
+T@4: | | >mysql_audit_acquire_plugins
+T@4: | | <mysql_audit_acquire_plugins 1125
+T@4: | | >log_slow_applicable
+T@4: | | <log_slow_applicable 1707
+T@4: | | THD::enter_stage: 'cleaning up' /home/user/Repos/mysql-server/sql/sql_parse.cc:1898
+T@4: | | >PROFILING::status_change
+T@4: | | <PROFILING::status_change 364
+T@4: | | >my_raw_malloc
+T@4: | | | my: size: 72  my_flags: 16
+T@4: | | | exit: ptr: 0x7efad4018880
+T@4: | | <my_raw_malloc 219
+T@4: | | >free_root
+T@4: | | | enter: root: 0x7efad400d360  flags: 1
+T@4: | | <free_root 477
+T@4: | | >PROFILING::finish_current_profile
+T@4: | | <PROFILING::finish_current_profile 450
+T@4: | <dispatch_command 1928
+T@4: <do_command 1007
+T@4: >do_command
+T@4: | >clea^C

@@ -1,0 +1,15 @@
+### on primary instance , execute drop database test_db_1. then the not primary instance failed.
+### 
+
+2021-06-10T09:54:44.414388Z 16 [Note] 'CHANGE MASTER TO FOR CHANNEL 'group_replication_recovery' executed'. Previous state master_host='node1', master_port= 3310, master_log_file='', master_log_pos= 4, master_bind=''. New state master_host='<NULL>', master_port= 0, master_log_file='', master_log_pos= 4, master_bind=''.
+2021-06-10T09:54:44.420850Z 0 [Note] Plugin group_replication reported: 'This server was declared online within the replication group'
+2021-06-10T09:55:44.787895Z 10 [Note] Plugin group_replication reported: 'Primary had applied all relay logs, disabled conflict detection'
+2021-06-10T09:56:31.922603Z 13 [ERROR] Slave SQL for channel 'group_replication_applier': Error 'Can't drop database 'test_db_1'; database doesn't exist' on query. Default database: 'test_db_1'. Query: 'drop database test_db_1', Error_code: 1008
+2021-06-10T09:56:31.922632Z 13 [Warning] Slave: Can't drop database 'test_db_1'; database doesn't exist Error_code: 1008
+2021-06-10T09:56:31.922637Z 13 [ERROR] Error running query, slave SQL thread aborted. Fix the problem, and restart the slave SQL thread with "SLAVE START". We stopped at log 'FIRST' position 79
+2021-06-10T09:56:31.922647Z 13 [ERROR] Plugin group_replication reported: 'The applier thread execution was aborted. Unable to process more transactions, this member will now leave the group.'
+2021-06-10T09:56:31.922965Z 10 [ERROR] Plugin group_replication reported: 'Fatal error during execution on the Applier process of Group Replication. The server will now leave the group.'
+2021-06-10T09:56:31.923026Z 10 [ERROR] Plugin group_replication reported: 'The server was automatically set into read only mode after an error was detected.'
+2021-06-10T09:56:31.923592Z 10 [Note] Plugin group_replication reported: 'The group replication applier thread was killed'
+2021-06-10T09:56:35.324706Z 0 [Note] Plugin group_replication reported: 'Group membership changed: This member has left the group.'
+
