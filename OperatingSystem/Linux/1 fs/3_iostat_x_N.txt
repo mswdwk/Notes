@@ -1,0 +1,3 @@
+# (-N) Display the registered device mapper names for any device mapper devices.  Useful for viewing LVM2 statistics.
+# print io detail per second 
+iostat -Nx 1
