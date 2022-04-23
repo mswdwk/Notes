@@ -1,0 +1,48 @@
+warning:
+	"page_cleaner: 1000ms intended loop took 33000ms. The settings might not be optimal. (flushed= 479 and evicted=0 during the time.)"
+	
+ib::info() << "page_cleaner: 1000ms"
+						" intended loop took "
+						<< 1000 + curr_time
+						   - next_loop_time
+						<< "ms. The settings might not"
+						" be optimal. (flushed="
+						<< n_flushed_last
+						<< " and evicted="
+						<< n_evicted
+						<< ", during the time.)";
+                  
+// page_cleaner thread
+buf_flush_page_cleaner_coordinator{
+   pc_flush_slot{
+      buf_flush_LRU_list{
+         buf_flush_do_batch{
+            buf_flush_batch{
+               buf_do_LRU_batch{
+                  buf_flush_LRU_list_batch{
+                     buf_flush_page_and_try_neighbors{
+                        buf_flush_try_neighbors{
+                           buf_flush_page{
+                              buf_dblwr_sync_datafiles{
+                                 fil_flush_file_spaces{
+                                    fil_flush{
+                                       os_file_flush{
+                                          os_file_flush_pfs{
+                                             os_file_flush_func{
+                                                os_file_fsync_posix -> fsync(file)
+                                             }
+                                          }
+                                       }
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}
