@@ -1,0 +1,42 @@
+# method 1: install from source
+## download nginx source codes
+wget http://nginx.org/download/nginx-1.20.2.tar.gz
+## complile & install nginx
+```
+tar -zxvf nginx-1.20.2.tar.gz
+cd nginx-1.20.2
+./configure  --with-http_ssl_module
+make -j 8
+sudo make install 
+```
+
+# method 2: install from yum . 
+
+
+# config https
+```nginx.conf
+# HTTPS server
+    
+    server {
+        listen       443 ssl;
+        server_name  localhost;
+
+        ssl_certificate      /usr/local/nginx/ca/server.crt; #cert.pem;
+        ssl_certificate_key  /usr/local/nginx/ca/server_unsecure.key; # no encrypt by a password
+
+        ssl_session_cache    shared:SSL:1m;
+        ssl_session_timeout  5m;
+
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers  on;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+    }
+```
+# reload config
+
+nginx -t
+nginx -s reload

@@ -1,0 +1,27 @@
+# [openssl生成自签名证书流程](https://blog.csdn.net/never_late/article/details/124313210)
+# 1 create virtaul CA key & crt
+## 1-1 create a virtual CA key
+#[create, must input some password]
+openssl genrsa -des3 -out ca.key 1024 
+#[optional,decrypt ,delete password]
+openssl genrsa -in ca.key -out ca.key 
+## 1-2 create virtual CA crt
+openssl req -new -x509 -key ca.key -out ca.crt -days 365 
+
+# 2 create WEB key & crt 
+## 2-1 create a web CA key
+#[create, must input some password]
+openssl genrsa -des3 -out server.key 2048 
+## 2-2 create self web ca request file
+openssl req -new -key server.key -out server.csr 
+## 2-3 create web crt with signature
+openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out server.crt  -days 365 
+
+# 3 note 
+server private key is server.key
+server public key is server.crt
+
+# 4 nginx error 'bad password read error'
+[decrytp server.key,input the password]
+openssl rsa -in server.key -out server_unsecure.key
+#use server_unsecure.key in your file nginx.conf 
