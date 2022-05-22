@@ -14,3 +14,6 @@ origin	git@gitaddr2.com:user/repo1.git (push)
 ```
 # reference
 https://blog.csdn.net/s_156/article/details/120975674
+
+# pull from given url
+git pull https://gitaddr2.com/user/repo1
