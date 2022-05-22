@@ -1,0 +1,16 @@
+# add two origin remote urls , 
+```
+git remote set-url --add origin git@gitaddr1.com:user1/repo1.git
+git remote set-url --add origin git@gitaddr2.com:user1/repo1.git
+```
+# display multi remotes, then you can see at least two push urls
+```
+[u@h] git remote -v
+origin	git@gitaddr1.com:user/repo1.git (fetch)
+origin	git@gitaddr1.com:user/repo1.git (push)
+origin	git@gitaddr2.com:user/repo1.git (push)
+[u@h]
+
+```
+# reference
+https://blog.csdn.net/s_156/article/details/120975674
