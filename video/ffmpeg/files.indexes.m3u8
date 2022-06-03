@@ -1,0 +1,13 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:10
+#EXT-X-MEDIA-SEQUENCE:0
+#EXTINF:10.000000,
+https://yyy.xxx.com/xxx/yyy.ts?start=0&end=1234567&type=mpegts
+#EXTINF:10.000000,
+https://yyy.xxx.com/xxx/yyy.ts?start=1234567&end=2345678&type=mpegts
+#EXTINF:10.000000,
+https://yyy.xxx.com/xxx/yyy.ts?start=2345678&end=3456789&type=mpegts
+#EXTINF:10.000000,
+https://yyy.xxx.com/xxx/yyy.ts?start=3456789&end=4567890&type=mpegts
+#EXT-X-ENDLIST

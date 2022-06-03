@@ -1,0 +1,3 @@
+# 利用ffmepg下载在线视频文件 
+# https://blog.csdn.net/Brother_PIN/article/details/106824493
+ffmpeg -protocol_whitelist "file,https,crypto,tcp,http,tls" -i files.indexes.m3u8 -c copy out.mp4
