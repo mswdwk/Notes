@@ -1,20 +1,28 @@
+USER=user
+INSTALL_DIR_NAME=mysql5722
+MYSQL_PORT=3310
+MAX_UNDO_LOG_SIZE=512M
+SERVER_ID=1
+#cat < my.cnf.default > my.cnf1
+#DOC_CONT=$(cat my.cnf.default)
+cat <<EOF > my.cnf
 [general]
 instance_num = 1
 [mysqld]
 bind_address=0.0.0.0
-port=3310
+port=$MYSQL_PORT
 sync_binlog=1
 innodb_flush_log_at_trx_commit=1
 transaction_isolation=READ-COMMITTED
 slow_query_log=on
 long_query_time=0.6
-basedir=/home/user/mysql5722
-datadir=/home/user/mysql5722/data/data
+basedir=/home/$USER/$INSTALL_DIR_NAME
+datadir=/home/$USER/$INSTALL_DIR_NAME/data/data
 innodb_data_file_path=ibdata1:300M:autoextend
-innodb_data_home_dir=/home/user/mysql5722/data/data
-innodb_undo_directory=/home/user/mysql5722/data/undo
-innodb_max_undo_log_size=512M
-innodb_log_group_home_dir=/home/user/mysql5722/data/redo
+innodb_data_home_dir=/home/$USER/$INSTALL_DIR_NAME/data/data
+innodb_undo_directory=/home/$USER/$INSTALL_DIR_NAME/data/undo
+innodb_max_undo_log_size=$MAX_UNDO_LOG_SIZE
+innodb_log_group_home_dir=/home/$USER/$INSTALL_DIR_NAME/data/redo
 innodb_lock_wait_timeout=10
 innodb_print_all_deadlocks=ON
 innodb_write_io_threads=8
@@ -30,19 +38,21 @@ log-bin=../binlog/mysql-bin
 binlog_format=ROW
 max_binlog_size=104857600
 relay-log=../relaylog/relay-bin
-log-error=/home/user/mysql5722/log/mysqld1.log
-pid-file=/home/user/mysql5722/mysqld1.pid
-tmpdir=/home/user/mysql5722/data/tmp
-socket=/home/user/mysql5722/bin/mysql1.sock
-server_id=1
+log-error=/home/$USER/$INSTALL_DIR_NAME/log/mysqld1.log
+pid-file=/home/$USER/$INSTALL_DIR_NAME/mysqld1.pid
+tmpdir=/home/$USER/$INSTALL_DIR_NAME/data/tmp
+socket=/home/$USER/$INSTALL_DIR_NAME/bin/mysql1.sock
+server_id=$SERVER_ID
 gtid_mode=on
 enforce_gtid_consistency=on
-#defaults_file=/home/user/mysql5722/etc/my.cnf
+#defaults_file=/home/$USER/$INSTALL_DIR_NAME/etc/my.cnf
 
 binlog_ignore_db=sys, mysql,performance_schema,information_schema ;日志记录忽略那些数据库的
 #binlog_do_db = testdb
 expire_logs_days=3
 
 [client]
-socket=/home/user/mysql5722/bin/mysql1.sock
-port=3310
+socket=/home/$USER/$INSTALL_DIR_NAME/bin/mysql1.sock
+port=$MYSQL_PORT
+EOF
+
