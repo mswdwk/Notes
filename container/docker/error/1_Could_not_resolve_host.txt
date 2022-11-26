@@ -1,0 +1,26 @@
+[Could not resolve host解决方法](https://www.cnblogs.com/testopsfeng/p/15181494.html)
+
+
+1) 查看docker接口，一般为docker0
+route 
+
+2) 添加接口信任
+sudo firewall-cmd --permanent --zone=trusted --add-interface=docker0
+sudo firewall-cmd --reload
+
+3) # 添加允许ip地址伪装
+sudo firewall-cmd --add-masquerade --permanent
+sudo firewall-cmd --reload
+
+4) # 开启端口转发功能
+修改/etc/sysctl.conf的net.ipv4.ip_forwar为1：
+# 如没有字段：
+echo 'net.ipv4.ip_forward = 1' >> /etc/sysctl.conf
+# 如有字段：
+sed -i 's#net.ipv4.ip_forward = 0#net.ipv4.ip_forward = 1#g' /etc/sysctl.conf
+
+5) # 然后使得配置生效：
+sysctl -p 
+
+6) # 检查
+cat /proc/sys/net/ipv4/ip_forward # 返回1则成功
