@@ -1,0 +1,26 @@
+{
+    "terminal.integrated.profiles.windows": {
+    
+
+        "PowerShell": {
+            "source": "PowerShell",
+            "icon": "terminal-powershell"
+        },
+        "Command Prompt": {
+            "path": [
+                "${env:windir}\\Sysnative\\cmd.exe",
+                "${env:windir}\\System32\\cmd.exe"
+            ],
+            "args": [],
+            "icon": "terminal-cmd"
+        },
+        "Git Bash": {
+            "source": "Git Bash"
+        },
+        "msys2-mingw64":{
+            "path":"cmd.exe",
+            "args": ["/c","D:\\msys64\\msys2_shell.cmd -defterm -mingw64 -no-start -here"]
+        }
+     },
+	"terminal.integrated.defaultProfile.windows": "msys2-mingw64"
+}
