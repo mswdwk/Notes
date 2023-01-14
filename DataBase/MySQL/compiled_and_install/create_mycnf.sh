@@ -1,8 +1,4 @@
-USER=user
-INSTALL_DIR_NAME=mysql5722
-MYSQL_PORT=3310
-MAX_UNDO_LOG_SIZE=512M
-SERVER_ID=1
+source  ./install.conf.sh
 #cat < my.cnf.default > my.cnf1
 #DOC_CONT=$(cat my.cnf.default)
 cat <<EOF > my.cnf
@@ -56,3 +52,4 @@ socket=/home/$USER/$INSTALL_DIR_NAME/bin/mysql1.sock
 port=$MYSQL_PORT
 EOF
 
+cp my.cnf $BASEDIR/etc

@@ -1,6 +1,8 @@
 # config
 echo "`date` start config"
-export BASEDIR=/home/user/mysql5722
+. ./install.conf.sh
+#echo "name=$INSTALL_DIR_NAME"
+#exit 0
 
 #init dir
 
@@ -16,7 +18,7 @@ mkdir -p $BASEDIR/etc
 #init my.cnf
 echo "`date` start init my.cnf"
 sh create_mycnf.sh
-exit 0
+
 #init db
 echo "`date` start init database"
 $BASEDIR/bin/mysqld --defaults-file=$BASEDIR/etc/my.cnf --initialize-insecure
