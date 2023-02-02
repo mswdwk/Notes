@@ -1,0 +1,68 @@
+sql_yacc.yy
+
+lex->prepared_stmt_name= to_lex_cstring($2);
+
+prepare_src:
+          TEXT_STRING_sys
+          {
+            THD *thd= YYTHD;
+            LEX *lex= thd->lex;
+            lex->prepared_stmt_code= $1;
+            lex->prepared_stmt_code_is_varref= FALSE;
+          }
+          
+          
+sql_prepare.cc
+
+ parser_state.m_lip.stmt_prepare_mode= TRUE;
+ 
+# 3 mysqld_stmt_prepare {
+   Prepared_statement::prepare{
+   
+      parser_state.init(thd, thd->query().str, thd->query().length);
+      parser_state.m_lip.stmt_prepare_mode= TRUE;
+      
+      thd->m_parser_state = &parser_state;
+      invoke_pre_parse_rewrite_plugins(thd);
+      thd->m_parser_state = NULL;
+  
+      parse_sql(thd, &parser_state, NULL) ;
+      
+      invoke_post_parse_rewrite_plugins(thd, true);
+      error = init_param_array(this);
+   }
+}
+
+# 4 lex_one_token
+
+lip->start_token();
+  state=lip->next_state;
+  lip->next_state=MY_LEX_OPERATOR_OR_IDENT;
+  for (;;)
+  {
+   case MY_LEX_OPERATOR_OR_IDENT:	// Next is operator or keyword
+   case MY_LEX_START:			// Start of token
+      // Skip starting whitespace
+      while(state_map[c= lip->yyPeek()] == MY_LEX_SKIP)
+      {
+	if (c == '\n')
+	  lip->yylineno++;
+
+        lip->yySkip();
+      }
+
+      /* Start of real token */
+      lip->restart_token();
+      c= lip->yyGet();
+      state= state_map[c];
+      break;
+case MY_LEX_SKIP:
+if (c == '?' && lip->stmt_prepare_mode && !ident_map[lip->yyPeek()])
+        return(PARAM_MARKER);
+        
+   }
+   
+# 5 init_state_maps
+
+# 6 MYSQLparse
+# 7 MYSQLlex
