@@ -9,12 +9,12 @@ bootstrapTokens:
   - authentication
 kind: InitConfiguration
 localAPIEndpoint:
-  advertiseAddress: 192.168.79.132
+  advertiseAddress: 192.168.79.133
   bindPort: 6443
 nodeRegistration:
   criSocket: unix:///var/run/containerd/containerd.sock
-  imagePullPolicy: Never 
-  name: node1
+  imagePullPolicy: IfNotPresent #Never 
+  name: node2
   taints: null
 ---
 apiServer:
