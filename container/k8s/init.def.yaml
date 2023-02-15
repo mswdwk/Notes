@@ -9,13 +9,12 @@ bootstrapTokens:
   - authentication
 kind: InitConfiguration
 localAPIEndpoint:
-  advertiseAddress: 192.168.79.133
+  advertiseAddress: 192.168.79.134
   bindPort: 6443
 nodeRegistration:
-  criSocket: unix:///var/run/containerd/containerd.sock
-  #imagePullPolicy: IfNotPresent
-  imagePullPolicy: Never
-  name: node2
+  criSocket: unix:///run/containerd/containerd.sock
+  imagePullPolicy: IfNotPresent
+  name: node3
   taints: null
 ---
 apiServer:
@@ -30,12 +29,11 @@ etcd:
     dataDir: /var/lib/etcd
 #imageRepository: registry.k8s.io
 imageRepository: registry.aliyuncs.com/google_containers
-#imageRepository: registry.aliyuncs.com
 kind: ClusterConfiguration
-kubernetesVersion: 1.26.1
+kubernetesVersion: 1.26.0
 networking:
   dnsDomain: cluster.local
-  podSubnet: "192.168.0.0/16"
+  podsubnet: "192.168.0.0/16"
   serviceSubnet: 10.96.0.0/12
 scheduler: {}
 ---
