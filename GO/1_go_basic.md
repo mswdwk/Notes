@@ -8,3 +8,21 @@
 
 import（.“fmt”）
 这个点操作的含义就是这个包导入之后在你调用这个包的函数时，你可以省略前缀的包名，也就是前面你调用的fmt.Println("hello world")可以省略的写成Println("hello world")
+
+# 2) go doc, find go usage 
+go install golang.org/x/tools/cmd/godoc
+godoc -http :8081
+
+# 3) go study
+## demo codes
+https://github.com/hantmac/Mastering_Go_ZH_CN 
+https://github.com/polaris1119/The-Golang-Standard-Library-by-Example
+https://github.com/eddycjy/go-gin-example
+https://github.com/golang/example 
+https://github.com/unknwon/the-way-to-go_ZH_CN.git
+
+## book
+https://www.bookstack.cn/read/Mastering_Go_ZH_CN/README.md
+https://www.bookstack.cn/read/tour-go/methods-8.md
+https://www.kancloud.cn/cloud001/golang#/reward
+https://www.kancloud.cn/kancloud/the-way-to-go/72504
