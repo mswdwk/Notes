@@ -52,4 +52,4 @@ socket=/home/$USER/$INSTALL_DIR_NAME/bin/mysql1.sock
 port=$MYSQL_PORT
 EOF
 
-cp my.cnf $BASEDIR/etc
+cp my.cnf $BASEDIR/
