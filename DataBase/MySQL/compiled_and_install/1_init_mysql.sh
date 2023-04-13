@@ -21,5 +21,5 @@ sh create_mycnf.sh
 
 #init db
 echo "`date` start init database"
-$BASEDIR/bin/mysqld --defaults-file=$BASEDIR/etc/my.cnf --initialize-insecure
+$BASEDIR/bin/mysqld --defaults-file=$BASEDIR/my.cnf --initialize-insecure
 echo "`date` finish init database"
