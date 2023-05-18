@@ -1,0 +1,24 @@
+在公司可能因为网络波动的原因，使用git总是down了一半多就报错：
+
+fatal: the remote end hung up unexpectedlyMiB | 8.00 KiB/s
+fatal: early EOF
+fatal: index-pack failed
+
+    1
+    2
+    3
+
+在网上找到了解决办法，如下：
+
+修改git配置：
+
+//httpBuffer加大
+git config --global http.postBuffer 524288000
+//压缩配置
+git config --global core.compression -1
+//修改配置文件 。这步骤可以滤过。
+export GIT_TRACE_PACKET=1
+export GIT_TRACE=1
+export GIT_CURL_VERBOSE=1
+
+原文链接：https://blog.csdn.net/weixin_44377505/article/details/100828546
