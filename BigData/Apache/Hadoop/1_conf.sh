@@ -2,18 +2,29 @@
 
 # edit etc/hadoop-env.sh ,set JAVA_HOME path
 
+export HADOOP_HOME=/home/user/hadoop-3.3.4
+#HADOOP_DATA_ROOT=/data1/hadoop_data
+HADOOP_DATA_ROOT=$HADOOP_HOME/hadoop_data
+JAVA_HOME=/usr/lib/jdk-21
 
-HADOOP_HOME=/home/user/hadoop-3.3.5
-HADOOP_DATA_ROOT=/data1/hadoop_data
-echo "export JAVA_HOME=/usr/lib/jvm/jdk-19.0.1" >> $HADOOP_HOME/etc/hadoop-env.sh
-echo "export HADOOP_HOME=$HADOOP_HOME" >> $HADOOP_HOME/etc/hadoop-env.sh
-echo "export HADOOP_OPTS=\" --add-opens java.base/java.lang=ALL-UNNAMED \" >>$HADOOP_HOME/etc/hadoop-env.sh
+sed -i '$a\'\
+"\nexport JAVA_HOME=$JAVA_HOME"\
+"\nexport HADOOP_HOME=$HADOOP_HOME"\
+"\nexport HADOOP_OPTS=\" --add-opens java.base/java.lang=ALL-UNNAMED \""\
+ ${HADOOP_HOME}/etc/hadoop/hadoop-env.sh
+echo "?=$?"
 
-echo "export JAVA_HOME=/usr/lib/jvm/jdk-19.0.1" >> $HADOOP_HOME/etc/mapred-env.sh
+sed -i '$a\'\
+"\nexport JAVA_HOME=$JAVA_HOME"\
+ $HADOOP_HOME/etc/hadoop/mapred-env.sh
+
+echo "?=$?"
+#echo "export JAVA_HOME=$JAVA_HOME">>${HADOOP_HOME}/etc/hadoop/hadoop-env.sh
+#echo "export JAVA_HOME=$JAVA_HOME">>$HADOOP_HOME/etc/hadoop/mapred-env.sh
+#echo "export HADOOP_HOME=$HADOOP_HOME">>$HADOOP_HOME/etc/hadoop/hadoop-env.sh
+#echo "export HADOOP_OPTS=\" --add-opens java.base/java.lang=ALL-UNNAMED \"">>$HADOOP_HOME/etc/hadoop/hadoop-env.sh
 
 # java version > 8
-
-#echo "HDFS_NAMENODE_OPTS=\"\""
 
 # pay attention to dir 'limits of authority'
 
