@@ -6,9 +6,6 @@ pwd
 #/usr/sbin/ifconfig
 #ifconfig
 cd $HADOOP_HOME
-ls
-echo "start format namenode On node1"
-bin/hadoop namenode -format
 sbin/hadoop-daemon.sh start namenode
 sbin/hadoop-daemon.sh start datanode
 sbin/yarn-daemon.sh  start resourcemanager
@@ -21,10 +18,8 @@ HOSTS=(node2 node3)
 for host in ${HOSTS[@]};
 do
 ssh user@$host "bash -s" <<ENDSSH
-pwd
-#/usr/sbin/ifconfig
-#ifconfig
 cd $HADOOP_HOME
+pwd
 ls
 sbin/hadoop-daemon.sh start datanode
 sbin/yarn-daemon.sh start nodemanager
@@ -33,6 +28,7 @@ ENDSSH
 done
 
 ssh user@node1 "bash -s" <<ENDSSH
+cd $HADOOP_HOME
 sbin/start-dfs.sh
 sbin/start-yarn.sh
 sbin/mr-jobhistory-daemon.sh start historyserver

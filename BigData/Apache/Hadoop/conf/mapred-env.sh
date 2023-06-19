@@ -44,4 +44,4 @@
 # Java property: hadoop.root.logger
 #export HADOOP_JHS_LOGGER=INFO,RFA
 
-export JAVA_HOME=/usr/lib/jvm/jdk-19.0.1
+#export JAVA_HOME=/usr/lib/jvm/jdk-19.0.1

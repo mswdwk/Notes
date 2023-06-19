@@ -34,3 +34,7 @@ mkdir -p $HADOOP_DATA_ROOT/dataNodeDatas
 mkdir -p $HADOOP_DATA_ROOT/nn/edits
 mkdir -p $HADOOP_DATA_ROOT/snn/name
 mkdir -p $HADOOP_DATA_ROOT/dfs/snn/edits
+
+
+sed -i "s?/data1/hadoop_data?$HADOOP_DATA_ROOT?g" $HADOOP_HOME/etc/hadoop/core-site.xml
+sed -i "s?/data1/hadoop_data?$HADOOP_DATA_ROOT?g" $HADOOP_HOME/etc/hadoop/hdfs-site.xml
