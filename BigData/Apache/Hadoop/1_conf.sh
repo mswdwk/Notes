@@ -38,3 +38,4 @@ mkdir -p $HADOOP_DATA_ROOT/dfs/snn/edits
 
 sed -i "s?/data1/hadoop_data?$HADOOP_DATA_ROOT?g" $HADOOP_HOME/etc/hadoop/core-site.xml
 sed -i "s?/data1/hadoop_data?$HADOOP_DATA_ROOT?g" $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+sed -i "s?/home/user/hadoop-3.3.4?$HADOOP_HOME?g" $HADOOP_HOME/etc/hadoop/mapred-site.xml

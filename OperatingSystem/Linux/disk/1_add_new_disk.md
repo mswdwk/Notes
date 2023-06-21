@@ -14,16 +14,18 @@
    executed the following commands.
 
 ## 2) create physical volume 
-```
+```shell
 	pvcreate /dev/sdb
 ```
 	If success,the shell terminal will print:
-		"
+```
  		Physical volume "/dev/sdb" successfully created.
-		"
+```
 
 ## 3) show the new created physical volume
+```shell
 	pvdisplay
+```
 
 ## 4) add the PV into VG 'rhel'
 ```
@@ -63,7 +65,7 @@
 
 ## 7) create a new partiton /dev/mapper/rhel-data, named 'data'
 
-```
+```shell
 	#use all free disk space on VG rhel
 	lvcreate -l 100%VG -n data rhel	
 ```
@@ -71,7 +73,10 @@
 	' 
 		Logical volume "data" created.
 	'	
-
+	format filesystem of LV 'rhel-data'
+```shell
+	sudo mkfs.xfs /dev/mapper/rhel-data
+```
 ## 8) Mount New Created Partition 'data'	
 ### 8-1) temporary mount 
 ```

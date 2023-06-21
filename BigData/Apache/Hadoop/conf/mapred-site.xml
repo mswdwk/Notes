@@ -41,4 +41,16 @@
 <value>node1:19888</value>
 </property>
 
+ <property>
+ <name>yarn.app.mapreduce.am.env</name>
+ <value>HADOOP_MAPRED_HOME=/home/user/hadoop-3.3.4</value>
+ </property>
+ <property>
+ <name>mapreduce.map.env</name>
+ <value>HADOOP_MAPRED_HOME=/home/user/hadoop-3.3.4</value>
+ </property>
+ <property>
+ <name>mapreduce.reduce.env</name>
+ <value>HADOOP_MAPRED_HOME=/home/user/hadoop-3.3.4</value>
+ </property>
 </configuration>

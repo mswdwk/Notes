@@ -22,3 +22,8 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['localhost:9090','localhost:9057']
+
+  - job_name: 'zookeeper'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.79.132:7000','192.168.79.133:7000','192.168.79.134:7000']
