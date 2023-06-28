@@ -1,6 +1,7 @@
 #!/bin/bash
-HBASE_HOME=$HOME/hbase-2.5.4
-JAVA_HOME=/usr/lib/jdk-21
+source ./conf.sh 
+#HBASE_HOME=$HOME/hbase-2.5.4
+#JAVA_HOME=/usr/lib/jdk-21
 
 sed -i '$a\'\
 export JAVA_HOME=$JAVA_HOME

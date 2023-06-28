@@ -1,6 +1,7 @@
 #!/bin/bash
-HBASE_HOME=$HOME/hbase-2.5.4
-
+#HBASE_HOME=$HOME/hbase-2.5.4
+source ./conf.sh
+echo "HBASE_HOME=$HBASE_HOME"
 if [ $# -eq 0  ]; then
 	action=status
 else
