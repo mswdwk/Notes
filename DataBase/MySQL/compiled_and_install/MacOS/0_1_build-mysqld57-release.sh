@@ -1,10 +1,4 @@
-MYSQL_VERSION=5740
-BOOST_VERSION=1_59_0
-MYSQL_SRC=~/Repos/mysql-server
-#mysql install dir
-MYSQL_ISD=~/MySQL-$MYSQL_VERSION-rel 
-BOOST_DIR=~/boost/boost_$BOOST_VERSION
-BUILD_DIR=~/build/build-mysql${MYSQL_VERSION}-rel
+source ./0_vars.sh
 
 prepare_make(){
 	rm -rf  $BUILD_DIR

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# compile configs
+MYSQL_VERSION=5740
+BOOST_VERSION=1_59_0
+MYSQL_SRC=~/Repos/mysql-server
+#mysql install dir
+MYSQL_ISD=~/MySQL-$MYSQL_VERSION-rel 
+BOOST_DIR=~/boost/boost_$BOOST_VERSION
+BUILD_DIR=~/build/build-mysql${MYSQL_VERSION}-rel
+
+# install configs
+USER=lili
+INSTALL_DIR_NAME=MySQL-5740-rel
+BASEDIR=/Users/$USER/$INSTALL_DIR_NAME
+MYSQL_PORT=5742
+MAX_UNDO_LOG_SIZE=64M
+SERVER_ID=2
+NEW_MYSQL_PASSWORD=RT@21.com
