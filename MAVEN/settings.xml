@@ -1,0 +1,69 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <localRepository>C:\code\java\apache-maven-3.8.1-bin\repository</localRepository>
+  <interactiveMode />
+  <usePluginRegistry />
+  <offline />
+  <pluginGroups />
+  <servers />
+  <mirrors>
+
+    <mirror>
+      <id>nju_mirror</id>
+      <mirrorOf>central</mirrorOf>
+      <url>https://repo.nju.edu.cn/repository/maven-public/</url>
+    </mirror>
+
+    <mirror>
+      <id>aliyunmaven</id>
+      <mirrorOf>central</mirrorOf>
+      <name>aliyun</name>
+      <url>https://maven.aliyun.com/repository/central</url>
+    </mirror>
+
+    <mirror>
+      <id>sjtugmaven</id>
+      <mirrorOf>central</mirrorOf>
+      <name>sjtug maven</name>
+      <url>https://mirrors.sjtug.sjtu.edu.cn/maven-central/</url>
+    </mirror>
+
+    <mirror>
+      <id>nexus-tencentyun</id>
+      <mirrorOf>central</mirrorOf>
+      <name>tencent</name>
+      <url>http://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+    </mirror>
+
+    <mirror>
+      <id>huaweicloud</id>
+      <mirrorOf>central</mirrorOf>
+      <name>HuaWei</name>
+      <url>https://repo.huaweicloud.com/repository/maven/</url>
+    </mirror>
+
+    <mirror>
+      <id>apachemaven</id>
+      <mirrorOf>central</mirrorOf>
+      <name>apache repo</name>
+      <url>https://repo.maven.apache.org/maven2/</url>
+    </mirror>
+
+    <mirror>
+      <id>repomaven</id>
+      <mirrorOf>central</mirrorOf>
+      <name>central repo</name>
+      <url>https://repo1.maven.org/maven2/</url>
+    </mirror>
+
+
+    <mirror>
+      <id>aliyunmaven</id>
+      <mirrorOf>apache snapshots</mirrorOf>
+      <name>aliyun apache</name>
+      <url>https://maven.aliyun.com/repository/apache-snapshots</url>
+    </mirror>
+
+  </mirrors>
+</settings>
+

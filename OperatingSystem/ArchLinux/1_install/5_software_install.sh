@@ -5,5 +5,5 @@ yay -S jdk-openjdk
 yay -S visual-studio-code-bin
 yay -S intellij-idea-community-edition-no-jre
 
-# get systeminfo
+# get systeminfo through 'neofetch'
 yay -S neofetch  

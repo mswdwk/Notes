@@ -66,6 +66,8 @@ passwd root
 # 13 dual system config,edit /etc/default/grub
 GRUB_DISABLE_OS_PROBER=false
 
+```shell
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Arch
 grub-mkconfig -o /boot/grub/grub.cfg
+```
 
