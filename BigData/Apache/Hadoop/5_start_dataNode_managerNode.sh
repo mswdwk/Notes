@@ -1,7 +1,8 @@
 # On node1
 # namenode format
-HADOOP_HOME=/home/user/hadoop-3.3.5
-JAVA_HOME=/usr/lib/jdk-21
+#HADOOP_HOME=/home/user/hadoop-3.3.4
+#JAVA_HOME=/usr/lib/jdk-21
+source ./0_vars.sh
 ssh user@node1 "bash -s" <<ENDSSH
 pwd
 #/usr/sbin/ifconfig

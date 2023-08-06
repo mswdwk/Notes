@@ -2,10 +2,9 @@
 
 # edit etc/hadoop-env.sh ,set JAVA_HOME path
 
-export HADOOP_HOME=/home/user/hadoop-3.3.4
+#export HADOOP_HOME=/home/user/hadoop-3.3.5
+source ./0_vars.sh
 #HADOOP_DATA_ROOT=/data1/hadoop_data
-HADOOP_DATA_ROOT=$HADOOP_HOME/hadoop_data
-JAVA_HOME=/usr/lib/jdk-21
 
 sed -i '$a\'\
 "\nexport JAVA_HOME=$JAVA_HOME"\

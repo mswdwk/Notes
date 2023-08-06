@@ -1,19 +1,23 @@
 #!/bin/bash
 #HBASE_HOME=$HOME/hbase-2.5.4
-source ./conf.sh
+source ./vars.sh
 echo "HBASE_HOME=$HBASE_HOME"
 
 start_s=`date +%s`
 action=$1
 case $action in
 	start)
-		cmd=$HBASE_HOME/bin/start-hbase.sh 
+		$HBASE_HOME/bin/start-hbase.sh 
+		exit 0
 	;;
 	stop)
-		cmd=$HBASE_HOME/bin/stop-hbase.sh 
+		cmd="$HBASE_HOME/bin/stop-hbase.sh "
 	;;
 	cleanlog)
 		cmd="rm -rf $HBASE_HOME/logs/*"
+	;;
+	cleantmp)
+		cmd="rm -rf $HBASE_HOME/tmp/*"
 	;;
 	*)
 		echo "unknown cmd, exit"

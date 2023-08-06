@@ -1,0 +1,67 @@
+Caused by: java.lang.IllegalStateException: Multiple resources found for 'META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_epoll_x86_64.so' with different content: [jar:file:/home/user/hbase-2.5.3/lib/hbase-shaded-netty-4.1.4.jar!/META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_epoll_x86_64.so, jar:file:/home/user/trinodb/phoenix-hbase-2.5-5.1.3-bin/phoenix-client-embedded-hbase-2.5-5.1.3.jar!/META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_epoll_x86_64.so, jar:file:/home/user/trinodb/phoenix-hbase-2.5-5.1.3-bin/phoenix-client-hbase-2.5-5.1.3.jar!/META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_epoll_x86_64.so]
+
+
+2023-05-15 11:09:10,610 INFO  [main] util.ServerCommandLine (ServerCommandLine.java:logJVMInfo(78)) - vmInputArguments=[-Dproc_master, -XX:OnOutOfMemoryError=kill -9 %p, -XX:+UseG1GC, -Djava.util.logging.config.class=org.apache.hadoop.hbase.logging.JulToSlf4jInitializer, -Dorg.apache.hbase.thirdparty.io.netty.tryReflectionSetAccessible=true, --add-modules=jdk.unsupported, --add-opens=java.base/java.nio=ALL-UNNAMED, --add-opens=java.base/sun.nio.ch=ALL-UNNAMED, --add-opens=java.base/java.lang=ALL-UNNAMED, --add-opens=java.base/jdk.internal.ref=ALL-UNNAMED, --add-opens=java.base/java.lang.reflect=ALL-UNNAMED, --add-exports=java.base/jdk.internal.misc=ALL-UNNAMED, --add-exports=java.security.jgss/sun.security.krb5=ALL-UNNAMED, -Dhbase.log.dir=/home/user/hbase-2.5.3/bin/../logs, -Dhbase.log.file=hbase-user-master-node1.log, -Dhbase.home.dir=/home/user/hbase-2.5.3/bin/.., -Dhbase.id.str=user, -Dhbase.root.logger=INFO,RFA, -Dhbase.security.logger=INFO,RFAS]
+2023-05-15 11:09:10,738 ERROR [main] regionserver.HRegionServer (HRegionServer.java:<init>(723)) - Failed construction RegionServer
+java.lang.UnsatisfiedLinkError: failed to load the required native library
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.Epoll.ensureAvailability(Epoll.java:81)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoop.<clinit>(EpollEventLoop.java:56)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoopGroup.newChild(EpollEventLoopGroup.java:186)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoopGroup.newChild(EpollEventLoopGroup.java:37)
+        at org.apache.hbase.thirdparty.io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:84)
+        at org.apache.hbase.thirdparty.io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:60)
+        at org.apache.hbase.thirdparty.io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:49)
+        at org.apache.hbase.thirdparty.io.netty.channel.MultithreadEventLoopGroup.<init>(MultithreadEventLoopGroup.java:59)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoopGroup.<init>(EpollEventLoopGroup.java:114)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoopGroup.<init>(EpollEventLoopGroup.java:101)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoopGroup.<init>(EpollEventLoopGroup.java:78)
+        at org.apache.hadoop.hbase.util.NettyEventLoopGroupConfig.<init>(NettyEventLoopGroupConfig.java:73)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.setupNetty(HRegionServer.java:782)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.<init>(HRegionServer.java:608)
+        at org.apache.hadoop.hbase.master.HMaster.<init>(HMaster.java:460)
+        at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:67)
+        at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
+        at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:484)
+        at org.apache.hadoop.hbase.master.HMaster.constructMaster(HMaster.java:3271)
+        at org.apache.hadoop.hbase.master.HMasterCommandLine.startMaster(HMasterCommandLine.java:248)
+        at org.apache.hadoop.hbase.master.HMasterCommandLine.run(HMasterCommandLine.java:147)
+        at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)
+        at org.apache.hadoop.hbase.util.ServerCommandLine.doMain(ServerCommandLine.java:140)
+        at org.apache.hadoop.hbase.master.HMaster.main(HMaster.java:3291)
+Caused by: java.lang.ExceptionInInitializerError
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.Epoll.<clinit>(Epoll.java:40)
+        ... 23 more
+Caused by: java.lang.IllegalStateException: Multiple resources found for 'META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_epoll_x86_64.so' with different content: [jar:file:/home/user/hbase-2.5.3/lib/hbase-shaded-netty-4.1.4.jar!/META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_epoll_x86_64.so, jar:file:/home/user/trinodb/phoenix-hbase-2.5-5.1.3-bin/phoenix-client-embedded-hbase-2.5-5.1.3.jar!/META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_epoll_x86_64.so, jar:file:/home/user/trinodb/phoenix-hbase-2.5-5.1.3-bin/phoenix-client-hbase-2.5-5.1.3.jar!/META-INF/native/liborg_apache_hbase_thirdparty_netty_transport_native_epoll_x86_64.so]
+        at org.apache.hbase.thirdparty.io.netty.util.internal.NativeLibraryLoader.getResource(NativeLibraryLoader.java:301)
+        at org.apache.hbase.thirdparty.io.netty.util.internal.NativeLibraryLoader.load(NativeLibraryLoader.java:173)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.Native.loadNativeLibrary(Native.java:323)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.Native.<clinit>(Native.java:85)
+        ... 24 more
+2023-05-15 11:09:10,739 ERROR [main] master.HMasterCommandLine (HMasterCommandLine.java:startMaster(260)) - Master exiting
+java.lang.RuntimeException: Failed construction of Master: class org.apache.hadoop.hbase.master.HMaster. 
+        at org.apache.hadoop.hbase.master.HMaster.constructMaster(HMaster.java:3280)
+        at org.apache.hadoop.hbase.master.HMasterCommandLine.startMaster(HMasterCommandLine.java:248)
+        at org.apache.hadoop.hbase.master.HMasterCommandLine.run(HMasterCommandLine.java:147)
+        at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:76)
+        at org.apache.hadoop.hbase.util.ServerCommandLine.doMain(ServerCommandLine.java:140)
+        at org.apache.hadoop.hbase.master.HMaster.main(HMaster.java:3291)
+Caused by: java.lang.UnsatisfiedLinkError: failed to load the required native library
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.Epoll.ensureAvailability(Epoll.java:81)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoop.<clinit>(EpollEventLoop.java:56)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoopGroup.newChild(EpollEventLoopGroup.java:186)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoopGroup.newChild(EpollEventLoopGroup.java:37)
+        at org.apache.hbase.thirdparty.io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:84)
+        at org.apache.hbase.thirdparty.io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:60)
+        at org.apache.hbase.thirdparty.io.netty.util.concurrent.MultithreadEventExecutorGroup.<init>(MultithreadEventExecutorGroup.java:49)
+        at org.apache.hbase.thirdparty.io.netty.channel.MultithreadEventLoopGroup.<init>(MultithreadEventLoopGroup.java:59)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoopGroup.<init>(EpollEventLoopGroup.java:114)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoopGroup.<init>(EpollEventLoopGroup.java:101)
+        at org.apache.hbase.thirdparty.io.netty.channel.epoll.EpollEventLoopGroup.<init>(EpollEventLoopGroup.java:78)
+        at org.apache.hadoop.hbase.util.NettyEventLoopGroupConfig.<init>(NettyEventLoopGroupConfig.java:73)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.setupNetty(HRegionServer.java:782)
+        at org.apache.hadoop.hbase.regionserver.HRegionServer.<init>(HRegionServer.java:608)
+        at org.apache.hadoop.hbase.master.HMaster.<init>(HMaster.java:460)
+        at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:67)
+        at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
+        at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:484)
+        at org.apache.hadoop.hbase.master.HMaster.constructMaster(HMaster.java:3271)

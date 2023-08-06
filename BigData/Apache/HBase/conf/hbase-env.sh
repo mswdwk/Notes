@@ -25,7 +25,6 @@
 # into the startup scripts (bin/hbase, etc.)
 
 # The java implementation to use.  Java 1.8+ required.
-# export JAVA_HOME=/usr/java/jdk1.8.0/
 
 # Extra Java CLASSPATH elements.  Optional.
 # export HBASE_CLASSPATH=
@@ -209,3 +208,6 @@
 # Additional arguments passed to jshell invocation
 # export HBASE_JSHELL_ARGS="--startup DEFAULT --startup PRINTING --startup hbase_startup.jsh"
 
+
+export JAVA_HOME=/usr/lib/jdk-21
+export HBASE_MANAGES_ZK=false
