@@ -1,0 +1,20 @@
+[Unit]
+Description=HBase Service unit Configuration
+#After=network.target
+After=zookeeper.target
+
+[Service]
+Type=forking
+Environment=JAVA_HOME=/usr/lib/jdk-21
+Environment=ZK_HOME=/home/user/hbase-2.5.4
+Environment=ZK_DATA_DIR=/home/user/hbase-2.5.4/zook_data
+ExecStart=/home/user/hbase-2.5.4/bin/start-hbase.sh 
+ExecStop=/home/user/hbase-2.5.4/bin/stop-hbase.sh 
+PIDFile=/home/user/hbase-2.5.4/zook_data/zookeeper_server.pid
+KillMode=none
+User=user
+Group=user
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

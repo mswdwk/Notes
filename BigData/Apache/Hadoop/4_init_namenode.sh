@@ -1,6 +1,7 @@
 # On node1
 # namenode format
-HADOOP_HOME=/home/user/hadoop-3.3.4
+#HADOOP_HOME=/home/user/hadoop-3.3.4
+source ./0_vars.sh
 ssh user@node1 "bash -s" <<ENDSSH
 pwd
 cd $HADOOP_HOME
