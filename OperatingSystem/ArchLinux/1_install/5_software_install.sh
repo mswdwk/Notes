@@ -7,3 +7,8 @@ yay -S intellij-idea-community-edition-no-jre
 
 # get systeminfo through 'neofetch'
 yay -S neofetch  
+
+#https://bbs.archlinux.org/viewtopic.php?id=125308
+echo 'install hostname'
+yay -S inetutils
+yay -S net-tools
