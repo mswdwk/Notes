@@ -1,4 +1,8 @@
-# [TiDB 源码阅读系列文章（三）SQL 的一生](https://cn.pingcap.com/blog/tidb-source-code-reading-3/)
+# reference 
+## [TiDB 源码阅读系列文章（三）SQL 的一生](https://cn.pingcap.com/blog/tidb-source-code-reading-3/)
+## [TiDB 源码阅读系列文章（六）Select 语句概览](https://cn.pingcap.com/blog/tidb-source-code-reading-6/)
+
+# TIDB CODE MAP
 server.(*Server).onConn (tidb/server/server.go:626) {
 	server.(*clientConn).onCon {
 		server.(*clientConn).Run (tidb/server/conn.go:1129){
@@ -25,6 +29,7 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 																	return b.buildJoin(ctx, x)
 																case *ast.TableSource:	
 																	switch v := x.Source.(type) {
+
 																		case *ast.TableName:
 																			p, err = b.buildDataSource(ctx, v, &x.AsName) {
 																				
@@ -55,7 +60,15 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 												physical, cost, err := physicalOptimize(logic, &planCounter) {
 													preparePossibleProperties(logic)
 													opt := defaultPhysicalOptimizeOption()
-													t, _, err := logic.findBestTask(prop, planCounter, opt)
+													t, _, err := logic.findBestTask(prop, planCounter, opt) (planner/core/find_best_task.go:803) {
+														tblTask, err = ds.convertToTableScan(prop, candidate, opt) {
+															ts, _ := ds.getOriginalPhysicalTableScan(prop, candidate.path, candidate.isMatchProp)
+															ts.addPushedDownSelection(copTask, ds.stats.ScaleByExpectCnt(prop.ExpectedCnt))
+														}
+														idxTask, err := ds.convertToIndexScan(prop, candidate, opt)
+														appendCandidate(ds, idxTask, prop, opt)
+														curIsBetter, err := compareTaskCost(ds.ctx, idxTask, t, opt)
+													}
 													cost, err = getPlanCost(t.plan(), property.RootTaskType, NewDefaultPlanCostOption())
 													return t.plan(), cost, err
 												}
@@ -67,7 +80,34 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 								// Execute the physical plan in stmt .
 								recordSet, err = runStmt(ctx, s, stmt) {
 									rs, err = s.Exec(ctx) (executor/adapter.go:455) {
-										err = a.openExecutor(ctx, e);
+										err = a.openExecutor(ctx, e) {
+											executor.( xxx ).open {
+												executor.(*TableReaderExecutor).Open {
+													executor.(*TableReaderExecutor).buildResp {
+														executor.selectResultHook.SelectResult {
+															distsql.SelectWithRuntimeStats {
+																sr, err := Select(ctx, sctx, kvReq, fieldTypes, fb) {
+																	resp := sctx.GetClient().Send(ctx, kvReq, sctx.GetSessionVars().KVVars, option)
+																	return &selectResult{
+																		label:              "dag",
+																		resp:               resp,
+																		rowLen:             len(fieldTypes),
+																		fieldTypes:         fieldTypes,
+																		ctx:                sctx,
+																		feedback:           fb,
+																		sqlType:            label,
+																		memTracker:         kvReq.MemTracker,
+																		storeType:          kvReq.StoreType,
+																		paging:             kvReq.Paging.Enable,
+																		distSQLConcurrency: kvReq.Concurrency,
+																	}, nil
+																}
+															}
+														}
+													}
+												}
+											}
+										}
 									}
 									err = finishStmt(ctx, se, err, s)
 								}
@@ -104,3 +144,4 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 
 
 # 1 planner/core ToString translate a plan to string
+# TestCrossValidationSelectivity
