@@ -29,10 +29,11 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 																	return b.buildJoin(ctx, x)
 																case *ast.TableSource:	
 																	switch v := x.Source.(type) {
-
 																		case *ast.TableName:
 																			p, err = b.buildDataSource(ctx, v, &x.AsName) {
-																				
+																				if tableInfo.IsView() {
+																					return b.BuildDataSourceFromView(ctx, dbName, tableInfo, currentQBNameMap4View, currentViewHints)
+																				}
 																			}
 																			return p
 																	}
@@ -45,6 +46,14 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 														}
 													}
 													case *ast.InsertStmt: core.(*PlanBuilder).buildInsert{
+													}
+													case *ast.InsertStmt: core.(*PlanBuilder).buildDDL(ctx context.Context, node ast.DDLNode) {
+														switch v := node.(type) {
+															case *ast.CreateTableStmt: { }
+															case *ast.CreateViewStmt: {
+																
+															}
+														}
 													}
 												} // end PlanBuilder Build
 											}
