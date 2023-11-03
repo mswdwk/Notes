@@ -80,6 +80,7 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 								// Execute the physical plan in stmt .
 								recordSet, err = runStmt(ctx, s, stmt) {
 									rs, err = s.Exec(ctx) (executor/adapter.go:455) {
+										e, err := a.buildExecutor()
 										err = a.openExecutor(ctx, e) {
 											executor.( xxx ).open {
 												executor.(*TableReaderExecutor).Open {
@@ -108,6 +109,20 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 												}
 											}
 										}
+										pi.SetProcessInfo(sql, time.Now(), cmd, maxExecutionTime) {
+											// GetExplainRowsForPlan get explain rows for plan.
+											func GetExplainRowsForPlan(plan Plan) (rows [][]string) {
+												err := explain.RenderResult(){
+													switch strings.ToLower(e.Format) {
+														case types.ExplainFormatBrief: {
+															flat := FlattenPhysicalPlan(e.TargetPlan, true)
+															e.explainFlatPlanInRowFormat(flat)
+														}
+													}
+												}
+											}
+	
+										}
 									}
 									err = finishStmt(ctx, se, err, s)
 								}
@@ -118,8 +133,19 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 							cc.initResultEncoder(ctx)	
 							cc.writeChunks(ctx, rs, binary, serverStatus) {
 								for {
-									err := rs.Next(ctx, req)
+									err := rs.Next(ctx, req) {
+										// for ExplainExec
+										e.generateExplainInfo(ctx) (rows [][]string,err error) {   [ executor/explain.go:71 ]
+											e.executeAnalyzeExec(ctx);
+											err = e.explain.RenderResult() {
+												flat := FlattenPhysicalPlan(e.TargetPlan, true)
+												e.explainFlatPlanInRowFormat(flat)	
+											}
+											return e.explain.Rows
+										}
+									}
 									rowCount := req.NumRows()
+
 									if rowCount == 0  { break }
 									for i:=0; i< rowCount;i++ {
 										data, err = dumpBinaryRow(data, rs.Columns(), req.GetRow(i), cc.rsEncoder)
@@ -146,3 +172,9 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 # 1 planner/core ToString translate a plan to string
 func ToString(p Plan) string (planner/core/stringer.go:26)
 # TestCrossValidationSelectivity
+# Flat Plan Test
+file : planner/core/flat_plan_test.go
+func : TestFlatPhysicalPlan
+testdata: 
+		planner/core/testdata/flat_plan_suite_in.json
+	   	planner/core/testdata/flat_plan_suite_out.json
