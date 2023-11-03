@@ -144,4 +144,5 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 
 
 # 1 planner/core ToString translate a plan to string
+func ToString(p Plan) string (planner/core/stringer.go:26)
 # TestCrossValidationSelectivity
