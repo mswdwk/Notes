@@ -1,0 +1,40 @@
+# 1） pacstrap /mnt base linux linux-firmware 
+
+Starting build: 5.17.5-arch1-1
+  -> Running build hook: [base]
+  -> Running build hook: [udev]
+  -> Running build hook: [autodetect]
+  -> Running build hook: [modconf]
+  -> Running build hook: [block]
+  -> Running build hook: [filesystems]
+  -> Running build hook: [keyboard]
+  -> Running build hook: [fsck]
+==> ERROR: file not found: `fsck.xfs'
+==> WARNING: No fsck helpers found. fsck will not be run on boot.
+==> Generating module dependencies
+==> Creating zstd-compressed initcpio image: /boot/initramfs-linux.img
+==> WARNING: errors were encountered during the build. The image may not be complete.
+==> Building image from preset: /etc/mkinitcpio.d/linux.preset: 'fallback'
+  -> -k /boot/vmlinuz-linux -c /etc/mkinitcpio.conf -g /boot/initramfs-linux-fallback.img -S autodetect
+==> Starting build: 5.17.5-arch1-1
+  -> Running build hook: [base]
+  -> Running build hook: [udev]
+  -> Running build hook: [modconf]
+  -> Running build hook: [block]
+==> WARNING: Possibly missing firmware for module: aic94xx
+==> WARNING: Possibly missing firmware for module: bfa
+==> WARNING: Possibly missing firmware for module: qed
+==> WARNING: Possibly missing firmware for module: qla1280
+==> WARNING: Possibly missing firmware for module: qla2xxx
+==> WARNING: Possibly missing firmware for module: wd719x
+==> WARNING: Possibly missing firmware for module: xhci_pci
+
+ file not found: `fsck.xfs' , can ignore.
+ 
+ # 2) not auto get a  ip 
+ solve:
+ ```
+ # ip link set eth0 up
+# ip addr add 192.168.79.132/24 dev eth0
+# ip route add default via 192.168.1.1 dev eth0
+```

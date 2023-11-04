@@ -1,0 +1,69 @@
+https://wiki.archlinux.org/title/Installation_guide_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E5%AE%89%E8%A3%85
+
+# 1) config  /etc/pacman.d/mirrorlist, add the content in the first. 
+	then execute 'pacman -Syy'
+	Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
+	
+# 2) disk partition
+```
+	fdisk /dev/sda
+###	
+	Device       Start       End   Sectors   Size Type
+/dev/sda1     2048   1026047   1024000   500M Linux filesystem
+/dev/sda2  1026048 251656191 250630144 119.5G Linux LVM
+```
+# 3) create file system
+	mkfs.fat -F32 /dev/sda1
+	mkfs.xfs /dev/sda2
+	mkdir /mnt/boot
+	mount /dev/sda1 /mnt/boot
+	mount /dev/sda2 /mnt
+  
+ 
+# 4]  download base software	
+```
+pacstrap /mnt base linux linux-firmware
+```
+
+# switch to the install arch system file dir
+```
+arch-chroot /mnt
+```
+# set timezone
+```
+ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+```
+# sync time 
+hwclock --systohc
+
+# locale ,edit /etc/locale.gen 
+```
+ locale-gen
+```
+create file locale.conf, add the fellowing content
+LANG=en_US.UTF-8
+
+# passwd
+
+# install grub 和 efibootmgr
+```
+pacman -S  grub efibootmgr 
+```
+# boot 
+grub-install 
+
+然后按照下列步骤安装 GRUB：
+
+挂载 EFI 系统分区，在本节之后的内容里，把 esp 替换成挂载点。
+选择一个启动引导器标识，这里叫做 GRUB。这将在 esp/EFI/ 中创建一个与标识同名的目录来储存 EFI 二进制文件，而且这个名字还会在 UEFI 启动菜单中表示 GRUB 启动项。
+执行下面的命令来将 GRUB EFI 应用 grubx64.efi 安装到 esp/EFI/GRUB/，并将其模块安装到 /boot/grub/x86_64-efi/。
+```
+  grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB
+  grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+输入 exit 或按 Ctrl+d 退出 chroot 环境。
+
+可选用 umount -R /mnt 手动卸载被挂载的分区：这有助于发现任何「繁忙」的分区，并通过 fuser(1) 查找原因。
+
+最后，通过执行 reboot 重启系统，s

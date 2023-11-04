@@ -9,6 +9,6 @@ yay -S intellij-idea-community-edition-no-jre
 yay -S neofetch  
 
 #https://bbs.archlinux.org/viewtopic.php?id=125308
-echo 'install hostname'
+echo 'install cmd hostname'
 yay -S inetutils
 yay -S net-tools

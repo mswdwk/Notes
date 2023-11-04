@@ -1,0 +1,5 @@
+collation_connection <- {
+	void THD::update_charset()
+	set_slave_thread_default_charset()
+	bool thd_init_client_charset(THD *thd, uint cs_number)
+}
