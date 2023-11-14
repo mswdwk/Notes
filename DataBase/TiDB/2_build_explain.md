@@ -42,7 +42,12 @@ server.(*Server).onConn (tidb/server/server.go:626) {
 															}
 														}
 														if sel.Where != nil {
-															p, err = b.buildSelection(ctx, p, sel.Where, nil) (planner/core/logical_plan_builder.go:1033)
+															p, err = b.buildSelection(ctx, p, sel.Where, nil) (planner/core/logical_plan_builder.go:1033) {
+																conditions := splitWhere(where)
+																selection.Conditions = cnfExpres
+																selection.SetChildren(p)
+																return selection,nil
+															}
 														}
 													}
 													case *ast.InsertStmt: core.(*PlanBuilder).buildInsert{
