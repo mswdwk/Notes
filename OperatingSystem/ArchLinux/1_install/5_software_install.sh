@@ -11,6 +11,7 @@ yay -S neofetch
 
 #https://bbs.archlinux.org/viewtopic.php?id=125308
 echo 'install cmd hostname'
+echo 'install telnet'
 yay -S inetutils
 yay -S net-tools
 
