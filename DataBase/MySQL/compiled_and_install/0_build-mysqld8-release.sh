@@ -1,6 +1,6 @@
-MYSQL_SRC=~/mysql-8.0.25-src
-MYSQL_ISD=~/MySQL-8025-rel #install dir
-BOOST_DIR=/usr/local/boost_1_73_0
+MYSQL_SRC=~/repos/mysql-server
+MYSQL_ISD=~/MySQL-8035-rel #install dir
+BOOST_DIR=/home/user/boost_1_77_0
 BUILD_DIR=~/build-mysql8-rel
 
 prepare_make(){
