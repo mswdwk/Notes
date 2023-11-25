@@ -1,3 +1,4 @@
 {
-	"data-root":"/data1/docker"
+	"data-root":"/home/user/docker_data",
+	"registry-mirrors": ["https://hub-mirror.c.163.com"]
 }
