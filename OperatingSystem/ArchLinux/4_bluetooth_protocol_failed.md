@@ -21,7 +21,27 @@ Oct 03 11:06:57 arch-laptop bluetoothd[471]: src/profile.c:ext_connect() Headset
 Oct 03 11:06:58 arch-laptop bluetoothd[471]: profiles/audio/avdtp.c:avdtp_connect_cb() connect to EB:06:EF:4A:66:81: Too many levels of symbolic links (40)
 ```
 ## solution:
-	Delete the already bluetooth equipment name.
+	Delete the already bluetooth equipment name, then reconnect it.
+
+# Problem 3: D-Bus experimental not enabled
+## systemctl status bluetooth
+```
+Nov 26 15:06:41 Arch bluetoothd[2678]: src/plugin.c:plugin_init() System does not support csip plugin
+Nov 26 15:06:41 Arch bluetoothd[2678]: profiles/audio/micp.c:micp_init() D-Bus experimental not enabled
+Nov 26 15:06:41 Arch bluetoothd[2678]: src/plugin.c:plugin_init() System does not support micp plugin
+Nov 26 15:06:41 Arch bluetoothd[2678]: src/plugin.c:plugin_init() System does not support vcp plugin
+Nov 26 15:06:41 Arch bluetoothd[2678]: src/plugin.c:plugin_init() System does not support mcp plugin
+Nov 26 15:06:41 Arch bluetoothd[2678]: src/plugin.c:plugin_init() System does not support bass plugin
+Nov 26 15:06:41 Arch bluetoothd[2678]: src/plugin.c:plugin_init() System does not support bap plugin
+```
+## solution 
+```bash
+sudo rmmod btusb
+sudo rmmod btintel
+sudo modproble btusb
+sudo modproble btintel
+sudo lsmod |grep bt
+```
 # reference
 
 [Archlinux 突然启动不了蓝牙 ](https://jone.plus/2022/10/15/problem/linux/Arch%20%E6%97%A0%E6%B3%95%E5%90%AF%E5%8A%A8%E8%93%9D%E7%89%99/)
