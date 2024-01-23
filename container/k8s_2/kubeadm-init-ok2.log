@@ -1,0 +1,159 @@
+[O[node1]➜  k8s_2 git:(master) ✗ sudo kubeadm --v=5 init --config kubeadm-init.yaml
+[sudo] password for user: 
+I0123 14:09:23.315488  103343 initconfiguration.go:254] loading configuration from "kubeadm-init.yaml"
+W0123 14:09:23.317777  103343 utils.go:69] The recommended value for "healthzBindAddress" in "KubeletConfiguration" is: 127.0.0.1; the provided value is: 192.168.79.132
+[init] Using Kubernetes version: v1.26.1
+[preflight] Running pre-flight checks
+I0123 14:09:23.320438  103343 checks.go:568] validating Kubernetes and kubeadm version
+I0123 14:09:23.320457  103343 checks.go:168] validating if the firewall is enabled and active
+I0123 14:09:23.326947  103343 checks.go:203] validating availability of port 6443
+I0123 14:09:23.327213  103343 checks.go:203] validating availability of port 10259
+I0123 14:09:23.327240  103343 checks.go:203] validating availability of port 10257
+I0123 14:09:23.327265  103343 checks.go:280] validating the existence of file /etc/kubernetes/manifests/kube-apiserver.yaml
+I0123 14:09:23.327307  103343 checks.go:280] validating the existence of file /etc/kubernetes/manifests/kube-controller-manager.yaml
+I0123 14:09:23.327319  103343 checks.go:280] validating the existence of file /etc/kubernetes/manifests/kube-scheduler.yaml
+I0123 14:09:23.327328  103343 checks.go:280] validating the existence of file /etc/kubernetes/manifests/etcd.yaml
+I0123 14:09:23.327344  103343 checks.go:430] validating if the connectivity type is via proxy or direct
+I0123 14:09:23.327391  103343 checks.go:469] validating http connectivity to first IP address in the CIDR
+I0123 14:09:23.327418  103343 checks.go:469] validating http connectivity to first IP address in the CIDR
+I0123 14:09:23.327435  103343 checks.go:104] validating the container runtime
+I0123 14:09:23.358288  103343 checks.go:329] validating the contents of file /proc/sys/net/bridge/bridge-nf-call-iptables
+I0123 14:09:23.358355  103343 checks.go:329] validating the contents of file /proc/sys/net/ipv4/ip_forward
+I0123 14:09:23.358391  103343 checks.go:644] validating whether swap is enabled or not
+I0123 14:09:23.358422  103343 checks.go:370] validating the presence of executable crictl
+I0123 14:09:23.358443  103343 checks.go:370] validating the presence of executable conntrack
+I0123 14:09:23.358475  103343 checks.go:370] validating the presence of executable ip
+I0123 14:09:23.358481  103343 checks.go:370] validating the presence of executable iptables
+I0123 14:09:23.358487  103343 checks.go:370] validating the presence of executable mount
+I0123 14:09:23.358494  103343 checks.go:370] validating the presence of executable nsenter
+I0123 14:09:23.358502  103343 checks.go:370] validating the presence of executable ebtables
+I0123 14:09:23.358507  103343 checks.go:370] validating the presence of executable ethtool
+I0123 14:09:23.358523  103343 checks.go:370] validating the presence of executable socat
+I0123 14:09:23.358531  103343 checks.go:370] validating the presence of executable tc
+I0123 14:09:23.358540  103343 checks.go:370] validating the presence of executable touch
+I0123 14:09:23.358563  103343 checks.go:516] running all checks
+I0123 14:09:23.367050  103343 checks.go:401] checking whether the given node name is valid and reachable using net.LookupHost
+I0123 14:09:23.367234  103343 checks.go:610] validating kubelet version
+I0123 14:09:23.428583  103343 checks.go:130] validating if the "kubelet" service is enabled and active
+I0123 14:09:23.434870  103343 checks.go:203] validating availability of port 10250
+I0123 14:09:23.434952  103343 checks.go:203] validating availability of port 2379
+I0123 14:09:23.434976  103343 checks.go:203] validating availability of port 2380
+I0123 14:09:23.435002  103343 checks.go:243] validating the existence and emptiness of directory /var/lib/etcd
+[preflight] Pulling images required for setting up a Kubernetes cluster
+[preflight] This might take a minute or two, depending on the speed of your internet connection
+[preflight] You can also perform this action in beforehand using 'kubeadm config images pull'
+I0123 14:09:23.435151  103343 checks.go:832] using image pull policy: IfNotPresent
+I0123 14:09:23.461210  103343 checks.go:849] pulling: registry.aliyuncs.com/google_containers/kube-apiserver:v1.26.1
+I0123 14:09:26.166341  103343 checks.go:849] pulling: registry.aliyuncs.com/google_containers/kube-controller-manager:v1.26.1
+I0123 14:09:28.581386  103343 checks.go:849] pulling: registry.aliyuncs.com/google_containers/kube-scheduler:v1.26.1
+I0123 14:09:30.537242  103343 checks.go:849] pulling: registry.aliyuncs.com/google_containers/kube-proxy:v1.26.1
+I0123 14:09:32.555699  103343 checks.go:841] image exists: registry.aliyuncs.com/google_containers/pause:3.9
+I0123 14:09:32.583108  103343 checks.go:841] image exists: registry.aliyuncs.com/google_containers/etcd:3.5.6-0
+I0123 14:09:32.611146  103343 checks.go:841] image exists: registry.aliyuncs.com/google_containers/coredns:v1.9.3
+[certs] Using certificateDir folder "/etc/kubernetes/pki"
+I0123 14:09:32.611229  103343 certs.go:112] creating a new certificate authority for ca
+[certs] Generating "ca" certificate and key
+I0123 14:09:32.674661  103343 certs.go:519] validating certificate period for ca certificate
+[certs] Generating "apiserver" certificate and key
+[certs] apiserver serving cert is signed for DNS names [kubernetes kubernetes.default kubernetes.default.svc kubernetes.default.svc.cluster.local node1] and IPs [10.96.0.1 192.168.79.132]
+[certs] Generating "apiserver-kubelet-client" certificate and key
+I0123 14:09:33.084604  103343 certs.go:112] creating a new certificate authority for front-proxy-ca
+[certs] Generating "front-proxy-ca" certificate and key
+I0123 14:09:33.220965  103343 certs.go:519] validating certificate period for front-proxy-ca certificate
+[certs] Generating "front-proxy-client" certificate and key
+I0123 14:09:33.270155  103343 certs.go:112] creating a new certificate authority for etcd-ca
+[certs] Generating "etcd/ca" certificate and key
+I0123 14:09:33.308415  103343 certs.go:519] validating certificate period for etcd/ca certificate
+[certs] Generating "etcd/server" certificate and key
+[certs] etcd/server serving cert is signed for DNS names [localhost node1] and IPs [192.168.79.132 127.0.0.1 ::1]
+[certs] Generating "etcd/peer" certificate and key
+[certs] etcd/peer serving cert is signed for DNS names [localhost node1] and IPs [192.168.79.132 127.0.0.1 ::1]
+[certs] Generating "etcd/healthcheck-client" certificate and key
+[certs] Generating "apiserver-etcd-client" certificate and key
+I0123 14:09:33.814417  103343 certs.go:78] creating new public/private key files for signing service account users
+[certs] Generating "sa" key and public key
+[kubeconfig] Using kubeconfig folder "/etc/kubernetes"
+I0123 14:09:33.990819  103343 kubeconfig.go:103] creating kubeconfig file for admin.conf
+[kubeconfig] Writing "admin.conf" kubeconfig file
+I0123 14:09:34.230740  103343 kubeconfig.go:103] creating kubeconfig file for kubelet.conf
+[kubeconfig] Writing "kubelet.conf" kubeconfig file
+I0123 14:09:34.351028  103343 kubeconfig.go:103] creating kubeconfig file for controller-manager.conf
+[kubeconfig] Writing "controller-manager.conf" kubeconfig file
+I0123 14:09:34.401024  103343 kubeconfig.go:103] creating kubeconfig file for scheduler.conf
+[kubeconfig] Writing "scheduler.conf" kubeconfig file
+I0123 14:09:34.569118  103343 kubelet.go:67] Stopping the kubelet
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Starting the kubelet
+[control-plane] Using manifest folder "/etc/kubernetes/manifests"
+[control-plane] Creating static Pod manifest for "kube-apiserver"
+I0123 14:09:34.658442  103343 manifests.go:99] [control-plane] getting StaticPodSpecs
+I0123 14:09:34.658674  103343 certs.go:519] validating certificate period for CA certificate
+I0123 14:09:34.658722  103343 manifests.go:125] [control-plane] adding volume "ca-certs" for component "kube-apiserver"
+I0123 14:09:34.658727  103343 manifests.go:125] [control-plane] adding volume "etc-pki" for component "kube-apiserver"
+I0123 14:09:34.658731  103343 manifests.go:125] [control-plane] adding volume "k8s-certs" for component "kube-apiserver"
+I0123 14:09:34.660774  103343 manifests.go:154] [control-plane] wrote static Pod manifest for component "kube-apiserver" to "/etc/kubernetes/manifests/kube-apiserver.yaml"
+[control-plane] Creating static Pod manifest for "kube-controller-manager"
+I0123 14:09:34.660798  103343 manifests.go:99] [control-plane] getting StaticPodSpecs
+I0123 14:09:34.660973  103343 manifests.go:125] [control-plane] adding volume "ca-certs" for component "kube-controller-manager"
+I0123 14:09:34.660979  103343 manifests.go:125] [control-plane] adding volume "etc-pki" for component "kube-controller-manager"
+I0123 14:09:34.660983  103343 manifests.go:125] [control-plane] adding volume "flexvolume-dir" for component "kube-controller-manager"
+I0123 14:09:34.660987  103343 manifests.go:125] [control-plane] adding volume "k8s-certs" for component "kube-controller-manager"
+I0123 14:09:34.660991  103343 manifests.go:125] [control-plane] adding volume "kubeconfig" for component "kube-controller-manager"
+I0123 14:09:34.662214  103343 manifests.go:154] [control-plane] wrote static Pod manifest for component "kube-controller-manager" to "/etc/kubernetes/manifests/kube-controller-manager.yaml"
+[control-plane] Creating static Pod manifest for "kube-scheduler"
+I0123 14:09:34.662243  103343 manifests.go:99] [control-plane] getting StaticPodSpecs
+I0123 14:09:34.662550  103343 manifests.go:125] [control-plane] adding volume "kubeconfig" for component "kube-scheduler"
+I0123 14:09:34.663691  103343 manifests.go:154] [control-plane] wrote static Pod manifest for component "kube-scheduler" to "/etc/kubernetes/manifests/kube-scheduler.yaml"
+[etcd] Creating static Pod manifest for local etcd in "/etc/kubernetes/manifests"
+I0123 14:09:34.664354  103343 local.go:65] [etcd] wrote Static Pod manifest for a local etcd member to "/etc/kubernetes/manifests/etcd.yaml"
+I0123 14:09:34.664374  103343 waitcontrolplane.go:83] [wait-control-plane] Waiting for the API server to be healthy
+[wait-control-plane] Waiting for the kubelet to boot up the control plane as static Pods from directory "/etc/kubernetes/manifests". This can take up to 4m0s
+[apiclient] All control plane components are healthy after 4.503002 seconds
+I0123 14:09:39.169346  103343 uploadconfig.go:111] [upload-config] Uploading the kubeadm ClusterConfiguration to a ConfigMap
+[upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+I0123 14:09:39.179896  103343 uploadconfig.go:125] [upload-config] Uploading the kubelet component config to a ConfigMap
+[kubelet] Creating a ConfigMap "kubelet-config" in namespace kube-system with the configuration for the kubelets in the cluster
+I0123 14:09:39.189382  103343 uploadconfig.go:130] [upload-config] Preserving the CRISocket information for the control-plane node
+I0123 14:09:39.189413  103343 patchnode.go:31] [patchnode] Uploading the CRI Socket information "unix:///run/containerd/containerd.sock" to the Node API object "node1" as an annotation
+[upload-certs] Skipping phase. Please see --upload-certs
+[mark-control-plane] Marking the node node1 as control-plane by adding the labels: [node-role.kubernetes.io/control-plane node.kubernetes.io/exclude-from-external-load-balancers]
+[mark-control-plane] Marking the node node1 as control-plane by adding the taints [node-role.kubernetes.io/control-plane:NoSchedule]
+[bootstrap-token] Using token: abcdef.0123456789abcdef
+[bootstrap-token] Configuring bootstrap tokens, cluster-info ConfigMap, RBAC Roles
+[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to get nodes
+[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstrap-token] Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstrap-token] Configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[bootstrap-token] Creating the "cluster-info" ConfigMap in the "kube-public" namespace
+I0123 14:09:40.228255  103343 clusterinfo.go:47] [bootstrap-token] loading admin kubeconfig
+I0123 14:09:40.228666  103343 clusterinfo.go:58] [bootstrap-token] copying the cluster from admin.conf to the bootstrap kubeconfig
+I0123 14:09:40.228797  103343 clusterinfo.go:70] [bootstrap-token] creating/updating ConfigMap in kube-public namespace
+I0123 14:09:40.232259  103343 clusterinfo.go:84] creating the RBAC rules for exposing the cluster-info ConfigMap in the kube-public namespace
+I0123 14:09:40.237958  103343 kubeletfinalize.go:90] [kubelet-finalize] Assuming that kubelet client certificate rotation is enabled: found "/var/lib/kubelet/pki/kubelet-client-current.pem"
+[kubelet-finalize] Updating "/etc/kubernetes/kubelet.conf" to point to a rotatable kubelet client certificate and key
+I0123 14:09:40.238783  103343 kubeletfinalize.go:134] [kubelet-finalize] Restarting the kubelet to enable client certificate rotation
+[addons] Applied essential addon: CoreDNS
+I0123 14:09:40.613621  103343 request.go:622] Waited for 195.619262ms due to client-side throttling, not priority and fairness, request: POST:https://192.168.79.132:6443/apis/rbac.authorization.k8s.io/v1/namespaces/kube-system/rolebindings?timeout=10s
+[addons] Applied essential addon: kube-proxy
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.79.132:6443 --token abcdef.0123456789abcdef \
+        --discovery-token-ca-cert-hash sha256:d81ceeec9a76134b60aab7134a28d722172c6d09a019687ed1f002d3d90addd4 

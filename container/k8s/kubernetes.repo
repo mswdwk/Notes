@@ -1,0 +1,9 @@
+[kubernetes]
+name=Kubernetes
+#baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch
+baseurl=https://mirrors.tuna.tsinghua.edu.cn/kubernetes/yum/repos/kubernetes-el7-$basearch
+enabled=1
+gpgcheck=0
+#gpgkey=https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+#gpgkey=https://mirrors.tuna.tsinghua.edu.cn/kubernetes/yum/repos/kubernetes-el7-$basearch
+exclude=kubelet kubeadm kubectl

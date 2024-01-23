@@ -19,14 +19,18 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
 
-  - job_name: 'mysql57_1'
+  - job_name: 'mysql80_1'
     scrape_interval: 5s
     static_configs:
       - targets: ['192.168.79.132:9100','192.168.79.132:9104']
         labels:
-          instance: 'db_5.7'
+          instance: 'db_8.0'
 
   - job_name: 'zookeeper'
     scrape_interval: 5s
     static_configs:
       - targets: ['192.168.79.132:7000','192.168.79.133:7000','192.168.79.134:7000']
+  - job_name: 'java-examp'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ["192.168.79.1:9400"]
