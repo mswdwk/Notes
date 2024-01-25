@@ -9,12 +9,12 @@ bootstrapTokens:
   - authentication
 kind: InitConfiguration
 localAPIEndpoint:
-  advertiseAddress: 192.168.79.134
+  advertiseAddress: 192.168.79.31
   bindPort: 6443
 nodeRegistration:
   criSocket: unix:///run/containerd/containerd.sock
   imagePullPolicy: IfNotPresent
-  name: node3
+  name: node1
   taints: null
 ---
 apiServer:
@@ -32,7 +32,7 @@ kind: ClusterConfiguration
 kubernetesVersion: 1.26.1
 networking:
   dnsDomain: cluster.local
-  podSubnet: "192.168.0.0/16"
+  podSubnet: "172.16.0.0/16"
   serviceSubnet: 10.96.0.0/12
 scheduler: {}
 ---
