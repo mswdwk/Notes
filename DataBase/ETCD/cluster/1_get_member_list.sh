@@ -10,6 +10,7 @@ etcdctl --endpoints=http://localhost:32379  member list
 ENDPOINTS=http://localhost:12379,http://localhost:22379,http://localhost:32379
 echo -e "\n endpoint health"
 etcdctl --endpoints=$ENDPOINTS endpoint health
+etcdctl --endpoints=$ENDPOINTS endpoint status 
 
 echo -e "\n get all keys in path '/'"
 etcdctl --endpoints=$ENDPOINTS get --keys-only=true /
