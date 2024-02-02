@@ -1,0 +1,23 @@
+name: etcd1
+data-dir: data/etcd/default.etcd
+listen-peer-urls: https://192.168.31.17:2380
+listen-client-urls: https://192.168.31.17:2379,https://127.0.0.1:2379
+initial-advertise-peer-urls: https://192.168.31.17:2380
+advertise-client-url: https://192.168.31.17:2379
+initial-cluster: etcd01=https://192.168.31.17:2380
+initial-cluster-token: etcd-cluster
+initial-cluster-state: new
+# client节点通信 证书配置
+client-transport-security: 
+  cert-file:  certs/client.crt
+  key-file:   certs/client.key
+  client-cert-auth: true
+  trusted-ca-file: certs/ca.crt
+
+# 集群peer节点间通信  证书配置
+peer-transport-security:
+  cert-file: certs/peer.crt
+  key-file:  certs/peer.key
+  client-cert-auth: false
+  trusted-ca-file: certs/ca.crt
+  auto-tls: false
