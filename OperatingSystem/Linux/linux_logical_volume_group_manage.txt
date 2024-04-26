@@ -1,4 +1,4 @@
-/home/user/MySQL5.7_reate,pvscan,pvdisplay.卷组操作命令：vgcreate,vgdisplay. （转）
+物理卷操作命令：pvcreate,pvscan,pvdisplay.卷组操作命令：vgcreate,vgdisplay. （转）
 
 新硬盘创建LVM系统过程。
 物理卷操作命令：pvcreate,pvscan,pvdisplay.
@@ -785,3 +785,5 @@ vgchange
 vgscan
 VG的完整架构图：
 http://www.cnblogs.com/timdes/p/4438581.html
+
+2024 https://www.cnblogs.com/softidea/p/5147091.html
