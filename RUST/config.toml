@@ -1,0 +1,20 @@
+[registry]
+default="tuna"
+
+[source.crates-io]
+replace-with = 'rsproxy-sparse'
+
+[source.rsproxy]
+registry = "https://rsproxy.cn/crates.io-index"
+
+[source.rsproxy-sparse]
+registry = "sparse+https://rsproxy.cn/index/"
+
+[registries.rsproxy]
+index = "https://rsproxy.cn/crates.io-index"
+
+[registries.tuna]
+index = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git/"
+
+[net]
+git-fetch-with-cli = true
