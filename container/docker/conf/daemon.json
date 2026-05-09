@@ -1,4 +1,4 @@
 {
 	"data-root":"/home/user/docker_data",
-	"registry-mirrors": ["https://hub-mirror.c.163.com"]
+	"registry-mirrors": ["https://registry.cn-hangzhou.aliyuncs.com","https://hub-mirror.c.163.com","https://ckdhnbk9.mirror.aliyuncs.com"]
 }
